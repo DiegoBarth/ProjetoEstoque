@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: ./backend
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: loja
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
