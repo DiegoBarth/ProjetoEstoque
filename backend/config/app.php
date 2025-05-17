@@ -122,5 +122,25 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    'providers' => [
+        App\Providers\RateLimiterServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
+        Illuminate\Auth\AuthServiceProvider::class,
+        Illuminate\Cache\CacheServiceProvider::class,
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
+        Illuminate\Routing\RoutingServiceProvider::class,
+        Illuminate\Database\DatabaseServiceProvider::class,
+        Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Hashing\HashServiceProvider::class,
+Illuminate\Session\SessionServiceProvider::class,
+Illuminate\Cookie\CookieServiceProvider::class,
+Illuminate\View\ViewServiceProvider::class,
 
+
+    ],
+    'aliases' => [
+        'Auth' => Illuminate\Support\Facades\Auth::class
+    ]
 ];
