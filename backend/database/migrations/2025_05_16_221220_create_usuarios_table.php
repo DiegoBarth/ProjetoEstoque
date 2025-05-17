@@ -5,24 +5,20 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void {
-        Schema::create('usuarios', function (Blueprint $table) {
-            $table->id('usucodigo');
-            $table->string('usunome', 100);
-            $table->string('usunome_usuario', 20);
-            $table->foreignId('usunivel')->constrained('nivel_usuarios', 'nucodigo');
-            $table->boolean('usuativo')->default(true);
-            $table->text('ususenha');
-        });
-    }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void {
-        Schema::dropIfExists('usuarios');
-    }
+   public function up(): void {
+      Schema::create('usuarios', function (Blueprint $table) {
+         $table->id('usucodigo');
+         $table->string('usunome', 100);
+         $table->string('usunome_usuario', 20);
+         $table->foreignId('usunivel')->constrained('nivel_usuarios', 'nucodigo');
+         $table->boolean('usuativo')->default(true);
+         $table->text('ususenha');
+      });
+   }
+
+   public function down(): void {
+      Schema::dropIfExists('usuarios');
+   }
+
 };
