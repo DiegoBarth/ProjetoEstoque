@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Usuario extends Model {
+class Usuario extends Authenticatable {
+   
+   use HasApiTokens, Notifiable;
 
    protected $table = 'usuarios';
    protected $primaryKey = 'usucodigo';
@@ -18,6 +22,11 @@ class Usuario extends Model {
       'ususenha',
    ];
 
+   protected $hidden = [
+      'ususenha',
+      'remember_token',
+   ];
+
    public function nivel() {
       return $this->belongsTo(NivelUsuario::class, 'usunivel');
    }
@@ -29,5 +38,13 @@ class Usuario extends Model {
    public function devolucoes() {
       return $this->hasMany(Devolucao::class, 'usucodigo');
    }
-   
+
+   public function getAuthPassword() {
+      return $this->ususenha;
+   }
+
+   public function username() {
+      return 'usunome_usuario';
+   }
+
 }

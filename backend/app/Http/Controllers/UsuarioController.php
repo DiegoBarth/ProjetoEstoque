@@ -4,9 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller {
  
+   public function autenticar(Request $oRequest) {
+      $aCredenciais = [
+         'usunome_usuario' => $oRequest->sNomeUsuario,
+         'password'        => $oRequest->sSenha,
+      ];
+
+      if(!Auth::attempt($aCredenciais)) {
+         return response()->json(['mensagem' => 'Usuário ou senha inválidos'], 401);
+      }
+
+      $oUsuario = Auth::user();
+
+      $oTokenResult = $oUsuario->createToken('auth_token');
+      $oToken = $oTokenResult->accessToken;
+      $oToken->expires_at = now()->addHours(24);
+      $oToken->save();
+
+      return response()->json([
+         'access_token' => $oTokenResult->plainTextToken,
+         'token_type'   => 'Bearer',
+         'expires_at'   => $oToken->expires_at->toDateTimeString(),
+         'usuario' => [
+            'iCodigo' => $oUsuario->usucodigo,
+            'sNome'   => $oUsuario->usunome_usuario
+         ]
+      ]);
+   }
+
+
    /**
     * Retorna todos os usuários
     * @return \Illuminate\Http\JsonResponse

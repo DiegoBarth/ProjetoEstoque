@@ -9,9 +9,10 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        //
+    public function register(): void {
+        $this->app->bind('files', function () {
+            return new \Illuminate\Filesystem\Filesystem;
+        });
     }
 
     /**
@@ -21,4 +22,5 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
 }
