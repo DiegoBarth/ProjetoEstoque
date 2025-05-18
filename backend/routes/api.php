@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FornecedorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,13 @@ Route::post('/usuario', [UsuarioController::class, 'salvar']);
 
 #endregion
 
-#region Rotas Produto
+#region Rotas Cliente
 
-Route::get('/produto/{iProduto}', [ProdutoController::class, 'getProdutoByCodigo']);
+Route::post('/cliente', [ClienteController::class, 'salvar']);
+Route::get('/cliente', [ClienteController::class, 'getClientes']);
+Route::get('/cliente/{iCliente}', [ClienteController::class, 'getClienteByCodigo']);
+Route::put('/cliente/{iCliente}', [ClienteController::class, 'atualizar']);
+Route::delete('/cliente/{iCliente}', [ClienteController::class, 'excluir']);
 
 #endregion
 
@@ -35,5 +40,10 @@ Route::get('/fornecedor/{iFornecedor}', [FornecedorController::class, 'getFornec
 Route::put('/fornecedor/{iFornecedor}', [FornecedorController::class, 'atualizar']);
 Route::delete('/fornecedor/{iFornecedor}', [FornecedorController::class, 'excluir']);
 
+#endregion
+
+#region Rotas Produto
+
+Route::get('/produto/{iProduto}', [ProdutoController::class, 'getProdutoByCodigo']);
 
 #endregion
