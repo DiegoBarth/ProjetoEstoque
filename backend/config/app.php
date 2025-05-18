@@ -134,9 +134,14 @@ return [
         Illuminate\Database\DatabaseServiceProvider::class,
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Hashing\HashServiceProvider::class,
-Illuminate\Session\SessionServiceProvider::class,
-Illuminate\Cookie\CookieServiceProvider::class,
-Illuminate\View\ViewServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
+        Illuminate\Cookie\CookieServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
+        Illuminate\Encryption\EncryptionServiceProvider::class
+
+
 
 
     ],
