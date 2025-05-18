@@ -17,7 +17,7 @@ class FornecedorController extends Controller {
         $aValidacao = $oRequest->validate([
             'forrazao_social'  => 'required|string|max:150',
             'fornome_fantasia' => 'string|max:150',
-            'forcpfcnpj'       => 'required|string|max:14|min:14|unique:fornecedores,forcpfcnpj',
+            'forcpfcnpj'       => 'required|string|max:14|min:11|unique:fornecedores,forcpfcnpj',
             'fortelefone'      => 'string|max:11',
             'foremail'         => 'string|max:30',
             'forendereco'      => 'string',
@@ -84,14 +84,14 @@ class FornecedorController extends Controller {
         $aValidacao = $oRequest->validate([
             'forrazao_social'  => 'required|string|max:150',
             'fornome_fantasia' => 'string|max:150',
-            'forcpfcnpj'       => 'required|string|max:14|min:14|unique:fornecedores,forcpfcnpj',
+            'forcpfcnpj'       => "required|string|max:14|min:11|unique:fornecedores,forcpfcnpj,$iFornecedor,forcodigo",
             'fortelefone'      => 'string|max:11',
             'foremail'         => 'string|max:30',
             'forendereco'      => 'string',
             'fordata_fundacao' => 'date|before_or_equal:today'
         ]);
 
-        $oFornecedor = Fornecedor::update($aValidacao);
+        $oFornecedor->update($aValidacao);
 
         return response()->json(['oFornecedor' => $oFornecedor], 201);
     }
