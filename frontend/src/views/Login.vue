@@ -8,9 +8,9 @@
                     <img src="../assets/img/logo2.png" class="h-25" alt="">
                 </div>                
                 <div class="flex flex-col gap-2">
-                    <input class="border-1 rounded-sm w-xs" style="padding: 3px; border-color: #E0E0E0; outline: none;" type="text" name="email" placeholder="Email"/>
-                    <input class="border-1 rounded-sm w-xs" style="padding: 3px; border-color: #E0E0E0; outline: none;" type="text" name="senha" placeholder="Senha"/>
-                    <input @click="() => router.push({ name: 'Inicio' })" type="submit" name="enviar" value="enviar" style="background-color: #7ac1e3; padding: 3px" class="w-20 rounded"/>
+                    <input class="border-1 rounded-sm w-xs" style="padding: 3px; border-color: #E0E0E0; outline: none;" type="text" v-model="usuario" name="usuario" placeholder="Usuário"/>
+                    <input class="border-1 rounded-sm w-xs" style="padding: 3px; border-color: #E0E0E0; outline: none;" type="text" v-model="senha" name="senha" placeholder="Senha"/>
+                    <input @click="handleLogin" type="submit" name="enviar" value="enviar" style="background-color: #7ac1e3; padding: 3px" class="w-20 rounded"/>
                 </div>
             </div>
         </div>        
@@ -18,7 +18,30 @@
     </div>
 </template>
 <script setup>
-import { useRouter } from 'vue-router'
+   import { useRouter } from 'vue-router'
+   import { ref } from 'vue'
+   import api from '../api'
+
+   const usuario = ref('')
+   const senha   = ref('')
+
+   const handleLogin = async () => {
+
+   try {
+      await api.get('/sanctum/csrf-cookie')
+
+      const response = await api.post('/api/login', {
+         usunome_usuario: usuario.value,
+         password: senha.value
+      })
+
+      router.push({ name: 'Inicio' })
+   }
+   catch (e) {
+      console.error(e)
+   }
+
+}
 
 const router = useRouter();
 </script>

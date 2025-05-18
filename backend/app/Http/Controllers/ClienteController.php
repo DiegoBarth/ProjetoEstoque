@@ -4,108 +4,112 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class ClienteController extends Controller {
-    
-    /**
-     * Valida os dados da requisição, e então insere um novo registro de Cliente.
-     * @param Request $oRequest
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function salvar(Request $oRequest) {
-        $aValidacao = $oRequest->validate([
-            'clinome'            => 'required|string|max:100',
-            'clicpf'             => 'required|string|max:11|unique:clientes,clicpf',
-            'clidata_nascimento' => 'string|max:150',
-            'clitelefone'        => 'string|max:11',
-            'cliendereco'        => 'string'                        
-        ]);
 
-        $oCliente = Cliente::create([
-            'clinome'            => $aValidacao['clinome'], 
-            'clicpf'             => $aValidacao['clicpf'],
-            'clidata_nascimento' => $aValidacao['clidata_nascimento'],
-            'clitelefone'        => $aValidacao['clitelefone'],
-            'cliendereco'        => $aValidacao['cliendereco'],            
-        ]);
+   /**
+    * Valida os dados da requisição, e então insere um novo registro de Cliente.
+    * @param Request $oRequest
+    * @return JsonResponse
+    * @throws ValidationException
+    */
+   public function salvar(Request $oRequest) {
+      $aValidacao = $oRequest->validate([
+         'clinome'            => 'required|string|max:100',
+         'clicpf'             => 'required|string|max:11|unique:clientes,clicpf',
+         'clidata_nascimento' => 'string|max:150',
+         'clitelefone'        => 'string|max:11',
+         'cliendereco'        => 'string'
+      ]);
 
-        return response()->json(['oCliente' => $oCliente], 201);
-    }    
+      $oCliente = Cliente::create([
+         'clinome'            => $aValidacao['clinome'],
+         'clicpf'             => $aValidacao['clicpf'],
+         'clidata_nascimento' => $aValidacao['clidata_nascimento'],
+         'clitelefone'        => $aValidacao['clitelefone'],
+         'cliendereco'        => $aValidacao['cliendereco'],
+      ]);
 
-    /**
-     * Busca todos os Clientes
-     * @return JsonResponse
-     * @throws ValidationException
-     */
-    public function getClientes() {
-        $aClientes = Cliente::all();
+      return response()->json(['oCliente' => $oCliente], 201);
+   }
 
-        if(!$aClientes) {
-            return response()->json(['Nenhum cliente encontrado.'], 404);
-        }
+   /**
+    * Busca todos os Clientes
+    * @return JsonResponse
+    * @throws ValidationException
+    */
+   public function getClientes() {
+      $aClientes = Cliente::all();
 
-        return response()->json(['aClientes' => $aClientes], 200);
-    }
+      if(!$aClientes) {
+         return response()->json(['Nenhum cliente encontrado.'], 404);
+      }
 
-    /**
-     * Busca um Cliente com base no código informado, ou informa que Cliente não foi encontrado.
-     * @param int $iCliente
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getClienteByCodigo($iCliente) {
-        $oCliente = Cliente::find($iCliente);
+      return response()->json(['aClientes' => $aClientes], 200);
+   }
 
-        if(!$oCliente) {
-            return response()->json(['Cliente não encontrado.'], 404);
-        }
+   /**
+    * Busca um Cliente com base no código informado, ou informa que Cliente não foi encontrado.
+    * @param int $iCliente
+    * @return JsonResponse
+    */
+   public function getClienteByCodigo($iCliente) {
+      $oCliente = Cliente::find($iCliente);
 
-        return response()->json(['oCliente' => $oCliente], 200);
-    }
+      if(!$oCliente) {
+         return response()->json(['Cliente não encontrado.'], 404);
+      }
 
-    /**
-     * Atualiza as informações de um Cliente
-     * @param Request $oRequest
-     * @param int $iCliente
-     * @return JsonResponse
-     * @throws ValidationException
-     */
-    public function atualizar(Request $oRequest, $iCliente) {
-        $oCliente = Cliente::find($iCliente);
-        
-        if(!$oCliente) {
-            return response()->json(['sMensagem' => 'Cliente não encontrado.'], 404);
-        }
+      return response()->json(['oCliente' => $oCliente], 200);
+   }
 
-        $aValidacao = $oRequest->validate([
-            'clinome'            => 'required|string|max:100',
-            'clicpf'             => "required|string|max:11|unique:clientes,clicpf,$iCliente,clicodigo",
-            'clidata_nascimento' => 'string|max:150',
-            'clitelefone'        => 'string|max:11',
-            'cliendereco'        => 'string'                        
-        ]);
+   /**
+    * Atualiza as informações de um Cliente
+    * @param Request $oRequest
+    * @param integer $iCliente
+    * @return JsonResponse
+    * @throws ValidationException
+    */
+   public function atualizar(Request $oRequest, $iCliente) {
+      $oCliente = Cliente::find($iCliente);
 
-        $oCliente->update($aValidacao);
+      if(!$oCliente) {
+         return response()->json(['sMensagem' => 'Cliente não encontrado.'], 404);
+      }
 
-        return response()->json(['oCliente' => $oCliente], 201);
-    }
+      $aValidacao = $oRequest->validate([
+         'clinome'            => 'required|string|max:100',
+         'clicpf'             => "required|string|max:11|unique:clientes,clicpf,$iCliente,clicodigo",
+         'clidata_nascimento' => 'string|max:150',
+         'clitelefone'        => 'string|max:11',
+         'cliendereco'        => 'string'
+      ]);
 
-    /**
-     * Exclui um Cliente com base no código
-     * @param int $iCliente
-     * @return JsonResponse
-     * @throws ValidationException
-     */
-    public function excluir($iCliente) {
-        $oCliente = Cliente::find($iCliente);
+      $oCliente->update($aValidacao);
 
-        if(!$oCliente) {
-            return response()->json(['sMensagem' => 'Cliente não encontrado.'], 404);
-        }
+      return response()->json(['oCliente' => $oCliente], 201);
+   }
 
-        $oCliente->delete();
+   /**
+    * Exclui um Cliente com base no código
+    * @param integer $iCliente
+    * @return JsonResponse
+    * @throws ValidationException
+    */
+   public function excluir($iCliente) {
+      $oCliente = Cliente::find($iCliente);
 
-        return response()->json(['sMensagem' => "Cliente {$iCliente} - {$oCliente['forrazao_social']} excluído com sucesso."], 200);
-    }
-    
+      if(!$oCliente) {
+         return response()->json(['sMensagem' => 'Cliente não encontrado.'], 404);
+      }
+
+      $sNomeCliente = $oCliente->clinome;
+
+      $oCliente->delete();
+
+      return response()->json(['sMensagem' => "Cliente {$iCliente} - $sNomeCliente excluído com sucesso."], 200);
+   }
+
 }
