@@ -5,36 +5,41 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller {
  
-   public function autenticar(Request $oRequest) {
-      $aCredenciais = [
-         'usunome_usuario' => $oRequest->sNomeUsuario,
-         'password'        => $oRequest->sSenha,
-      ];
+   /**
+    * 
+    * @param \Illuminate\Http\Request $oRequest
+    * @return mixed|\Illuminate\Http\JsonResponse
+    */
+   public function login(Request $oRequest) {
+      $aCredenciais = $oRequest->validate([
+         'usunome_usuario' => 'required|string',
+         'password' => 'required|string',
+      ]);
 
       if(!Auth::attempt($aCredenciais)) {
-         return response()->json(['mensagem' => 'Usuário ou senha inválidos'], 401);
+         return response()->json(['sMensagem' => 'Credenciais inválidas'], 401);
       }
 
-      $oUsuario = Auth::user();
+      $oRequest->session()->regenerate();
 
-      $oTokenResult = $oUsuario->createToken('auth_token');
-      $oToken = $oTokenResult->accessToken;
-      $oToken->expires_at = now()->addHours(24);
-      $oToken->save();
+      return response()->json(['sMensagem' => 'Login bem-sucedido']);
+   }
 
-      return response()->json([
-         'access_token' => $oTokenResult->plainTextToken,
-         'token_type'   => 'Bearer',
-         'expires_at'   => $oToken->expires_at->toDateTimeString(),
-         'usuario' => [
-            'iCodigo' => $oUsuario->usucodigo,
-            'sNome'   => $oUsuario->usunome_usuario
-         ]
-      ]);
+   /**
+    * 
+    * @param \Illuminate\Http\Request $oRequest
+    * @return mixed|\Illuminate\Http\JsonResponse
+    */
+   public function logout(Request $oRequest) {
+      Auth::guard('web')->logout();
+
+      $oRequest->session()->invalidate();
+      $oRequest->session()->regenerateToken();
+
+      return response()->json(['sMensagem' => 'Logout feito com sucesso']);
    }
 
 
@@ -55,11 +60,7 @@ class UsuarioController extends Controller {
     * @throws \Illuminate\Validation\ValidationException
     */
    public function getUsuarioByCodigo($iCodigo) {
-      $oUsuario = Usuario::find($iCodigo);
-
-      if(!$oUsuario) {
-         return response()->json(['sMensagem' => 'Usuário não encontrado'], 404);
-      }
+      $oUsuario = $this->getUsuarioOuRetornaMensagemUsuarioNaoEncontrado($iCodigo);
 
       return response()->json(['oUsuario' => $oUsuario]);
    }

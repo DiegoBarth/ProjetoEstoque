@@ -14,21 +14,29 @@ Route::get('/user', function (Request $request) {
 
 #region Rotas Usuário
 
-Route::get('/usuario/{codigo}', [UsuarioController::class, 'getUsuarioByCodigo']);
+Route::post('/login',  [UsuarioController::class, 'login']);
+Route::post('/logout', [UsuarioController::class, 'logout']);
 
-Route::post('/autenticar', [UsuarioController::class, 'autenticar']);
-
-Route::post('/usuario', [UsuarioController::class, 'salvar']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/usuario',              [UsuarioController::class, 'getUsuarios']);
+    Route::get('/usuario/{iCodigo}',    [UsuarioController::class, 'getUsuarioByCodigo']);
+    Route::post('/usuario',             [UsuarioController::class, 'salvar']);
+    Route::put('/usuario/{iCodigo}',    [UsuarioController::class, 'atualizar']);
+    Route::delete('/usuario/{iCodigo}', [UsuarioController::class, 'excluir']);
+    Route::put('/usuario/{iCodigo}/status/{iSituacao}', [UsuarioController::class, 'atualizarSituacao']);
+});
 
 #endregion
 
 #region Rotas Cliente
 
-Route::post('/cliente', [ClienteController::class, 'salvar']);
-Route::get('/cliente', [ClienteController::class, 'getClientes']);
-Route::get('/cliente/{iCliente}', [ClienteController::class, 'getClienteByCodigo']);
-Route::put('/cliente/{iCliente}', [ClienteController::class, 'atualizar']);
-Route::delete('/cliente/{iCliente}', [ClienteController::class, 'excluir']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cliente',               [ClienteController::class, 'getClientes']);
+    Route::post('/cliente',              [ClienteController::class, 'salvar']);
+    Route::get('/cliente/{iCliente}',    [ClienteController::class, 'getClienteByCodigo']);
+    Route::put('/cliente/{iCliente}',    [ClienteController::class, 'atualizar']);
+    Route::delete('/cliente/{iCliente}', [ClienteController::class, 'excluir']);
+});
 
 #endregion
 
