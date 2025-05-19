@@ -26,7 +26,7 @@ api.interceptors.response.use(
             router.push({ name: 'Login' });
          }
 
-         return;
+         return error.response;
       }
       
       return Promise.reject(error);

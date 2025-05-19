@@ -1,12 +1,9 @@
 <template>
    <aside>
-      <span class="controleMenu"><i @click="controlaMenu()" class="fa-solid fa-xmark"></i></span>
       <span v-for="(sItemMenu, iIndice) of aItensMenu" :key="iIndice">{{ sItemMenu }}</span>
       <span class="perfil">
-         <!-- <h4>Bem vindo, <br> Fulano dos Santos.</h4> -->
-         <div class="perfilImg rounded-full w-20 h-20">
-               
-         </div>
+         <h4>Bem vindo, <br> Fulano dos Santos.</h4>      
+         <i class="fa fa-user-circle block text-5xl relative"></i>
       </span>
    </aside>
 </template>
@@ -17,23 +14,6 @@ const aItensMenu = [
    'Relatórios',
    'Metas'
 ]
-
-function controlaMenu() {
-   const oMenu = document.querySelector('aside');
-   const oIcon = document.querySelector('aside span i');
-
-   if(oMenu.classList.contains('menuFechado')) {
-      oMenu.classList.remove('menuFechado');
-      oIcon.classList.remove('fa-bars');
-      oIcon.classList.add('fa-xmark');
-      return
-   }
-
-   oIcon.classList.remove('fa-xmark');
-   oMenu.classList.add('menuFechado');
-   oIcon.classList.add('fa-bars');
-}
-
 </script>
 <style lang="scss" scoped>
 aside {
@@ -73,7 +53,7 @@ aside {
       justify-content: space-between;
 
       .perfilImg {                              
-         border: 1px solid white;
+         border: 1px solid var(--bordas);
       }
    }
 }
