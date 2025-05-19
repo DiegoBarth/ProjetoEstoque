@@ -12,12 +12,12 @@ Route::post('/login',  [UsuarioController::class, 'login']);
 Route::post('/logout', [UsuarioController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/usuario',                  [UsuarioController::class, 'getUsuarios']);
-    Route::get('/usuario/{iCodigo}',        [UsuarioController::class, 'getUsuarioByCodigo']);
-    Route::post('/usuario',                 [UsuarioController::class, 'salvar']);
-    Route::put('/usuario/{iCodigo}',        [UsuarioController::class, 'atualizar']);
-    Route::delete('/usuario/{iCodigo}',     [UsuarioController::class, 'excluir']);
-    Route::put('/usuario/{iCodigo}/status', [UsuarioController::class, 'atualizarSituacao']);
+   Route::get('/usuario',                  [UsuarioController::class, 'getUsuarios']);
+   Route::get('/usuario/{iCodigo}',        [UsuarioController::class, 'getUsuarioByCodigo']);
+   Route::post('/usuario',                 [UsuarioController::class, 'salvar']);
+   Route::put('/usuario/{iCodigo}',        [UsuarioController::class, 'atualizar']);
+   Route::delete('/usuario/{iCodigo}',     [UsuarioController::class, 'excluir']);
+   Route::put('/usuario/{iCodigo}/status', [UsuarioController::class, 'atualizarSituacao']);
 });
 
 #endregion
@@ -25,11 +25,12 @@ Route::middleware('auth:sanctum')->group(function () {
 #region Rotas Cliente
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/cliente',               [ClienteController::class, 'getClientes']);
-    Route::post('/cliente',              [ClienteController::class, 'salvar']);
-    Route::get('/cliente/{iCliente}',    [ClienteController::class, 'getClienteByCodigo']);
-    Route::put('/cliente/{iCliente}',    [ClienteController::class, 'atualizar']);
-    Route::delete('/cliente/{iCliente}', [ClienteController::class, 'excluir']);
+   Route::get('/cliente',               [ClienteController::class, 'getClientes']);
+   Route::get('/cliente/{iCliente}',    [ClienteController::class, 'getClienteByCodigo']);
+   Route::get('/cliente/cpf/{sCpf}',    [ClienteController::class, 'getClienteByCPF']);
+   Route::post('/cliente',              [ClienteController::class, 'salvar']);
+   Route::put('/cliente/{iCliente}',    [ClienteController::class, 'atualizar']);
+   Route::delete('/cliente/{iCliente}', [ClienteController::class, 'excluir']);
 });
 
 #endregion
@@ -37,17 +38,24 @@ Route::middleware('auth:sanctum')->group(function () {
 #region Rotas Fornecedor
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/fornecedor',                  [FornecedorController::class, 'getFornecedores']);
-    Route::post('/fornecedor',                 [FornecedorController::class, 'salvar']);
-    Route::get('/fornecedor/{iFornecedor}',    [FornecedorController::class, 'getFornecedorByCodigo']);
-    Route::put('/fornecedor/{iFornecedor}',    [FornecedorController::class, 'atualizar']);
-    Route::delete('/fornecedor/{iFornecedor}', [FornecedorController::class, 'excluir']);
+   Route::get('/fornecedor',                  [FornecedorController::class, 'getFornecedores']);
+   Route::get('/fornecedor/{iFornecedor}',    [FornecedorController::class, 'getFornecedorByCodigo']);
+   Route::post('/fornecedor',                 [FornecedorController::class, 'salvar']);
+   Route::put('/fornecedor/{iFornecedor}',    [FornecedorController::class, 'atualizar']);
+   Route::delete('/fornecedor/{iFornecedor}', [FornecedorController::class, 'excluir']);
 });
 
 #endregion
 
 #region Rotas Produto
 
-Route::get('/produto/{iProduto}', [ProdutoController::class, 'getProdutoByCodigo']);
+Route::middleware('auth:sanctum')->group(function () {
+   Route::get('/produto',                 [FornecedorController::class, 'getProdutos']);
+   Route::get('/produto/{iProduto}',      [FornecedorController::class, 'getProdutoByCodigo']);
+   Route::get('/produto/nome/{sProduto}', [FornecedorController::class, 'getProdutoByNome']);
+   Route::post('/produto',                [FornecedorController::class, 'salvar']);
+   Route::put('/produto/{iProduto}',      [FornecedorController::class, 'atualizar']);
+   Route::delete('/produto/{iProduto}',   [FornecedorController::class, 'excluir']);
+});
 
 #endregion

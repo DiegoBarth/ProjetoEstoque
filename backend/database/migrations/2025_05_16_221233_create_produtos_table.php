@@ -11,9 +11,9 @@ return new class extends Migration {
          $table->id('procodigo');
          $table->string('pronome', 50);
          $table->foreignId('forcodigo')->constrained('fornecedores', 'forcodigo');
-         $table->decimal('forcusto', 10, 2);
-         $table->decimal('forvalor', 10, 2);
-         $table->integer('forestoque');
+         $table->decimal('procusto', 10, 2);
+         $table->decimal('provalor', 10, 2);
+         $table->integer('proestoque');
       });
    }
 

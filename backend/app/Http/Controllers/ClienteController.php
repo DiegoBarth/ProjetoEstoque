@@ -10,32 +10,6 @@ use Illuminate\Validation\ValidationException;
 class ClienteController extends Controller {
 
    /**
-    * Valida os dados da requisição, e então insere um novo registro de Cliente.
-    * @param Request $oRequest
-    * @return JsonResponse
-    * @throws ValidationException
-    */
-   public function salvar(Request $oRequest) {
-      $aValidacao = $oRequest->validate([
-         'clinome'            => 'required|string|max:100',
-         'clicpf'             => 'required|string|max:11|unique:clientes,clicpf',
-         'clidata_nascimento' => 'string|max:150',
-         'clitelefone'        => 'string|max:11',
-         'cliendereco'        => 'string'
-      ]);
-
-      $oCliente = Cliente::create([
-         'clinome'            => $aValidacao['clinome'],
-         'clicpf'             => $aValidacao['clicpf'],
-         'clidata_nascimento' => $aValidacao['clidata_nascimento'],
-         'clitelefone'        => $aValidacao['clitelefone'],
-         'cliendereco'        => $aValidacao['cliendereco'],
-      ]);
-
-      return response()->json(['oCliente' => $oCliente], 201);
-   }
-
-   /**
     * Busca todos os Clientes
     * @return JsonResponse
     * @throws ValidationException
@@ -63,6 +37,47 @@ class ClienteController extends Controller {
       }
 
       return response()->json(['oCliente' => $oCliente], 200);
+   }
+
+   /**
+    * Busca um Cliente com base no CPF informado, ou informa que Cliente não foi encontrado.
+    * @param string $sCPF
+    * @return JsonResponse
+    */
+   public function getClienteByCPF($sCPF) {
+      $oCliente = Cliente::find('*')->where('clicpf', $sCPF)->first();
+
+      if(!$oCliente) {
+         return response()->json(['Cliente não encontrado.'], 404);
+      }
+
+      return response()->json(['oCliente' => $oCliente], 200);
+   }
+
+   /**
+    * Valida os dados da requisição, e então insere um novo registro de Cliente.
+    * @param Request $oRequest
+    * @return JsonResponse
+    * @throws ValidationException
+    */
+   public function salvar(Request $oRequest) {
+      $aValidacao = $oRequest->validate([
+         'clinome'            => 'required|string|max:100',
+         'clicpf'             => 'required|string|max:11|unique:clientes,clicpf',
+         'clidata_nascimento' => 'string|max:150',
+         'clitelefone'        => 'string|max:11',
+         'cliendereco'        => 'string'
+      ]);
+
+      $oCliente = Cliente::create([
+         'clinome'            => $aValidacao['clinome'],
+         'clicpf'             => $aValidacao['clicpf'],
+         'clidata_nascimento' => $aValidacao['clidata_nascimento'],
+         'clitelefone'        => $aValidacao['clitelefone'],
+         'cliendereco'        => $aValidacao['cliendereco'],
+      ]);
+
+      return response()->json(['oCliente' => $oCliente], 201);
    }
 
    /**
