@@ -11,7 +11,7 @@
                   <input class="border-1 rounded-sm w-xs p-2" style="border-color: #E0E0E0; outline: none;" type="text" v-model="sUsuario" name="usuario" placeholder="Usuário"/>
                   <input class="border-1 rounded-sm w-xs p-2" style="border-color: #E0E0E0; outline: none;" type="text" v-model="sSsenha" name="senha" placeholder="Senha"/>
                   <p style="color: rgb(248, 70, 70)">{{sErro}}</p>
-                  <button @click="handleLogin" type="submit" style="background-color: #7ac1e3; font-weight: 600" class="cursor-pointer w-1/3 rounded p-1 text-white">Entrar</button>
+                  <button @click="login" type="submit" style="background-color: #7ac1e3; font-weight: 600" class="cursor-pointer w-1/3 rounded p-1 text-white">Entrar</button>
                </div>
          </div>
       </div>        
@@ -28,24 +28,26 @@
    const sErro    = ref('');
    const oRouter  = useRouter();
 
-   const handleLogin = async () => {
+   async function login() {
       sErro.value = '';
       try {
          await api.get('/sanctum/csrf-cookie')
 
-         const response = await api.post('/api/login', {
+         const oResponse = await api.post('/api/login', {
             usunome_usuario: sUsuario.value,
-            password: sSsenha.value
+            password       : sSsenha.value
          });         
 
-         if(response.status != 200) {
-            return sErro.value = response.data.sMensagem;
+         if(oResponse.status != 200) {
+            return sErro.value = oResponse.data.sMensagem;
          }
          
          oRouter.push({ name: 'Inicio' });
       }
-      catch (e) {
-         console.error(e);
+      catch(error) {
+         console.error('Erro no login', error);
+
+         sErro.value = 'Não foi possível realizar o login. Tente novamente.';
       }
    }
 </script>
