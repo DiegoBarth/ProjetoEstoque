@@ -3,24 +3,38 @@
       <span v-for="(sItemMenu, iIndice) of aItensMenu" :key="iIndice">{{ sItemMenu }}</span>
       <span class="perfil">
          <h4>Bem vindo, <br> Fulano dos Santos.</h4>      
-         <i class="fa fa-user-circle block text-5xl relative"></i>
+         <div class="icone-usuario" @click="openModalLogout">            
+            <i class="fa fa-user-circle block text-5xl relative"></i>
+            <i class="fa-solid fa-right-from-bracket icone-logout"></i>
+         </div>
       </span>
-   </aside>
+   </aside>   
 </template>
 <script setup>
+import ModalLogout from "../ModalLogout.vue";
 const aItensMenu = [
    'Cadastros',
    'Venda',
    'Relatórios',
    'Metas'
 ]
+
+function openModalLogout() {
+   const oModal = document.getElementById('modalLogout');
+
+   console.log(oModal)
+
+   oModal.style.display = 'flex';
+}
 </script>
 <style lang="scss" scoped>
 aside {
    position: relative;
    height: 100%;    
-   width: 18%;
+   width: 12%;
    background-color: var(--elementos);
+   border-right: 1px solid var(--bordas);
+   box-shadow: 4px 0 10px 1px var(--bordas);
    transition: 1s width;
    
 
@@ -28,11 +42,11 @@ aside {
       display: flex;
       align-items: center;
       border-bottom: 1px solid var(--bordas);
-      height: 8%;
+      height: 5%;
       width: 100%;
       text-align: left;
       padding: 15px;
-      font-size: 1.4rem;
+      font-size: 1rem;
    }
 
    span.controleMenu {
@@ -50,11 +64,28 @@ aside {
       bottom: 0;
       height: 20%;
       width: 100%;
-      justify-content: space-between;
+      justify-content: space-between;      
+   }
 
-      .perfilImg {                              
-         border: 1px solid var(--bordas);
-      }
+   .icone-usuario {
+      position: relative;
+      cursor: pointer;
+   }
+
+   .icone-logout {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #fff;
+      color: #000;
+      padding: 4px;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0,0,0,0.2);      
+      display: none;            
+   }
+
+   .icone-usuario:hover .icone-logout {
+      display: block;      
    }
 }
 

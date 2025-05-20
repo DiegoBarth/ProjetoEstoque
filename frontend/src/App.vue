@@ -1,6 +1,6 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
 import Menu from './components/UI/Menu.vue'
+import ModalLogout from './components/ModalLogout.vue'
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -9,6 +9,7 @@ const route = useRoute();
 <template>
   <div class="principal">
     <Menu v-if="route.name != 'Login'" />
+    <ModalLogout />
     <RouterView />
   </div>
 </template>
