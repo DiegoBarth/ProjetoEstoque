@@ -71,19 +71,23 @@ class ProdutoController extends Controller {
     */
    public function salvar(Request $oRequest) {
       $aValidacao = $oRequest->validate([
-         'pronome'    => 'required|string|max:50',
-         'forcodigo'  => 'required|integer|exists:fornecedores,forcodigo',
-         'procusto'   => 'required|numeric|min:0',
-         'provalor'   => 'required|numeric|min:0',
-         'proestoque' => 'required|integer'
+         'pronome'           => 'required|string|max:50',
+         'procodigo_barras'  => 'string|max:20',
+         'forcodigo'         => 'required|integer|exists:fornecedores,forcodigo',
+         'procusto'          => 'required|numeric|min:0',
+         'provalor'          => 'required|numeric|min:0',
+         'provalor_desconto' => 'required|numeric|min:0',
+         'proestoque'        => 'required|integer'
       ]);
 
       $oProduto = Produto::create([
-         'pronome'    => $aValidacao['pronome'],
-         'forcodigo'  => $aValidacao['forcodigo'],
-         'procusto'   => $aValidacao['procusto'],
-         'provalor'   => $aValidacao['provalor'],
-         'proestoque' => $aValidacao['proestoque']
+         'pronome'           => $aValidacao['pronome'],
+         'procodigo_barras'  => $aValidacao['procodigo_barras'],
+         'forcodigo'         => $aValidacao['forcodigo'],
+         'procusto'          => $aValidacao['procusto'],
+         'provalor'          => $aValidacao['provalor'],
+         'provalor_desconto' => $aValidacao['provalor_desconto'],
+         'proestoque'        => $aValidacao['proestoque']
       ]);
 
       return response()->json(['oProduto' => $oProduto], 201);
@@ -98,11 +102,13 @@ class ProdutoController extends Controller {
       $oProduto = $this->getProdutoOuRetornaMensagemProdutoNaoEncontrado($iCodigo);
 
       $aValidacao = $oRequest->validate([
-         'pronome'    => 'sometimes|required|string|max:50',
-         'forcodigo'  => 'sometimes|required|integer|exists:fornecedores,forcodigo',
-         'procusto'   => 'sometimes|required|numeric|min:0',
-         'provalor'   => 'sometimes|required|numeric|min:0',
-         'proestoque' => 'sometimes|required|integer'
+         'pronome'           => 'sometimes|required|string|max:50',
+         'procodigo_barras'  => 'sometimes|string|max:20',
+         'forcodigo'         => 'sometimes|required|integer|exists:fornecedores,forcodigo',
+         'procusto'          => 'sometimes|required|numeric|min:0',
+         'provalor'          => 'sometimes|required|numeric|min:0',
+         'provalor_desconto' => 'sometimes|required|numeric|min:0',
+         'proestoque'        => 'sometimes|required|integer'
       ]);
 
       $oProduto->update($aValidacao);

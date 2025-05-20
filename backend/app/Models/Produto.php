@@ -12,10 +12,12 @@ class Produto extends Model {
 
    protected $fillable = [
       'pronome',
+      'procodigo_barras',
       'forcodigo',
-      'forcusto',
-      'forvalor',
-      'forestoque',
+      'procusto',
+      'provalor',
+      'provalor_desconto',
+      'proestoque'
    ];
 
    public function fornecedor() {
