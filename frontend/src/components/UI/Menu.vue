@@ -11,8 +11,8 @@
    </aside>   
 </template>
 <script setup>
-import Cookies from 'js-cookie';
 import ModalLogout from "../ModalLogout.vue";
+import Cookies from 'js-cookie';
 import { onMounted, ref } from 'vue';
 
 const sUsuario = ref('');
@@ -22,7 +22,10 @@ onMounted(() => {
 });
 
 const aItensMenu = [
-   'Cadastros',
+   'Clientes',
+   'Fornecedores',
+   'Produtos',
+   'Usuários',
    'Venda',
    'Relatórios',
    'Metas'
