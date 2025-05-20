@@ -2,7 +2,7 @@
    <aside>
       <span v-for="(sItemMenu, iIndice) of aItensMenu" :key="iIndice">{{ sItemMenu }}</span>
       <span class="perfil">
-         <h4>Bem vindo, <br> Fulano dos Santos.</h4>      
+         <h4>Bem vindo, <br> {{ sUsuario || 'Usuário' }}</h4>      
          <div class="icone-usuario" @click="openModalLogout">            
             <i class="fa fa-user-circle block text-5xl relative"></i>
             <i class="fa-solid fa-right-from-bracket icone-logout"></i>
@@ -12,12 +12,22 @@
 </template>
 <script setup>
 import ModalLogout from "../ModalLogout.vue";
+import { useUsuarioStore } from '@/stores/usuario';
+import { onMounted, ref } from "vue";
+
+const sUsuario = ref('');
+
+onMounted(() => {
+   const usuarioStore = useUsuarioStore();
+   sUsuario.value     = usuarioStore.getUsuario().usunome;
+});
+
 const aItensMenu = [
    'Cadastros',
    'Venda',
    'Relatórios',
    'Metas'
-]
+];
 
 function openModalLogout() {
    const oModal = document.getElementById('modalLogout');

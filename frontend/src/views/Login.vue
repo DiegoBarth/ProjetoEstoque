@@ -19,6 +19,7 @@
    </div>
 </template>
 <script setup>
+   import { useUsuarioStore } from '@/stores/usuario';
    import { useRouter } from 'vue-router';
    import { ref } from 'vue';
    import api from '../api';
@@ -33,14 +34,18 @@
       try {
          await api.get('/sanctum/csrf-cookie')
 
-         const oResponse = await api.post('/api/login', {
+         const {data, status} = await api.post('/api/login', {
             usunome_usuario: sUsuario.value,
             password       : sSsenha.value
          });         
 
-         if(oResponse.status != 200) {
-            return sErro.value = oResponse.data.sMensagem;
+         if(status != 200) {
+            return sErro.value = data.sMensagem;
          }
+
+         const usuarioStore = useUsuarioStore();
+
+         usuarioStore.setUsuario(data.oUsuario);
          
          oRouter.push({ name: 'Inicio' });
       }

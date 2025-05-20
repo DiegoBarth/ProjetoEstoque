@@ -28,7 +28,9 @@ class UsuarioController extends Controller {
 
       $oRequest->session()->regenerate();
 
-      return response()->json(['sMensagem' => 'Login bem-sucedido']);
+      $oUsuario = Usuario::where('usunome_usuario', '=', $oRequest->usunome_usuario)->first();
+
+      return response()->json(['oUsuario' => $oUsuario], 200);
    }
 
    /**
