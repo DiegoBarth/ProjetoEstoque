@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class NivelUsuario extends Model {
 
-   protected $table = 'nivel_usuarios';
+   protected $table = 'niveis_usuarios';
    protected $primaryKey = 'nucodigo';
    public $timestamps = false;
 

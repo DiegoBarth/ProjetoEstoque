@@ -11,7 +11,7 @@ return new class extends Migration {
          $table->id('usucodigo');
          $table->string('usunome', 100);
          $table->string('usunome_usuario', 20);
-         $table->foreignId('usunivel')->constrained('nivel_usuarios', 'nucodigo');
+         $table->foreignId('usunivel')->constrained('niveis_usuarios', 'nucodigo');
          $table->boolean('usuativo')->default(true);
          $table->text('ususenha');
       });

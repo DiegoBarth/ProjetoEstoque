@@ -78,7 +78,7 @@ class UsuarioController extends Controller {
       $aValidacao = $oRequest->validate([
          'usunome'         => 'required|string|max:100',
          'usunome_usuario' => 'required|string|max:20|unique:usuarios,usunome_usuario',
-         'usunivel'        => 'required|integer|exists:nivel_usuarios,nucodigo',
+         'usunivel'        => 'required|integer|exists:niveis_usuarios,nucodigo',
          'ususenha'        => 'required|string|min:6',
          'usuativo'        => 'boolean'
       ]);
@@ -105,7 +105,7 @@ class UsuarioController extends Controller {
       $aValidacao = $oRequest->validate([
          'usunome'         => 'sometimes|string|max:100',
          'usunome_usuario' => "sometimes|string|max:20|unique:usuarios,usunome_usuario,$iCodigo,usucodigo",
-         'usunivel'        => 'sometimes|integer|exists:nivel_usuarios,nucodigo',
+         'usunivel'        => 'sometimes|integer|exists:niveis_usuarios,nucodigo',
          'ususenha'        => 'sometimes|string|min:6',
          'usuativo'        => 'sometimes|boolean'
       ]);
