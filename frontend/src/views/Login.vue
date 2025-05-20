@@ -19,10 +19,10 @@
    </div>
 </template>
 <script setup>
-   import { useUsuarioStore } from '@/stores/usuario';
    import { useRouter } from 'vue-router';
    import { ref } from 'vue';
    import api from '../api';
+   import Cookies from 'js-cookie';
 
    const sUsuario = ref('');
    const sSsenha  = ref('');
@@ -43,9 +43,7 @@
             return sErro.value = data.sMensagem;
          }
 
-         const usuarioStore = useUsuarioStore();
-
-         usuarioStore.setUsuario(data.oUsuario);
+         setDadosCookies(data.oUsuario);
          
          oRouter.push({ name: 'Inicio' });
       }
@@ -54,6 +52,11 @@
 
          sErro.value = 'Não foi possível realizar o login. Tente novamente.';
       }
+   }
+
+   function setDadosCookies(oUsuario) {
+      Cookies.set('iUsuario', oUsuario.usucodigo);
+      Cookies.set('sUsuario', oUsuario.usunome);
    }
 </script>
 <style scoped>

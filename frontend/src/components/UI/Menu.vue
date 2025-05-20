@@ -11,15 +11,14 @@
    </aside>   
 </template>
 <script setup>
+import Cookies from 'js-cookie';
 import ModalLogout from "../ModalLogout.vue";
-import { useUsuarioStore } from '@/stores/usuario';
-import { onMounted, ref } from "vue";
+import { onMounted, ref } from 'vue';
 
 const sUsuario = ref('');
 
 onMounted(() => {
-   const usuarioStore = useUsuarioStore();
-   sUsuario.value     = usuarioStore.getUsuario().usunome;
+   sUsuario.value = Cookies.get('sUsuario');
 });
 
 const aItensMenu = [
