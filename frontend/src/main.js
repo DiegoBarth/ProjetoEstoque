@@ -1,11 +1,15 @@
-import './assets/main.scss'
-import '@fontawesome/fontawesome-free/css/all.min.css'
+import './assets/main.scss';
+import '@fontawesome/fontawesome-free/css/all.min.css';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import $  from 'jquery'
 
 import App from './App.vue'
 import router from './router'
+
+window.$ = $
+window.jQuery = $
 
 const app = createApp(App)
 

@@ -1,6 +1,6 @@
 <template>
    <aside>
-      <span v-for="(sItemMenu, iIndice) of aItensMenu" :key="iIndice">{{ sItemMenu }}</span>
+      <RouterLink :to="{ name: oItemMenu.sRota}" v-for="(oItemMenu, iIndice) of aItensMenu" :key="iIndice">{{ oItemMenu.sTitulo }}</RouterLink>
       <span class="perfil">
          <h4>Bem vindo, <br> {{ sUsuario || 'Usuário' }}</h4>      
          <div class="icone-usuario" @click="openModalLogout">            
@@ -11,7 +11,6 @@
    </aside>   
 </template>
 <script setup>
-import ModalLogout from "../ModalLogout.vue";
 import Cookies from 'js-cookie';
 import { onMounted, ref } from 'vue';
 
@@ -22,13 +21,34 @@ onMounted(() => {
 });
 
 const aItensMenu = [
-   'Clientes',
-   'Fornecedores',
-   'Produtos',
-   'Usuários',
-   'Venda',
-   'Relatórios',
-   'Metas'
+   {
+      sTitulo: 'Clientes',
+      sRota  : 'Cliente'
+   },
+   {
+      sTitulo: 'Fornecedores',
+      sRota  : 'Fornecedor'
+   },
+   {
+      sTitulo: 'Produtos',
+      sRota  : 'Produto'
+   },
+   {
+      sTitulo: 'Usuários',
+      sRota  : 'Usuário'
+   },
+   {
+      sTitulo: 'Venda',
+      sRota  : 'Venda'
+   },
+   {
+      sTitulo: 'Relatórios',
+      sRota  : 'Relatório' 
+   },
+   {
+      sTitulo: 'Metas',
+      sRota  : 'Meta'  
+   }
 ];
 
 function openModalLogout() {
@@ -50,7 +70,7 @@ aside {
    transition: 1s width;
    
 
-   span {
+   a, span {
       display: flex;
       align-items: center;
       border-bottom: 1px solid var(--bordas);
@@ -59,15 +79,7 @@ aside {
       text-align: left;
       padding: 15px;
       font-size: 1rem;
-   }
-
-   span.controleMenu {
-      justify-content: center;
-
-      i {
-         font-size: 2rem;
-      }
-   }    
+   }   
 
    span.perfil {        
       border: none;

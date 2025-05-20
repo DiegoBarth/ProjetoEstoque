@@ -1,6 +1,6 @@
 <template>
     <div class="overlay">
-        <div class="modal">
+        <div v-bind="$attrs" class="modal">
             <slot></slot>
         </div>        
     </div>

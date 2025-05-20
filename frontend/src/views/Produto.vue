@@ -1,6 +1,9 @@
 <template>
-  <div class="w-full p-4">
-    <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+  <div>
+    <div>
+      <button @click="showModalCadastro" >Abrir modal</button>
+    </div>
+    <ModalCadastro class="flex items-center justify-content-center" @adicionarProduto="adicionarProduto" @atualizarProduto="atualizarProduto">       
       <div class="flex items-center mb-4">
         <i class="text-2xl mr-2">📦</i>
         <h2 class="text-xl font-semibold">Cadastro de produto</h2>
@@ -10,7 +13,7 @@
         <div>
           <label class="block text-sm font-medium">Produto</label>
           <input
-            v-model="product.product_name"
+            v-model="oProduto.sNome"
             type="text"
             maxlength="100"
             placeholder="Informe uma descrição"
@@ -21,9 +24,9 @@
         <div>
           <label class="block text-sm font-medium">Código de barras</label>
           <input
-            v-model="product.product_barcode"
+            v-model="oProduto.iCodigoBarras"
             type="text"
-            maxlength="100"
+            maxlength="20"            
             class="w-full mt-1 p-2 border rounded"
           />
         </div>
@@ -31,107 +34,111 @@
         <div>
           <label class="block text-sm font-medium">Quantidade</label>
           <input
-            v-model="product.quantity"
+            v-model="oProduto.iQuantidade"
             type="text"
             maxlength="4"
             class="w-full mt-1 p-2 border rounded"
-            @input="onlyNumbers('quantity')"
+            @input="onlyNumbers('iQuantidade')"
           />
         </div>
 
         <div>
           <label class="block text-sm font-medium">Valor compra</label>
           <input
-            v-model="product.purchase_price"
+            v-model="oProduto.fValorCompra"
             type="text"
-            maxlength="7"
+            maxlength="12"
             class="w-full mt-1 p-2 border rounded"
-            @input="onlyNumbers('purchase_price')"
-            @change="formatCurrency('purchase_price')"
+            @input="onlyNumbers('fValorCompra')"
+            @change="formatCurrency('fValorCompra')"
           />
         </div>
 
         <div>
           <label class="block text-sm font-medium">Valor venda</label>
           <input
-            v-model="product.sale_value"
+            v-model="oProduto.fValorVenda"
             type="text"
-            maxlength="7"
+            maxlength="12"
             class="w-full mt-1 p-2 border rounded"
-            @input="onlyNumbers('sale_value')"
-            @change="formatCurrency('sale_value')"
+            @input="onlyNumbers('fValorVenda')"
+            @change="formatCurrency('fValorVenda')"
           />
         </div>
 
         <div>
-          <label class="block text-sm font-medium">Desconto</label>
+          <label class="block text-sm font-medium">Valor desconto</label>
           <input
-            v-model="product.discount"
+            v-model="oProduto.fDesconto"
             type="text"
-            maxlength="3"
+            maxlength="12"
             class="w-full mt-1 p-2 border rounded"
             @input="handleDiscount()"
+            @change="formatCurrency('fDesconto')"
           />
         </div>
-      </div>
-
-      <div class="mt-6 flex gap-4">
-        <button
-          v-if="!product.code"
-          @click="addProduct"
-          class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          Incluir
-        </button>
-        <button
-          v-else
-          @click="updateProduct"
-          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Atualizar
-        </button>
-      </div>
-    </div>
+        <div>
+          <label class="block text-sm font-medium">Fornecedor</label>
+          <input
+            v-model="oProduto.iFornecedor"
+            type="text"
+            maxlength="3"
+            class="w-full mt-1 p-2 border rounded"            
+          />
+        </div>
+      </div>            
+    </ModalCadastro>
   </div>
 </template>
 
 <script setup>
 import { reactive } from 'vue'
+import api from '../api';
+import ModalCadastro from '../components/ModalCadastro.vue'
 
-const product = reactive({
-  code: '',
-  product_name: '',
-  product_barcode: '',
-  quantity: '',
-  purchase_price: '',
-  sale_value: '',
-  discount: ''
+const oProduto = reactive({
+  iProduto: '',
+  sNome: '',
+  iCodigoBarras: '',
+  iQuantidade: '',
+  fValorCompra: '',
+  fValorVenda: '',
+  fDesconto: '',
+  iFornecedor: ''
 })
 
-function addProduct() {
-  console.log('Produto incluído:', product)
+function showModalCadastro() {
+  const oModal = $('#modalCadastro');
+
+  oModal.css('display', 'flex');
 }
 
-function updateProduct() {
-  console.log('Produto atualizado:', product)
+async function adicionarProduto() {
+  const { data } = await api.post('api/produto', {
+    ...oProduto
+  });
+}
+
+async function atualizarProduto(iProduto) {
+  const { data } = await api.put(`api/produto/${iProduto}`, {
+
+  });
 }
 
 function onlyNumbers(field) {
-  product[field] = product[field].replace(/\D/g, '')
+  oProduto[field] = oProduto[field].replace(/\D/g, '')
 }
 
 function formatCurrency(field) {
-  const valor = parseFloat(product[field]) / 100
-  product[field] = valor.toLocaleString('pt-BR', {
+  const valor = parseFloat(oProduto[field]) / 100
+
+  if(isNaN(valor)) {
+    return;
+  }
+
+  oProduto[field] = valor.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   })
-}
-
-function handleDiscount() {
-  product.discount = product.discount.replace(/\D/g, '')
-  if (product.discount && !product.discount.includes('%')) {
-    product.discount += '%'
-  }
 }
 </script>
