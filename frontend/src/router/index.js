@@ -2,6 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Painel from '../views/Painel.vue';
 import Produto from '../views/Produto.vue';
 import Login from '../views/Login.vue';
+import Cliente from'../views/Cliente.vue';
+import Fornecedor from'../views/Fornecedor.vue';
+import Venda from'../views/Venda.vue';
+import Relatorio from'../views/Relatorio.vue';
+import Usuario from '../views/Usuario.vue'
+import Meta from'../views/Meta.vue';
 
 const router = createRouter({
    history: createWebHistory(import.meta.env.BASE_URL),
