@@ -4,12 +4,13 @@ import '@fontawesome/fontawesome-free/css/all.min.css';
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import $  from 'jquery'
+import App from './App.vue';
+import router from './router';
+import * as utils from '../src/utils/main.js';
 
-import App from './App.vue'
-import router from './router'
-
-window.$ = $
+window.$      = $
 window.jQuery = $
+window.utils  = utils;
 
 const app = createApp(App)
 

@@ -20,8 +20,31 @@ a,
   padding: 3px;
 }
 
+.alerta-container {
+   position: fixed;
+   top: 20px;
+   right: 20px;
+   z-index: 2000;
+}
+  
+.alerta-container:hover {
+   cursor: pointer;
+}
+
+.alerta {
+   width: 300px;
+   background-color: green;
+   color: white;
+   padding: 10px;
+   margin-bottom: 10px;
+   border-radius: 5px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+   transition: transform 0.8s ease-in-out;
+}
+
 @media (hover: hover) {
   a:hover {
     background-color: var(--bordas);
   }
 }
+

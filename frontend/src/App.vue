@@ -12,6 +12,7 @@ const route = useRoute();
     <ModalLogout />
     <RouterView />
   </div>
+  <div class='alerta-container'></div>
 </template>
 
 <style scoped>
