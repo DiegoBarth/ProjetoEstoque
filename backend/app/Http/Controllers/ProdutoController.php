@@ -16,7 +16,9 @@ class ProdutoController extends Controller {
     * @throws ValidationException
     */
    public function getProdutos() {
-      $aProdutos = Produto::all();
+      $aProdutos = Produto::join('fornecedores', 'fornecedores.forcodigo', '=', 'produtos.forcodigo')
+         ->select('produtos.*', 'fornecedores.forrazao_social')
+         ->get();
 
       return response()->json(['aProdutos' => $aProdutos], 200);
    }
@@ -43,8 +45,9 @@ class ProdutoController extends Controller {
     * @return JsonResponse
     */
    public function getProdutoByNome($sProduto) {
-      $aProdutos = Produto::find('*')
-         ->Where('pronome', 'ILIKE', "%{$sProduto}%")
+      $aProdutos = Produto::join('fornecedores', 'fornecedores.forcodigo', '=', 'produtos.forcodigo')
+         ->where('pronome', 'ILIKE', "%{$sProduto}%")
+         ->select('produtos.*', 'fornecedores.forrazao_social')
          ->get();
       
       if(!count($aProdutos)) {
@@ -71,23 +74,23 @@ class ProdutoController extends Controller {
     */
    public function salvar(Request $oRequest) {
       $aValidacao = $oRequest->validate([
-         'pronome'           => 'required|string|max:50',
-         'procodigo_barras'  => 'string|max:20',
-         'forcodigo'         => 'required|integer|exists:fornecedores,forcodigo',
-         'procusto'          => 'required|numeric|min:0',
-         'provalor'          => 'required|numeric|min:0',
-         'provalor_desconto' => 'required|numeric|min:0',
-         'proestoque'        => 'required|integer'
+         'sNome'         => 'required|string|max:50',
+         'sCodigoBarras' => 'string|max:20',
+         'iFornecedor'   => 'required|integer|exists:fornecedores,forcodigo',
+         'fValorCompra'  => 'required|numeric|min:0',
+         'fValorVenda'   => 'required|numeric|min:0',
+         'fDesconto'     => 'required|numeric|min:0',
+         'iQuantidade'   => 'required|integer'
       ]);
 
       $oProduto = Produto::create([
-         'pronome'           => $aValidacao['pronome'],
-         'procodigo_barras'  => $aValidacao['procodigo_barras'],
-         'forcodigo'         => $aValidacao['forcodigo'],
-         'procusto'          => $aValidacao['procusto'],
-         'provalor'          => $aValidacao['provalor'],
-         'provalor_desconto' => $aValidacao['provalor_desconto'],
-         'proestoque'        => $aValidacao['proestoque']
+         'pronome'           => $aValidacao['sNome'],
+         'procodigo_barras'  => $aValidacao['sCodigoBarras'],
+         'forcodigo'         => $aValidacao['iFornecedor'],
+         'procusto'          => $aValidacao['fValorCompra'],
+         'provalor'          => $aValidacao['fValorVenda'],
+         'provalor_desconto' => $aValidacao['fDesconto'],
+         'proestoque'        => $aValidacao['iQuantidade']
       ]);
 
       return response()->json(['oProduto' => $oProduto], 201);
@@ -102,16 +105,24 @@ class ProdutoController extends Controller {
       $oProduto = $this->getProdutoOuRetornaMensagemProdutoNaoEncontrado($iCodigo);
 
       $aValidacao = $oRequest->validate([
-         'pronome'           => 'sometimes|required|string|max:50',
-         'procodigo_barras'  => 'sometimes|string|max:20',
-         'forcodigo'         => 'sometimes|required|integer|exists:fornecedores,forcodigo',
-         'procusto'          => 'sometimes|required|numeric|min:0',
-         'provalor'          => 'sometimes|required|numeric|min:0',
-         'provalor_desconto' => 'sometimes|required|numeric|min:0',
-         'proestoque'        => 'sometimes|required|integer'
+         'sNome'         => 'sometimes|required|string|max:50',
+         'sCodigoBarras' => 'sometimes|string|max:20',
+         'iFornecedor'   => 'sometimes|required|integer|exists:fornecedores,forcodigo',
+         'fValorCompra'  => 'sometimes|required|numeric|min:0',
+         'fValorVenda'   => 'sometimes|required|numeric|min:0',
+         'fDesconto'     => 'sometimes|required|numeric|min:0',
+         'iQuantidade'   => 'sometimes|required|integer'
       ]);
 
-      $oProduto->update($aValidacao);
+      $oProduto->update([
+         'pronome'           => $aValidacao['sNome'],
+         'procodigo_barras'  => $aValidacao['sCodigoBarras'],
+         'forcodigo'         => $aValidacao['iFornecedor'],
+         'procusto'          => $aValidacao['fValorCompra'],
+         'provalor'          => $aValidacao['fValorVenda'],
+         'provalor_desconto' => $aValidacao['fDesconto'],
+         'proestoque'        => $aValidacao['iQuantidade']
+      ]);
 
       return response()->json(['oProduto' => $oProduto], 200);
    }
@@ -137,7 +148,9 @@ class ProdutoController extends Controller {
     * @throws HttpException
     */
    private function getProdutoOuRetornaMensagemProdutoNaoEncontrado($iCodigo) {
-      $oProduto = Produto::where('procodigo', $iCodigo)->first();
+      $oProduto = Produto::where('procodigo', $iCodigo)
+         ->join('fornecedores', 'fornecedores.forcodigo', '=', 'produtos.forcodigo')
+         ->first();
       
       if(!$oProduto) {
          abort(response()->json(['sMensagem' => 'Produto não encontrado'], 404));

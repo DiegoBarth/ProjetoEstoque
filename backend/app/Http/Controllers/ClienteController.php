@@ -45,7 +45,7 @@ class ClienteController extends Controller {
     * @return JsonResponse
     */
    public function getClienteByCPF($sCPF) {
-      $oCliente = Cliente::find('*')->where('clicpf', $sCPF)->first();
+      $oCliente = Cliente::where('clicpf', $sCPF)->first();
 
       if(!$oCliente) {
          return response()->json(['Cliente não encontrado.'], 404);
