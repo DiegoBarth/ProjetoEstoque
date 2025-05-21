@@ -7,7 +7,7 @@ const route = useRoute();
 </script>
 
 <template>
-  <div class="principal">
+  <div class="flex w-full h-full">
     <Menu v-if="route.name != 'Login'" />
     <ModalLogout />
     <RouterView />
@@ -15,9 +15,5 @@ const route = useRoute();
 </template>
 
 <style scoped>
-.principal {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
+
 </style>
