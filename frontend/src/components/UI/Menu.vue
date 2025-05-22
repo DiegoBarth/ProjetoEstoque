@@ -1,14 +1,20 @@
 <template>
-   <aside>
-      <RouterLink :to="{ name: oItemMenu.sRota}" v-for="(oItemMenu, iIndice) of aItensMenu" :key="iIndice">{{ oItemMenu.sTitulo }}</RouterLink>
-      <span class="perfil">
-         <h4>Bem vindo, <br> {{ sUsuario || 'Usuário' }}</h4>      
-         <div class="icone-usuario" @click="openModalLogout">            
-            <i class="fa fa-user-circle block text-5xl relative"></i>
+   <aside class="min-w-[160px] w-full sm:w-64 p-4 bg-gray-100 flex flex-col h-full">
+      <nav class="flex flex-col gap-2 flex-grow overflow-auto">
+         <RouterLink v-for="(oItemMenu, iIndice) of aItensMenu" :key="iIndice" class="hover:text-sky-600" :to="{ name: oItemMenu.sRota }">
+            {{ oItemMenu.sTitulo }}
+         </RouterLink>
+      </nav>
+      <div class="perfil w-full border-t border-gray-300 mt-4 pt-4 box-border flex items-center justify-between">
+         <h4 class="text-sm max-w-[108px] break-words">
+            Bem vindo, <br /> {{ sUsuario || 'Usuário' }}
+         </h4>
+         <div class="icone-usuario cursor-pointer flex justify-end items-center gap-2" @click="openModalLogout">
+            <i class="fa fa-user-circle text-5xl"></i>
             <i class="fa-solid fa-right-from-bracket icone-logout"></i>
          </div>
-      </span>
-   </aside>   
+      </div>
+  </aside>
 </template>
 <script setup>
 import Cookies from 'js-cookie';
@@ -17,7 +23,7 @@ import { onMounted, ref } from 'vue';
 const sUsuario = ref('');
 
 onMounted(() => {
-   sUsuario.value = Cookies.get('sUsuario');
+   sUsuario.value = Cookies.get('sUsuario').split(" ")[0];
 });
 
 const aItensMenu = [

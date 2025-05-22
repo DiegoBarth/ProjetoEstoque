@@ -11,16 +11,29 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(config => {
-   const token = Cookies.get('XSRF-TOKEN');
-   if(token) {
-      config.headers['X-XSRF-TOKEN'] = token;
+   utils.adicionarLoading(); 
+
+   const oToken = Cookies.get('XSRF-TOKEN');
+
+   if(oToken) {
+      config.headers['X-XSRF-TOKEN'] = oToken;
    }
+
    return config;
+},
+error => {
+   utils.removerLoading();
+   return Promise.reject(error);
 });
 
 api.interceptors.response.use(
-   response => response,
-   error    => {
+   response => {
+      utils.removerLoading();
+      return response;
+   },
+   error => {
+      utils.removerLoading();
+
       if(error.response && error.response.status === 401) {
          if(router.currentRoute.value.name !== 'Login') {
             router.push({ name: 'Login' });
