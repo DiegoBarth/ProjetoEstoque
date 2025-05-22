@@ -15,7 +15,10 @@
     "axios": "^1.9.0",
     "datatables.net": "^2.3.1",
     "datatables.net-dt": "^2.3.1",
+<<<<<<< Updated upstream
     "datatables.net-vue3": "^3.0.4",
+=======
+>>>>>>> Stashed changes
     "font-awesome": "^4.7.0",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",

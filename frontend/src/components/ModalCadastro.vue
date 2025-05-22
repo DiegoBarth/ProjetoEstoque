@@ -1,6 +1,9 @@
 <template>    
     <Modal v-bind="$attrs" class="bg-gray-100 p-6 shadow-md w-220" id="modalCadastro">
         <div>
+            <div class="flex items-center mb-4">        
+                <h2 class="text-xl font-semibold">{{ sTitulo }}</h2>
+            </div>
             <slot></slot>
             <div class="flex items-center justify-start mt-5 gap-2">
                 <button v-if="!bAlterar" @click="$emit('adicionarProduto')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
@@ -19,7 +22,7 @@
 <script setup>
 import Modal from '../components/UI/Modal.vue'
 
-defineProps(['bAlterar', 'iCodigo']);
+defineProps(['bAlterar', 'iCodigo', 'sTitulo']);
 defineEmits(['adicionarProduto', 'atualizarProduto']);
 
 function fecharModal() {

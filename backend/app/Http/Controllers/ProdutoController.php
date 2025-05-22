@@ -74,13 +74,13 @@ class ProdutoController extends Controller {
     */
    public function salvar(Request $oRequest) {
       $aValidacao = $oRequest->validate([
-         'sNome'         => 'required|string|max:50',
-         'sCodigoBarras' => 'string|max:20',
-         'iFornecedor'   => 'required|integer|exists:fornecedores,forcodigo',
-         'fValorCompra'  => 'required|numeric|min:0',
-         'fValorVenda'   => 'required|numeric|min:0',
-         'fDesconto'     => 'required|numeric|min:0',
-         'iQuantidade'   => 'required|integer'
+         "sNome"         => 'required|string|max:50',
+         "sCodigoBarras" => 'string|max:20',
+         "iFornecedor"   => 'required|integer|exists:fornecedores,forcodigo',
+         "fValorCompra"  => 'required|numeric|min:0',
+         "fValorVenda"   => 'required|numeric|min:0',
+         "fDesconto"     => 'required|numeric|min:0',
+         "iQuantidade"   => 'required|integer'
       ]);
 
       $oProduto = Produto::create([
