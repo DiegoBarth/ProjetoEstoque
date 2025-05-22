@@ -6,13 +6,13 @@
             </div>
             <slot></slot>
             <div class="flex items-center justify-start mt-5 gap-2">
-                <button v-if="!bAlterar" @click="$emit('adicionarProduto')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                <button v-if="!bAlterar" @click="$emit('incluir')" class="cursor-pointer px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
                     Incluir
                 </button>
-                <button v-else @click="$emit('atualizarProduto', iCodigo)" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                <button v-else @click="$emit('alterar')" class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                     Atualizar
                 </button>
-                <button @click="fecharModal" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700">
+                <button @click="fecharModal" class="cursor-pointer px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700">
                     Cancelar
                 </button>
             </div>
@@ -22,8 +22,8 @@
 <script setup>
 import Modal from '../components/UI/Modal.vue'
 
-defineProps(['bAlterar', 'iCodigo', 'sTitulo']);
-defineEmits(['adicionarProduto', 'atualizarProduto']);
+defineProps(['bAlterar', 'sTitulo', 'sAcaoIncluir', 'sAcaoAlterar']);
+defineEmits(['incluir', 'alterar']);
 
 function fecharModal() {
     $('#modalCadastro').hide();

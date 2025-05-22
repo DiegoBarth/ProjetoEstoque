@@ -72,16 +72,16 @@ class ProdutoController extends Controller {
     * @return JsonResponse
     * @throws ValidationException
     */
-   public function salvar(Request $oRequest) {
+   public function salvar(Request $oRequest) {      
       $aValidacao = $oRequest->validate([
          "sNome"         => 'required|string|max:50',
          "sCodigoBarras" => 'string|max:20',
          "iFornecedor"   => 'required|integer|exists:fornecedores,forcodigo',
          "fValorCompra"  => 'required|numeric|min:0',
          "fValorVenda"   => 'required|numeric|min:0',
-         "fDesconto"     => 'required|numeric|min:0',
+         "fDesconto"     => 'nullable|numeric|min:0',
          "iQuantidade"   => 'required|integer'
-      ]);
+      ]);            
 
       $oProduto = Produto::create([
          'pronome'           => $aValidacao['sNome'],
@@ -89,9 +89,9 @@ class ProdutoController extends Controller {
          'forcodigo'         => $aValidacao['iFornecedor'],
          'procusto'          => $aValidacao['fValorCompra'],
          'provalor'          => $aValidacao['fValorVenda'],
-         'provalor_desconto' => $aValidacao['fDesconto'],
+         'provalor_desconto' => $aValidacao['fDesconto'] ?: null,
          'proestoque'        => $aValidacao['iQuantidade']
-      ]);
+      ]);         
 
       return response()->json(['oProduto' => $oProduto], 201);
    }

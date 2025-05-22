@@ -27,6 +27,37 @@ export const useProdutoStore = defineStore('Produto', {
             catch(error) {
                 throw(error);
             }
+        },
+        getProdutoByCodigo: async (iProduto) => {
+            try {
+                const { data } = await api.get(`/api/produto/${iProduto}`);
+
+                return {
+                    iProduto: data.oProduto.procodigo,
+                    sNome: data.oProduto.pronome,
+                    sCodigoBarras: data.oProduto.procodigo_barras,
+                    iFornecedor: data.oProduto.forcodigo,
+                    fValorCompra: data.oProduto.procusto,
+                    fValorVenda: data.oProduto.provalor,
+                    fDesconto: data.oProduto.prodesconto,
+                    iQuantidade: data.oProduto.proestoque
+                };
+            }
+            catch(error) {
+                throw(error);
+            }
+        },
+        atualizarProduto: async (iProduto, oDados) => {
+            try {
+                const { data } = await api.put(`/api/produto/${iProduto}`, {
+                    ...oDados
+                });
+
+                return data;
+            }
+            catch(error) {
+                throw(error);
+            }
         }
     }
 })

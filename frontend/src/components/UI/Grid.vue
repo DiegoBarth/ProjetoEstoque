@@ -12,7 +12,5 @@
 const oPropriedades = defineProps(['aCabecalhos', 'sLayout']);
 </script>
 <style lang="scss" scoped>
-table {
-    display: grid;
-}
+
 </style>
