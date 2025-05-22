@@ -18,6 +18,7 @@ const oRouter = useRouter();
 const sErro   = ref('');
 
 async function logout() {
+   utils.adicionarLoading();
    try {
       const response = await api.post('/api/logout');
 
@@ -33,6 +34,9 @@ async function logout() {
       console.error('Erro no logout:', error);
 
       sErro.value = 'Não foi possível sair da conta. Tente novamente.';
+   }
+   finally {
+      utils.removerLoading();
    }
 }
 

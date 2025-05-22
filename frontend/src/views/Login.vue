@@ -31,6 +31,9 @@
 
    async function login() {
       sErro.value = '';
+
+      utils.adicionarLoading();
+
       try {
          await api.get('/sanctum/csrf-cookie')
 
@@ -51,6 +54,9 @@
          console.error('Erro no login', error);
 
          sErro.value = 'Não foi possível realizar o login. Tente novamente.';
+      }
+      finally {
+         utils.removerLoading();
       }
    }
 

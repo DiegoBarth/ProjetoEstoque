@@ -26,3 +26,11 @@ export function alerta(xMensagem, sTipo = 'ok') {
       });
    });
 }
+
+export function adicionarLoading() {
+   document.getElementById('loading_sistema').classList.add('active');
+}
+
+export function removerLoading() { 
+   document.getElementById('loading_sistema').classList.remove('active');
+}
