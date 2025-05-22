@@ -11,7 +11,7 @@
                   <input class="border-1 rounded-sm w-xs p-2" style="border-color: #E0E0E0; outline: none;" type="text" v-model="sUsuario" name="usuario" placeholder="Usuário"/>
                   <div class="relative">
                      <input class="border-1 rounded-sm w-xs p-2" id="senha" style="border-color: #E0E0E0; outline: none;" type="password" v-model="sSsenha" name="senha" placeholder="Senha"/>
-                     <i class="fa fa-eye absolute top-3.5 right-3 cursor-pointer" @click="alteraCampoSenha"></i>
+                     <i class="fa fa-eye absolute top-3.5 right-3 cursor-pointer" id="iconeOlho" @click="alteraCampoSenha"></i>
                   </div>
                   <p style="color: rgb(248, 70, 70)">{{sErro}}</p>
                   <button @click="login" type="submit" style="background-color: #7ac1e3; font-weight: 600" class="cursor-pointer w-1/3 rounded p-1 text-white">Entrar</button>
@@ -33,10 +33,17 @@
    const oRouter  = useRouter();
 
    function alteraCampoSenha() {
+      const oIcone = $('#iconeOlho');
+
       if($('#senha').prop('type') == 'text') {
+         oIcone.removeClass('fa-eye-slash');
+         oIcone.addClass('fa-eye');
+
          return $('#senha').prop('type', 'password');
       }
       $('#senha').prop('type', 'text');
+      oIcone.removeClass('fa-eye');
+      oIcone.addClass('fa-eye-slash');
    }
 
    async function login() {
