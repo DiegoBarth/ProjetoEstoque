@@ -14,7 +14,7 @@ return new class extends Migration {
          $table->foreignId('forcodigo')->constrained('fornecedores', 'forcodigo');
          $table->decimal('procusto', 10, 2);
          $table->decimal('provalor', 10, 2);
-         $table->decimal('provalor_desconto', 10, 2);
+         $table->decimal('provalor_desconto', 10, 2)->nullable();
          $table->integer('proestoque');
       });
    }
