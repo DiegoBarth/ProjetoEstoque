@@ -12,25 +12,32 @@
             <td class="p-2">R$ {{ oProduto.provalor_desconto.replace('.',',')  }}</td>
             <td class="p-2">{{ oProduto.forrazao_social                        }}</td>
             <td class="p-2 flex gap-2">
-              <span><i class="cursor-pointer fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
-              <span><i class="cursor-pointer fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white" @click="showModalCadastro(oProduto.procodigo)"></i></span>
-              <span><i class="cursor-pointer fa fa-trash p-2 bg-red-500 rounded-sm text-white"></i></span>
+              <span class="cursor-pointer" @click="visualizarProduto(oProduto)"><i class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
+              <span class="cursor-pointer" @click="showModalCadastro(oProduto)"><i class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white"></i></span>
+              <span class="cursor-pointer" @click="() => iProdutoExclusao = oProduto.procodigo"><i class="fa fa-trash p-2 bg-red-500 rounded-sm text-white"></i></span>
             </td>
           </tr>
         </Grid>
       </template>      
     </Consulta>           
-    <ModalCadastro class="flex items-center justify-content-center" sTitulo="📦 Cadastro de produto" :bAlterar="oProduto.iProduto ? true : false" @incluir="adicionarProduto" @alterar="atualizarProduto">
+    <ModalCadastro class="flex items-center justify-content-center" sTitulo="📦 Cadastro de produto" :bVisualizar="isVisualizar" :bAlterar="oProduto.iProduto ? true : false" @incluir="adicionarProduto" @alterar="atualizarProduto">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">            
-        <Campo sTipo="text" :bObrigatorio="true" sTitulo="Produto" v-model="oProduto.sNome" maxlength="100" placeholder="Informe uma descrição"/>
-        <Campo sTipo="text" :bObrigatorio="true" sTitulo="Código de barras" v-model="oProduto.sCodigoBarras" maxlength="20"/>
-        <Campo sTipo="text" :bObrigatorio="true" sTitulo="Quantidade" v-model="oProduto.iQuantidade" maxlength="4" @input="onlyNumbers('iQuantidade')"/>
-        <Campo sTipo="text" :bObrigatorio="true" sTitulo="Valor compra" v-model="oProduto.fValorCompra" maxlength="12" @input="onlyNumbers('fValorCompra')" @change="formatCurrency('fValorCompra')"/>
-        <Campo sTipo="text" :bObrigatorio="true" sTitulo="Valor venda" v-model="oProduto.fValorVenda" maxlength="12" @input="onlyNumbers('fValorVenda')" @change="formatCurrency('fValorVenda')"/>
-        <Campo sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" v-model="oProduto.fDesconto" maxlength="12" @change="formatCurrency('fDesconto')"/>                                
-        <Campo sTipo="select" :bObrigatorio="true" sTitulo="Fornecedor" v-model="oProduto.iFornecedor" :aOpcoes="aFornecedores"/>        
+        <Campo :disabled="isVisualizar" sTipo="text" :bObrigatorio="true" sTitulo="Produto" v-model="oProduto.sNome" maxlength="100" placeholder="Informe uma descrição"/>
+        <Campo :disabled="isVisualizar" sTipo="text" :bObrigatorio="true" sTitulo="Código de barras" v-model="oProduto.sCodigoBarras" maxlength="20"/>
+        <Campo :disabled="isVisualizar" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade" v-model="oProduto.iQuantidade" maxlength="4" @input="onlyNumbers('iQuantidade')"/>
+        <Campo :disabled="isVisualizar" sTipo="text" :bObrigatorio="true" sTitulo="Valor compra" v-model="oProduto.fValorCompra" maxlength="12" @input="onlyNumbers('fValorCompra')" @change="formatCurrency('fValorCompra')"/>
+        <Campo :disabled="isVisualizar" sTipo="text" :bObrigatorio="true" sTitulo="Valor venda" v-model="oProduto.fValorVenda" maxlength="12" @input="onlyNumbers('fValorVenda')" @change="formatCurrency('fValorVenda')"/>
+        <Campo :disabled="isVisualizar" sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" v-model="oProduto.fDesconto" maxlength="12" @change="formatCurrency('fDesconto')"/>                                
+        <Campo :disabled="isVisualizar" sTipo="select" :bObrigatorio="true" sTitulo="Fornecedor" v-model="oProduto.iFornecedor" :aOpcoes="aFornecedores"/>        
       </div>            
     </ModalCadastro>
+    <Modal v-if="iProdutoExclusao">
+      <h1>Confirma a exclusão do registro?</h1>
+      <div class="flex items-center gap-4">
+        <button @click="excluirProduto(iProdutoExclusao)" class="p-2 bg-yellow-400 rounded-sm">Sim</button>
+        <button @click="() => iProdutoExclusao = null" class="p-2 bg-red-400 rounded-sm">Não</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -39,12 +46,14 @@ import 'datatables.net-dt';
 import { nextTick, onMounted, onUnmounted, reactive, ref } from 'vue';
 import api from '../api';
 import ModalCadastro from '../components/ModalCadastro.vue';
+import Modal from '../components/UI/Modal.vue';
 import Grid from '../components/UI/Grid.vue';
 import Consulta from '../components/UI/Consulta.vue';
 import Campo from '../components/UI/Campo.vue';
 import { useProdutoStore } from '../stores/produtoStore';
 import { useFornecedorStore } from '../stores/fornecedorStore';
 
+const isVisualizar = ref(false);
 const oProduto = ref({
   iProduto: '',
   sNome: '',
@@ -55,6 +64,7 @@ const oProduto = ref({
   fDesconto: '',
   iFornecedor: ''
 })
+const iProdutoExclusao = ref(null);
 
 const aProdutos = ref([]);
 const oProdutoStore = useProdutoStore();
@@ -65,11 +75,19 @@ onMounted(async () => {
   aProdutos.value = await oProdutoStore.getProdutos();   
 });
 
-async function showModalCadastro(iProduto) {    
+async function showModalCadastro(oProdutoSelecionado) {    
   const oModal = $('#modalCadastro');
 
-  if(iProduto) {    
-    oProduto.value = await oProdutoStore.getProdutoByCodigo(iProduto);    
+  if(oProdutoSelecionado) {    
+    oProduto.value = {
+      sNome: oProdutoSelecionado.pronome,
+      sCodigoBarras: oProdutoSelecionado.procodigo_barras,
+      iQuantidade: oProdutoSelecionado.proestoque,
+      fValorCompra: oProdutoSelecionado.procusto,
+      fValorVenda: oProdutoSelecionado.provalor,
+      fDesconto: oProdutoSelecionado.prodesconto,
+      iFornecedor: oProdutoSelecionado.forcodigo
+    };    
   }
 
   oFornecedorStore.getFornecedores().then((oRetorno) => {    
@@ -172,6 +190,32 @@ async function atualizarProduto() {
   oModal.css('display', 'none');
   utils.alerta('Produto alterado com sucesso');
   aProdutos.value = await oProdutoStore.getProdutos();
+}
+
+function visualizarProduto(oProdutoSelecionado) {
+  isVisualizar.value = true;
+  const oModal = $('#modalCadastro');
+
+  oProduto.value = {
+    sNome: oProdutoSelecionado.pronome,
+    sCodigoBarras: oProdutoSelecionado.procodigo_barras,
+    iQuantidade: oProdutoSelecionado.proestoque,
+    fValorCompra: oProdutoSelecionado.procusto,
+    fValorVenda: oProdutoSelecionado.provalor,
+    fDesconto: oProdutoSelecionado.prodesconto,
+    iFornecedor: oProdutoSelecionado.forcodigo
+  };
+  oFornecedorStore.getFornecedores().then((oRetorno) => {    
+    aFornecedores.value = tratarFiltroFornecedores(oRetorno.aFornecedores);
+  });
+
+  oModal.css('display', 'flex ');
+}
+
+async function excluirProduto(iProduto) {
+  await oProdutoStore.excluirProduto(iProduto);
+  aProdutos.value = await oProdutoStore.getProdutos();
+  iProdutoExclusao.value = null;
 }
 
 function normalizarValor(valor) {

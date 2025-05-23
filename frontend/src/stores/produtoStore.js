@@ -58,6 +58,16 @@ export const useProdutoStore = defineStore('Produto', {
             catch(error) {
                 throw(error);
             }
+        },
+        excluirProduto: async (iProduto) => {
+            try {
+                const { data } = await api.delete(`/api/produto/${iProduto}`);
+
+                return data;
+            }
+            catch(error) {
+                throw(error);
+            }
         }
     }
 })
