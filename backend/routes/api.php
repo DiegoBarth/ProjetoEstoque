@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
    Route::get('/cliente',               [ClienteController::class, 'getClientes']);
    Route::get('/cliente/{iCliente}',    [ClienteController::class, 'getClienteByCodigo']);
-   Route::get('/cliente/busca/cpf',    [ClienteController::class, 'getClienteByCPF']);
+   Route::get('/cliente/busca/cpf',     [ClienteController::class, 'getClienteByCPF']);
    Route::post('/cliente',              [ClienteController::class, 'salvar']);
    Route::put('/cliente/{iCliente}',    [ClienteController::class, 'atualizar']);
    Route::delete('/cliente/{iCliente}', [ClienteController::class, 'excluir']);
@@ -50,12 +50,12 @@ Route::middleware('auth:sanctum')->group(function () {
 #region Rotas Produto
 
 Route::middleware('auth:sanctum')->group(function () {
-   Route::get('/produto',                   [ProdutoController::class, 'getProdutos']);
-   Route::get('/produto/{iProduto}',        [ProdutoController::class, 'getProdutoByCodigo']);
-   Route::get('/produto/busca/nome', [ProdutoController::class, 'getProdutoByNome']);
-   Route::post('/produto',                  [ProdutoController::class, 'salvar']);
-   Route::put('/produto/{iProduto}',        [ProdutoController::class, 'atualizar']);
-   Route::delete('/produto/{iProduto}',     [ProdutoController::class, 'excluir']);
+   Route::get('/produto',               [ProdutoController::class, 'getProdutos']);
+   Route::get('/produto/{iProduto}',    [ProdutoController::class, 'getProdutoByCodigo']);
+   Route::get('/produto/busca/nome',    [ProdutoController::class, 'getProdutoByNome']);
+   Route::post('/produto',              [ProdutoController::class, 'salvar']);
+   Route::put('/produto/{iProduto}',    [ProdutoController::class, 'atualizar']);
+   Route::delete('/produto/{iProduto}', [ProdutoController::class, 'excluir']);
 });
 
 #endregion
