@@ -23,7 +23,7 @@ import { onMounted, ref } from 'vue';
 const sUsuario = ref('');
 
 onMounted(() => {
-   sUsuario.value = Cookies.get('sUsuario').split(" ")[0];
+   sUsuario.value = Cookies.get('sUsuario')?.split(" ")[0];
 });
 
 const aItensMenu = [
