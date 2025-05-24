@@ -6,9 +6,9 @@
          </div>
          <div class="p-4 grid grid-cols-[auto_auto] gap-x-6 gap-y-6 max-w-4xl mx-auto">
             <div class="flex gap-4 items-end">
-               <Campo v-model="oProduto.iCodigo" sTipo="text" :bObrigatorio="true" sTitulo="Produto" />
+               <Campo v-model="oProduto.iCodigo" sTipo="text" :bObrigatorio="true" sTitulo="Produto" @change="onChangeCodigoProduto"/>
                <div class="relative">
-                  <Campo sTipo="text" :bObrigatorio="false" sTitulo="Produto" :bLabel="false" v-model="sConsultaProduto" sPlaceholder="Digite o nome do produto"  @input="filtrarSugestoes" @focus="bMostrarSugestoes = true" @blur="ocultarSugestoes" class="w-full"/>
+                  <Campo sTipo="text" :bObrigatorio="false" sTitulo="Produto" :bLabel="false" v-model="oProduto.sNome" sPlaceholder="Digite o nome do produto"  @input="filtrarSugestoes" @focus="() => {bMostrarSugestoes = true, bFocado = true}" @blur="() => {ocultarSugestoes(); bFocado = false;}" class="w-full"/>
                   <ul v-if="bMostrarSugestoes && aSugestoesFiltradas.length" class="absolute bg-white border border-gray-300 rounded mt-1 max-h-60 overflow-y-auto z-50 w-full">
                      <li v-for="(sSugestao, iIndice) in aSugestoesFiltradas" :key="iIndice" @mousedown.prevent="selecionarSugestao(sSugestao)" class="px-4 py-2 hover:bg-blue-100 cursor-pointer truncate">
                         {{ sSugestao }}
@@ -19,7 +19,7 @@
             <Campo v-model="oProduto.iQuantidade" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade" sStyle="width:40%"/>
             <Campo v-model="oProduto.fValorUnitario" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário" maxlength="12" sStyle="width:40%"/>
             <Campo v-model="oProduto.fValorDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" maxlength="12" sStyle="width:40%"/>
-            <button class="cursor-pointer col-span-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm px-3 py-1.5 w-fit">
+            <button class="cursor-pointer col-span-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm px-3 py-1.5 w-fit" @click="adicionarProduto">
                Adicionar
             </button>
          </div>
@@ -29,7 +29,7 @@
             <i class="fas fa-user mr-2"></i> Cliente
          </div>
          <div class="p-4 w-full">
-            <Campo class="w-1/2" sTipo="text" :bObrigatorio="false" sTitulo="CPF" v-model="sCpf" @input="utils.formatarCPF($event.target)"/>
+            <Campo class="w-1/2" sTipo="text" maxlength="14" :bObrigatorio="false" sTitulo="CPF" v-model="sCpf" @change="onChangeCPF" @input="utils.formatarCPF($event.target)"/>
             <div v-if="oCliente.sNome" class="w-full mt-4 space-y-6 text-sm text-gray-700">
                <div class="flex gap-4">
                   <p class="w-1/2"><strong>Nome:</strong> {{ oCliente.sNome }}</p>
@@ -88,67 +88,66 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import Campo from '../components/UI/Campo.vue';
+import { useClienteStore } from '../stores/clienteStore';
+import { useProdutoStore } from '../stores/produtoStore';
 import api from '../api';
+import Campo from '../components/UI/Campo.vue';
 import * as utils from "../utils/main.js";
+
+const oProdutoStore       = useProdutoStore();
+const oClienteStore       = useClienteStore();
+const bMostrarSugestoes   = ref(false)
+const aSugestoesFiltradas = ref([])
+const bFocado             = ref(false);
+let debounceTimeout       = null
+let oProdutoSelecionado   = null;
+let aProdutosFiltrados    = [];
 
 const sCpf     = ref('');
 const oCliente = ref({
-  sNome: '',
-  sEndereco: '',
-  sTelefone: '',
-  sDataNascimento: ''
+   sNome: '',
+   sEndereco: '',
+   sTelefone: '',
+   sDataNascimento: ''
 });
-
 const oProduto = ref({
-  iCodigo: '',
-  sNome: '',
-  iQuantidade: '',
-  fValorUnitario: '',
-  fValorDesconto: ''
+   iCodigo: '',
+   sNome: '',
+   iQuantidade: '',
+   fValorUnitario: '',
+   fValorDesconto: ''
 });
 
-const sConsultaProduto    = ref('')
-const bMostrarSugestoes   = ref(false)
-const aSugestoesFiltradas = ref([])
-let aProdutosFiltrados    = [];
-let debounceTimeout = null
+function onChangeCodigoProduto() {
+   if(!oProduto.value.iCodigo) {
+      resetarProduto();
+   }
+}
 
-watch(sCpf, async (novoValor) => {
-   let sValorCpf = novoValor.replace(/\D/g, '');
+async function onChangeCPF() {
+   let sValorCpf = sCpf.value.replace(/\D/g, '');
 
    if(sValorCpf.length >= 11) {
       try {
-         const { data } = await api.get(`/api/cliente/cpf/${sValorCpf}`);
-         const oDados = data.oCliente;
+         const oDados = await oClienteStore.getClienteByCPF(sValorCpf);
 
          oCliente.value = {
-         sNome: oDados.clinome || '',
-         sEndereco: oDados.cliendereco || '',
-         sTelefone: utils.formatarTelefone(oDados.clitelefone) || '',
-         sDataNascimento: oDados.clidata_nascimento || ''
+            sNome          : oDados.sNome,
+            sEndereco      : oDados.sEndereco,
+            sTelefone      : oDados.sTelefone,
+            sDataNascimento: oDados.sDataNascimento
          };
       }
-      catch (e) {
+      catch(e) {
          console.error('Erro ao buscar cliente', e);
-         oCliente.value = {
-         sNome: '',
-         sEndereco: '',
-         sTelefone: '',
-         sDataNascimento: ''
-         };
+         resetarCliente();
       }
    }
 
    if(!sValorCpf) {
-      oCliente.value = {
-         sNome: '',
-         sEndereco: '',
-         sTelefone: '',
-         sDataNascimento: ''
-      };
+      resetarCliente();
    }
-});
+}
 
 function filtrarSugestoes() {
    if(debounceTimeout) {
@@ -156,7 +155,11 @@ function filtrarSugestoes() {
    }
 
    debounceTimeout = setTimeout(async () => {
-      const search = sConsultaProduto.value.trim();
+      if(!bFocado.value) {
+         return;
+      }
+
+      const search = oProduto.value.sNome.trim();
 
       if(!search) {
          aSugestoesFiltradas.value = [];
@@ -165,51 +168,77 @@ function filtrarSugestoes() {
       }
 
       try {
-         const response = await api.get(`/api/produto?search=${encodeURIComponent(search)}`);
-         const aDados = response.data.aProdutos;
+         const aProdutos = await oProdutoStore.getProdutoByNome(search);
 
-         aSugestoesFiltradas.value = aDados.map(oDados => {
-            return oDados.pronome;
+         aSugestoesFiltradas.value = aProdutos.map(oProduto => {
+            return oProduto.sNome;
          });
 
-         aProdutosFiltrados = aDados;
-
+         aProdutosFiltrados = aProdutos;
       }
       catch (error) {
          console.error('Erro ao buscar sugestões:', error);
          aSugestoesFiltradas.value = [];
       }
-   }, 1500)
+   }, 1500);
 }
 
 function selecionarSugestao(sSugestao) {
-   sConsultaProduto.value    = sSugestao;
+   oProduto.value.sNome      = sSugestao;
    bMostrarSugestoes.value   = false;
    aSugestoesFiltradas.value = [];
 
-   const resultados = aProdutosFiltrados.filter(item =>
-      item.pronome.toLowerCase() === sSugestao.toLowerCase()
+   const aResultados = aProdutosFiltrados.filter(oProduto =>
+      oProduto.sNome.toLowerCase() === sSugestao.toLowerCase()
    );
 
-   if(resultados.length > 0) {
-      const produto = resultados[0];
+   if(aResultados.length > 0) {
+      const oResultadoProduto = aResultados[0];
+      oProdutoSelecionado     = oResultadoProduto;
 
       oProduto.value = {
-         iCodigo:        produto.procodigo,
-         sNome:          produto.pronome,
-         iQuantidade:    produto.proestoque,
-         fValorUnitario: produto.provalor,
-         fValorDesconto: produto.provalor_desconto
+         iCodigo       : oResultadoProduto.iProduto,
+         sNome         : oResultadoProduto.sNome,
+         iQuantidade   : oResultadoProduto.iQuantidade,
+         fValorUnitario: oResultadoProduto.fValorVenda,
+         fValorDesconto: oResultadoProduto.fDesconto
       };
    }
    else {
-      oProduto.value = null;
+      resetarProduto();
    }
 };
 
 function ocultarSugestoes() {
+   if(!oProduto.value.sNome && oProduto.value.iCodigo) {
+      oProduto.value.sNome  = oProdutoSelecionado.sNome;
+   }
+
    setTimeout(() => {
       bMostrarSugestoes.value = false;
    }, 100)
+}
+
+function adicionarProduto() {
+   utils.validarCamposObrigatorios();
+}
+
+function resetarCliente() {
+   oCliente.value = {
+      sNome: '',
+      sEndereco: '',
+      sTelefone: '',
+      sDataNascimento: ''
+   };
+}
+
+function resetarProduto() {
+   oProduto.value = {
+      iCodigo:        '',
+      sNome:          '',
+      iQuantidade:    '',
+      fValorUnitario: '',
+      fValorDesconto: ''
+   };
 }
 </script>
