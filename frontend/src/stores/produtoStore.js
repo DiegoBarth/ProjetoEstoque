@@ -2,72 +2,85 @@ import api from "@/api";
 import { defineStore } from "pinia";
 
 export const useProdutoStore = defineStore('Produto', {
-    state: () => ({
+   state: () => ({
 
-    }),
-    actions: {
-        cadatrarProduto: async (payload) => {            
-            try {
-                const { data } = await api.post('/api/produto', {
-                    ...payload
-                });
+   }),
+   actions: {
+      _formatarProduto(oProduto) {
+         return {
+            iProduto     : oProduto.procodigo,
+            sNome        : oProduto.pronome,
+            sCodigoBarras: oProduto.procodigo_barras,
+            iFornecedor  : oProduto.forcodigo,
+            fValorCompra : oProduto.procusto,
+            fValorVenda  : oProduto.provalor,
+            fDesconto    : oProduto.provalor_desconto,
+            iQuantidade  : oProduto.proestoque
+         };
+      },
+      async cadatrarProduto(payload) {
+         try {
+            const { data } = await api.post('/api/produto', {
+               ...payload
+            });
 
-                return data;
-            }
-            catch(error) {
-                throw(error);
-            }
-        },
-        getProdutos: async () => {
-            try {
-                const { data } = await api.get('/api/produto');
+            return data;
+         }
+         catch (error) {
+            throw (error);
+         }
+      },
+      async getProdutos() {
+         try {
+            const { data } = await api.get('/api/produto');
 
-                return data.aProdutos;
-            }
-            catch(error) {
-                throw(error);
-            }
-        },
-        getProdutoByCodigo: async (iProduto) => {
-            try {
-                const { data } = await api.get(`/api/produto/${iProduto}`);
+            return data.aProdutos;
+         }
+         catch (error) {
+            throw (error);
+         }
+      },
+      async getProdutoByCodigo(iProduto) {
+         try {
+            const { data } = await api.get(`/api/produto/${iProduto}`);
 
-                return {
-                    iProduto: data.oProduto.procodigo,
-                    sNome: data.oProduto.pronome,
-                    sCodigoBarras: data.oProduto.procodigo_barras,
-                    iFornecedor: data.oProduto.forcodigo,
-                    fValorCompra: data.oProduto.procusto,
-                    fValorVenda: data.oProduto.provalor,
-                    fDesconto: data.oProduto.prodesconto,
-                    iQuantidade: data.oProduto.proestoque
-                };
-            }
-            catch(error) {
-                throw(error);
-            }
-        },
-        atualizarProduto: async (iProduto, oDados) => {
-            try {
-                const { data } = await api.put(`/api/produto/${iProduto}`, {
-                    ...oDados
-                });
+            return this._formatarProduto(data.oProduto);
+         }
+         catch (error) {
+            throw (error);
+         }
+      },
+      async getProdutoByNome(sProduto) {
+         try {
+            const { data } = await api.get(`/api/produto/busca/nome?nome_produto=${encodeURIComponent(sProduto)}`);
 
-                return data;
-            }
-            catch(error) {
-                throw(error);
-            }
-        },
-        excluirProduto: async (iProduto) => {
-            try {
-                const { data } = await api.delete(`/api/produto/${iProduto}`);
+            return data.aProdutos.map(this._formatarProduto);
+         }
+         catch (error) {
+            throw (error);
+         }
+      },
+      async atualizarProduto(iProduto, oDados) {
+         try {
+            const { data } = await api.put(`/api/produto/${iProduto}`, {
+               ...oDados
+            });
 
-                return data;
-            }
-            catch(error) {
-                throw(error);
-            }
-        }
-    }
-})
+            return data;
+         }
+         catch (error) {
+            throw (error);
+         }
+      },
+      async excluirProduto(iProduto) {
+         try {
+            const { data } = await api.delete(`/api/produto/${iProduto}`);
+
+            return data;
+         }
+         catch (error) {
+            throw (error);
+         }
+      }
+   }
+});
