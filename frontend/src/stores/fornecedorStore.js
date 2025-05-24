@@ -10,7 +10,7 @@ export const useFornecedorStore = defineStore('Fornecedor', {
             try {
                 const { data } = await api.get('/api/fornecedor')
 
-                return data;                                
+                return data.aFornecedores;
             }
             catch(error) {
                 throw(error);
