@@ -54,6 +54,10 @@ const aItensMenu = [
    {
       sTitulo: 'Metas',
       sRota  : 'Meta'  
+   },
+   {
+      sTitulo: 'Usuários',
+      sRota  : 'Meta'  
    }
 ];
 
