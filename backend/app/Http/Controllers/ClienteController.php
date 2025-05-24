@@ -41,10 +41,12 @@ class ClienteController extends Controller {
 
    /**
     * Busca um Cliente com base no CPF informado, ou informa que Cliente não foi encontrado.
-    * @param string $sCPF
+    * @param Request $oRequest
     * @return JsonResponse
     */
-   public function getClienteByCPF($sCPF) {
+   public function getClienteByCPF(Request $oRequest) {
+      $sCPF     = $oRequest->query('cpf');
+
       $oCliente = Cliente::where('clicpf', $sCPF)->first();
 
       if(!$oCliente) {
