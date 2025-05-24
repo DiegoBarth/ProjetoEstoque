@@ -2,8 +2,8 @@
    <button :type="sTipo" :id="sId" :style="sStyle" :disabled="bDesabilitado" :class="[
       'transition-transform duration-150 ease-in-out font-semibold rounded p-2 text-white',
       'hover:scale-95',
-      `bg-[var(--${sCor})]`,
-      'hover:bg-[#4a4a4a]',
+      `bg-[var(--textoSecundario)]`,
+      'hover:bg-[#4A4A4A]',
       sLargura === 'full' ? 'w-full' : sLargura,
       bDesabilitado ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
       sClasses
