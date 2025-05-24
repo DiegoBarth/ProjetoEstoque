@@ -35,15 +35,23 @@ export function removerLoading() {
    document.getElementById('loading_sistema').classList.remove('active');
 }
 
-export function formatarCPF(oElemento) {
-   let sCpf = oElemento.value;
+export function formatarCPF(xValor) {
+   let sCpf = xValor;
+   
+   if(typeof xValor == 'object') {
+      sCpf = xValor.value;
+   }
 
    sCpf = sCpf.replace(/\D/g, '');
    sCpf = sCpf.replace(/(\d{3})(\d)/, '$1.$2');
    sCpf = sCpf.replace(/(\d{3})(\d)/, '$1.$2');
    sCpf = sCpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 
-   return oElemento.value = sCpf;
+   if(typeof xValor == 'object') {
+      return xValor.value = sCpf;
+   }
+   
+   return sCpf;
 }
 
 export function  formatarTelefone(sTelefone) {
@@ -57,4 +65,47 @@ export function  formatarTelefone(sTelefone) {
    }
 
   return sTelefone.trim();
+}
+
+export function formatarDataBR(sData) {
+   if(!sData) {
+      return '';
+   }
+
+   const aPartes = sData.split('-');
+
+   if(aPartes.length !== 3) {
+      return '';
+   }
+
+   const sAno = aPartes[0];
+   const sMes = aPartes[1];
+   const sDia = aPartes[2];
+
+   return `${sDia}/${sMes}/${sAno}`;
+}
+
+
+
+export function validarCamposObrigatorios() {
+   let bCamposPreenchidos = true;
+   const aLabels          = document.querySelectorAll('.obrigatorio');
+
+   for(const oLabel of aLabels) {
+      const oCampo = oLabel.nextElementSibling;
+
+      if(!oCampo) {
+      continue;
+      }
+
+      const sTipoCampo = oCampo.tagName.toLowerCase();
+
+      if(['input', 'select', 'textarea'].includes(sTipoCampo) && !oCampo.value.trim()) {
+         bCamposPreenchidos = false;
+
+         utils.alerta(`O campo "${oLabel.innerText}" é obrigatório.`, 'error');
+      }
+   }
+
+   return bCamposPreenchidos;
 }
