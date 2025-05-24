@@ -21,6 +21,11 @@ a,
    padding: 3px;
 }
 
+input {
+   border-color: var(--bordas);
+   color: #4D4D4D;
+}
+
 .alerta-container {
    position: fixed;
    top: 20px;
@@ -43,9 +48,42 @@ a,
    transition: transform 0.8s ease-in-out;
 }
 
+.texto {
+   color: var(--textoSecundario);
+}
+
+.fundo-principal {
+   background-color: var(--fundoPrincipal);
+}
+
+.cabecalho-principal {
+   background-color: var(--fundoSecundario);
+   color: var(--textoPrincipal);
+   font-size: 24px;
+   font-weight: 600;
+}
+
+.icone-cabecalho {
+   color: var(--principal);
+}
+
+.card-principal {
+   box-shadow: 6px 6px 10px 0px var(--principal);
+   background-color: var(--fundoSecundario);
+}
+
+.botao-card {
+   background-color: var(--textoPrincipal);
+   transition: all 0.4s;
+}
+
+.botao-card:hover {
+   background-color: var(--textoSecundario);
+}
+
 @media (hover: hover) {
    a:hover {
-      background-color: var(--bordas);
+      // background-color: var(--bordas);
    }
 }
 

@@ -102,8 +102,9 @@ export function validarCamposObrigatorios() {
 
       if(['input', 'select', 'textarea'].includes(sTipoCampo) && !oCampo.value.trim()) {
          bCamposPreenchidos = false;
+         let sLabel = oLabel.innerText.replace('*', '');
 
-         utils.alerta(`O campo "${oLabel.innerText}" é obrigatório.`, 'error');
+         utils.alerta(`O campo "${sLabel}" é obrigatório.`, 'error');
       }
    }
 

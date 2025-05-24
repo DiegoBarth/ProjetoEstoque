@@ -1,12 +1,12 @@
 <template>
-   <div class="grid grid-cols-3 gap-4 bg-neutral-100 min-h-screen box-border w-full items-stretch" style="padding: 30px;">
-      <div class="col-span-2 bg-white shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[280px]">
-         <div class="bg-neutral-800 text-white font-semibold px-4 py-2 flex items-center">
-            <i class="fas fa-box mr-2"></i> Produtos
+   <div class="fundo-principal grid grid-cols-3 gap-4 min-h-screen box-border w-full items-stretch" style="padding: 30px;">
+      <div class="card-principal col-span-2 shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[280px]">
+         <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
+            <i class="icone-cabecalho fas fa-box mr-2"></i> Produtos
          </div>
          <div class="p-4 grid grid-cols-[auto_auto] gap-x-6 gap-y-6 max-w-4xl mx-auto">
             <div class="flex gap-4 items-end">
-               <Campo v-model="oProduto.iCodigo" sTipo="text" :bObrigatorio="true" sTitulo="Produto" @change="onChangeCodigoProduto"/>
+               <Campo v-model="oProduto.iCodigo" sTipo="text" :bObrigatorio="true" sTitulo="Produto*" @change="onChangeCodigoProduto"/>
                <div class="relative">
                   <Campo sTipo="text" :bObrigatorio="false" sTitulo="Produto" :bLabel="false" v-model="oProduto.sNome" sPlaceholder="Digite o nome do produto"  @input="filtrarSugestoes" @focus="() => {bMostrarSugestoes = true, bFocado = true}" @blur="() => {ocultarSugestoes(); bFocado = false;}" class="w-full"/>
                   <ul v-if="bMostrarSugestoes && aSugestoesFiltradas.length" class="absolute bg-white border border-gray-300 rounded mt-1 max-h-60 overflow-y-auto z-50 w-full">
@@ -16,17 +16,17 @@
                   </ul>
                </div>
             </div>
-            <Campo v-model="oProduto.iQuantidade" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade" sStyle="width:40%"/>
-            <Campo v-model="oProduto.fValorUnitario" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário" maxlength="12" sStyle="width:40%"/>
+            <Campo v-model="oProduto.iQuantidade" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade*" sStyle="width:40%"/>
+            <Campo v-model="oProduto.fValorUnitario" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário*" maxlength="12" sStyle="width:40%"/>
             <Campo v-model="oProduto.fValorDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" maxlength="12" sStyle="width:40%"/>
-            <button class="cursor-pointer col-span-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm px-3 py-1.5 w-fit" @click="adicionarProduto">
+            <button class="botao-card cursor-pointer col-span-2 text-white rounded hover:bg-green-700 text-sm px-3 py-1.5 w-fit" @click="adicionarProduto">
                Adicionar
             </button>
          </div>
       </div>
-      <div class="bg-white shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[280px]">
-         <div class="bg-neutral-800 text-white font-semibold px-4 py-2 flex items-center">
-            <i class="fas fa-user mr-2"></i> Cliente
+      <div class="card-principal shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[280px]">
+         <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
+            <i class="icone-cabecalho fas fa-user mr-2"></i> Cliente
          </div>
          <div class="p-4 w-full">
             <Campo class="w-1/2" sTipo="text" maxlength="14" :bObrigatorio="false" sTitulo="CPF" v-model="sCpf" @change="onChangeCPF" @input="utils.formatarCPF($event.target)"/>
@@ -40,13 +40,13 @@
             </div>
          </div>
       </div>
-      <div class="col-span-2 bg-white shadow-lg rounded-xl overflow-hidden min-h-[40vh]">
-         <div class="bg-neutral-800 text-white font-semibold px-4 py-2 flex items-center">
-            <i class="fas fa-clipboard-list mr-2"></i> Selecionados
+      <div class="card-principal col-span-2 shadow-lg rounded-xl overflow-hidden min-h-[40vh]">
+         <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
+            <i class="icone-cabecalho fas fa-clipboard-list mr-2"></i> Selecionados
          </div>
          <div class="overflow-x-auto">
             <table class="table-auto w-full text-sm text-left">
-               <thead class="bg-blue-800 text-white">
+               <thead class="text-white" style="background-color: black;">
                   <tr>
                      <th class="px-4 py-2">Código</th>
                      <th class="px-4 py-2">Produto</th>
@@ -62,9 +62,9 @@
             </table>
          </div>
       </div>
-      <div class="bg-white shadow-lg rounded-xl overflow-hidden min-h-[40vh]">
-         <div class="bg-neutral-800 text-white font-semibold px-4 py-2 flex items-center">
-            <i class="fas fa-credit-card mr-2"></i> Pagamento
+      <div class="card-principal shadow-lg rounded-xl overflow-hidden min-h-[40vh]">
+         <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
+            <i class="icone-cabecalho fas fa-credit-card mr-2"></i> Pagamento
          </div>
          <!-- <div class="p-4 space-y-2">
             <div class="flex justify-between">

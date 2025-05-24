@@ -1,11 +1,13 @@
 :root {
-    --principal: #01F1FE;
-    --hover: #00C8D1;
-    --fundo: #FFFFFF;
-    --elementos: #F5F5F5;
-    --textoPrincipal: #181818;
-    --textoSecundario: #343434;
-    --bordas: #E0E0E0;
+   --principal      : #14868a;
+   --hover          : #00BFC9;
+   --fundoPrincipal : #E9EFF2;
+   --fundoSecundario: #FFFFFF;
+   --elementos      : #F5F5F5;
+   --textoPrincipal : #181818;
+   --textoSecundario: #343434;
+   --fundoInput     : #FBFBFB;
+   --bordas         : #E6E6E6;
 }
 
 // @media (prefers-color-scheme: dark) {
