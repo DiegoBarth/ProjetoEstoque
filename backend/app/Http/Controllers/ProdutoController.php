@@ -41,10 +41,12 @@ class ProdutoController extends Controller {
 
    /**
     * Busca produtos com base na descrição informada, ou informa que não foram encontrados produtos.
-    * @param string $sProduto
+    * @param Request $oRequest
     * @return JsonResponse
     */
-   public function getProdutoByNome($sProduto) {
+   public function getProdutoByNome(Request $oRequest) {
+      $sProduto  = $oRequest->query('nome_produto');
+
       $aProdutos = Produto::join('fornecedores', 'fornecedores.forcodigo', '=', 'produtos.forcodigo')
          ->where('pronome', 'ILIKE', "%{$sProduto}%")
          ->select('produtos.*', 'fornecedores.forrazao_social')
@@ -54,16 +56,7 @@ class ProdutoController extends Controller {
          abort(response()->json(['sMensagem' => 'Nenhum produto encontrado'], 404));
       }
 
-      $aNomes = [];
-        
-      foreach($aProdutos as $oProduto) {
-         $aNomes[] = $oProduto->pronome;
-      }
-
-      return response()->json((object) [
-         'aNomes'    => $aNomes,
-         'aProdutos' => $aProdutos
-      ], 200);
+      return response()->json(['aProdutos' => $aProdutos], 200);
    }
 
    /**
