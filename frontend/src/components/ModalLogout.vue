@@ -26,13 +26,16 @@ async function logout() {
          return;
       }
 
-      fechar();
       oRouter.push({ name: 'Login' });
    }
    catch(error) {
       console.error('Erro no logout:', error);
 
       sErro.value = 'Não foi possível sair da conta. Tente novamente.';
+   }
+   finally {
+      sErro.value = '';
+      fechar();
    }
 }
 
