@@ -50,12 +50,12 @@ Route::middleware('auth:sanctum')->group(function () {
 #region Rotas Produto
 
 Route::middleware('auth:sanctum')->group(function () {
-   Route::get('/produto',                 [ProdutoController::class, 'getProdutos']);
-   Route::get('/produto/{iProduto}',      [ProdutoController::class, 'getProdutoByCodigo']);
-   Route::get('/produto/nome/{sProduto}', [ProdutoController::class, 'getProdutoByNome']);
-   Route::post('/produto',                [ProdutoController::class, 'salvar']);
-   Route::put('/produto/{iProduto}',      [ProdutoController::class, 'atualizar']);
-   Route::delete('/produto/{iProduto}',   [ProdutoController::class, 'excluir']);
+   Route::get('/produto',                   [ProdutoController::class, 'getProdutos']);
+   Route::get('/produto/{iProduto}',        [ProdutoController::class, 'getProdutoByCodigo']);
+   Route::get('/produto?search={sProduto}', [ProdutoController::class, 'getProdutoByNome']);
+   Route::post('/produto',                  [ProdutoController::class, 'salvar']);
+   Route::put('/produto/{iProduto}',        [ProdutoController::class, 'atualizar']);
+   Route::delete('/produto/{iProduto}',     [ProdutoController::class, 'excluir']);
 });
 
 #endregion
