@@ -22,6 +22,9 @@ onMounted(() => {
          pageLength: 10,
          responsive: false,
          order: [[0, 'asc']],
+         columnDefs: [{
+            orderable: false, targets: -1
+         }],
          language: {
             url: "/js/datatable/pt-BR.json"
          }
