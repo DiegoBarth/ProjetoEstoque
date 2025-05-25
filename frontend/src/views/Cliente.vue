@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full h-full">        
+ <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden">
+ 
     <Consulta sTitulo='Clientes' @showModalCadastro="showModalCadastro(1)">      
         <template #gridConsulta>
             <GridClientes v-if="aClientes" :aClientes="aClientes" @showModalCadastro="showModalCadastro" @showModalExclusao="showModalExclusao"/>
