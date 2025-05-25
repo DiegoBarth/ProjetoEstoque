@@ -57,19 +57,24 @@ export function formatarCPF(xValor) {
 }
 
 export function formatarTelefone(sValor) {
-   if(sValor.length < 11) {
-      if(sValor.length == 10) {
-         return sValor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-      }
+    if(sValor.length < 8) {
+        utils.alerta('O valor informado é inválido', 'error');
+        return '';
+    }
 
-      if(sValor.length == 8) {
-         return sValor.replace(/(\d{4})(\d{4})/, '(47) $1-$2');
-      }
+    if(sValor.length < 11) {
+        if(sValor.length == 10) {
+            return sValor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+        }
 
-      return sValor.replace(/(\d{5})(\d{4})/, '(47) $1-$2');
-   }
+        if(sValor.length == 8) {
+            return sValor.replace(/(\d{4})(\d{4})/, '(47) $1-$2');
+        }
 
-   return sValor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        return sValor.replace(/(\d{5})(\d{4})/, '(47) $1-$2');
+    }
+
+    return sValor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
 }
 
 export function formatarDataBR(sData) {
@@ -105,7 +110,6 @@ export function validarCamposObrigatorios() {
 
       if(['input', 'select', 'textarea'].includes(sTipoCampo) && !oCampo.value.trim()) {
          bCamposPreenchidos = false;
-         let sLabel = oLabel.innerText.replace('*', '');
 
          utils.alerta(`O campo "${sLabel}" é obrigatório.`, 'error');
       }
@@ -115,13 +119,24 @@ export function validarCamposObrigatorios() {
 }
 
 export function formatarData(sValor) {
-   return format(sValor, 'dd/MM/yyyy');
+    if(sValor.length < 10) {
+        utils.alerta('Data inválida', 'error');
+        return '';
+    }
+    
+    return format(sValor, 'dd/MM/yyyy');
 }
 
 export function formatarCPFCNPJ(sValor) {
-   if(sValor.length > 11) {
-      return sValor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-   }
+    sValor = sValor.replace(/\D/g, '');
 
-   return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    if(sValor.length < 11 || sValor.length > 14) {
+        utils.alerta('O valor informado é inválido', 'error');
+        return '';
+    }
+    if(sValor.length > 11) {
+        return sValor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    }
+
+    return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }

@@ -12,52 +12,8 @@
 <script setup>
 import ModalCadastro from '../components/UI/ModalCadastro.vue';
 import Campo from '../components/UI/Campo.vue';
+import { formatarCPFCNPJ, formatarTelefone } from '../utils/main'
 
 defineProps(['iAcaoAtual', 'oCliente']);
 defineEmits(['adicionarProduto', 'atualizarProduto', 'fecharModal']);
-
-function formatarData(sValor) {
-    if(sValor.length < 10) {
-        utils.alerta('Data inválida', 'error');
-        return '';
-    }
-
-    return format(parseISO(sValor), 'dd/MM/yyyy');
-}
-
-function formatarCPFCNPJ(sValor) {
-    sValor = sValor.replace(/\D/g, '');
-
-    if(sValor.length < 11 || sValor.length > 14) {
-        utils.alerta('O valor informado é inválido', 'error');
-        return '';
-    }
-
-    if(sValor.length > 11) {
-        return sValor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-    }
-
-    return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-}
-
-function formatarTelefone(sValor) {
-    if(sValor.length < 8) {
-        utils.alerta('O valor informado é inválido', 'error');
-        return '';
-    }
-
-    if(sValor.length < 11) {
-        if(sValor.length == 10) {
-            return sValor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-        }
-
-        if(sValor.length == 8) {
-            return sValor.replace(/(\d{4})(\d{4})/, '(47) $1-$2');
-        }
-
-        return sValor.replace(/(\d{5})(\d{4})/, '(47) $1-$2');
-    }
-
-    return sValor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-}
 </script>
