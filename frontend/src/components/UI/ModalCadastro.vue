@@ -6,15 +6,9 @@
             </div>
             <slot></slot>
             <div class="flex items-center justify-start mt-5 gap-2">
-                <button id="incluir" v-if="iAcao == 1" @click="$emit('incluir')" class="cursor-pointer px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                    Incluir
-                </button>
-                <button v-else-if="iAcao == 2" @click="$emit('alterar')" class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    Atualizar
-                </button>
-                <button @click="$emit('fecharModal')" class="cursor-pointer px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700">
-                    {{ iAcao == 3 ? 'Fechar' : 'Cancelar' }}
-                </button>
+               <Botao v-if="iAcao === 1" sId="incluir" sCor="botaoVerde" sTexto="Incluir" sLargura="auto" @click="$emit('incluir')" :sStyle="{ padding: '0.5rem 1rem' }"/>
+               <Botao v-else-if="iAcao === 2" sCor="botaoAzul" sTexto="Atualizar" sLargura="auto" @click="$emit('alterar')" :sStyle="{ padding: '0.5rem 1rem' }"/>
+               <Botao sCor="botaoVermelho" :sTexto="iAcao === 3 ? 'Fechar' : 'Cancelar'" sLargura="auto" @click="$emit('fecharModal')" :sStyle="{ padding: '0.5rem 1rem' }"/>
             </div>
         </div>
     </Modal>    
@@ -22,6 +16,7 @@
 <script setup>
 import { onUnmounted } from 'vue';
 import Modal from './Modal.vue'
+import Botao from '../UI/Botao.vue';
 
 defineProps(['iAcao', 'sTitulo', 'bModalAberto']);
 defineEmits(['incluir', 'alterar', 'fecharModal']);
