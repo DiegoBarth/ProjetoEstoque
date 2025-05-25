@@ -21,7 +21,7 @@
 </template>
 <script setup>
 import { onUnmounted } from 'vue';
-import Modal from '../components/UI/Modal.vue'
+import Modal from './Modal.vue'
 
 defineProps(['iAcao', 'sTitulo', 'bModalAberto']);
 defineEmits(['incluir', 'alterar', 'fecharModal']);

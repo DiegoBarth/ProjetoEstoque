@@ -1,8 +1,10 @@
+import { format } from 'date-fns'
+
 export function alerta(xMensagem, sTipo = 'ok') {
    let aMensagens = (typeof xMensagem) == 'object' ? xMensagem : [xMensagem];
 
    aMensagens.forEach(sMensagem => {
-      const oAlerta    = $('<div>').addClass('alerta').text(sMensagem);
+      const oAlerta    = $('<div>').addClass('alerta').text(sMensagem).css('z-index', 9999);
       const oContainer = $('.alerta-container');
 
       if(sTipo == 'error') {
@@ -54,18 +56,18 @@ export function formatarCPF(xValor) {
    return sCpf;
 }
 
-export function  formatarTelefone(sTelefone) {
-  sTelefone = sTelefone.replace(/\D/g, '');
+// export function  formatarTelefone(sTelefone) {
+//   sTelefone = sTelefone.replace(/\D/g, '');
 
-   if(sTelefone.length <= 10) {
-      sTelefone = sTelefone.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
-   }
-   else {
-      sTelefone = sTelefone.replace(/^(\d{2})(\d{5})(\d{0,4})$/, '($1) $2-$3');
-   }
+//    if(sTelefone.length <= 10) {
+//       sTelefone = sTelefone.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+//    }
+//    else {
+//       sTelefone = sTelefone.replace(/^(\d{2})(\d{5})(\d{0,4})$/, '($1) $2-$3');
+//    }
 
-  return sTelefone.trim();
-}
+//   return sTelefone.trim();
+// }
 
 export function formatarDataBR(sData) {
    if(!sData) {
@@ -109,4 +111,32 @@ export function validarCamposObrigatorios() {
    }
 
    return bCamposPreenchidos;
+}
+
+export function formatarData(sValor) {
+    return format(sValor, 'dd/MM/yyyy');
+}
+
+export function formatarCPFCNPJ(sValor) {
+  if(sValor.length > 11) {
+    return sValor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+  }
+
+  return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+export function formatarTelefone(sValor) {
+  if(sValor.length < 11) {
+    if(sValor.length == 10) {
+      return sValor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
+    }
+
+    if(sValor.length == 8) {
+      return sValor.replace(/(\d{4})(\d{4})/, '(47) $1-$2')
+    }
+    
+    return sValor.replace(/(\d{5})(\d{4})/, '(47) $1-$2')
+  }
+
+  return sValor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
 }

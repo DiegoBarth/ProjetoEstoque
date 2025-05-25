@@ -19,7 +19,7 @@ export const useClienteStore = defineStore('Cliente', {
       async getClientes() {
          try {
             const { data } = await api.get('/api/cliente');
-
+            
             return data.aClientes;
          }
          catch (error) {
@@ -34,6 +34,40 @@ export const useClienteStore = defineStore('Cliente', {
          }
          catch (error) {
             throw (error);
+         }
+      },
+      async cadastrarCliente(oDados) {
+         try {
+            const { data } = await api.post(`/api/cliente`, {
+               ...oDados
+            });
+
+            return !!data;
+         }
+         catch(error) {
+            throw(error)
+         }
+      },
+      async atualizarCliente(iCliente, oDados) {
+         try {
+            const { data } = await api.put(`/api/cliente/${iCliente}`, {
+               ...oDados
+            });
+
+            return !!data;
+         }
+         catch(error) {
+            throw(error)
+         }
+      },
+      async excluirCliente(iCliente) {
+         try {
+            const { data } = await api.delete(`/api/cliente/${iCliente}`);
+
+            return !!data;
+         }
+         catch(error) {
+            throw(error)
          }
       }
    }

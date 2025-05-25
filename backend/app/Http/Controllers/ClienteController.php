@@ -68,7 +68,7 @@ class ClienteController extends Controller {
          'clicpf'             => 'required|string|max:11|unique:clientes,clicpf',
          'clidata_nascimento' => 'string|max:150',
          'clitelefone'        => 'string|max:11',
-         'cliendereco'        => 'string'
+         'cliendereco'        => 'string|nullable'
       ]);
 
       $oCliente = Cliente::create([

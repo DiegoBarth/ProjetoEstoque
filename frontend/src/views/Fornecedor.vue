@@ -42,7 +42,7 @@
 <script setup>
 import { onBeforeMount, onMounted, ref } from 'vue';
 import api from '../api';
-import ModalCadastro from '../components/ModalCadastro.vue';
+import ModalCadastro from '../components/UI/ModalCadastro.vue';
 import Modal from '../components/UI/Modal.vue';
 import Grid from '../components/UI/Grid.vue';
 import Consulta from '../components/UI/Consulta.vue';

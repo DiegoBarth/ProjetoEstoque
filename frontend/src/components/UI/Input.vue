@@ -1,6 +1,6 @@
 <template>
    <component :is="inputType" v-bind="$attrs"
-      :class="['bg-[color:var(--fundoInput)] focus:bg-white border rounded p-2 w-full max-w-[280px]']"
+      :class="['bg-[color:var(--fundoInput)] focus:bg-white border rounded p-2 w-full']"
       autocomplete="off" :style="`outline: none; ${sStyle}`" :type="sTipo !== 'select' ? sTipo : undefined"
       :value="modelValue" :placeholder="sPlaceholder" :required="bObrigatorio" @input="onInput" @change="onChange">
       <template v-if="sTipo === 'select'">
@@ -12,8 +12,6 @@
    </component>
 </template>
 <script setup>
-import { defineProps, defineEmits } from "vue";
-
 const emit = defineEmits(["update:modelValue", "change"]);
 const props = defineProps({
    modelValue: [String, Number],
