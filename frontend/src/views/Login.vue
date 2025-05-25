@@ -1,7 +1,7 @@
 <template>
    <div class="flex w-full h-full">
       <div class="cardLogin z-1 card bg-white w-2/3 h-full items-center justify-center flex">
- <div class="card-principal shadow-xl min-h-[70vh] w-[90%] max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto flex flex-col items-center justify-center rounded-2xl p-4 sm:p-6">
+         <div class="card-principal-login shadow-xl min-h-[70vh] w-[90%] max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto flex flex-col items-center justify-center rounded-2xl p-4 sm:p-6">
             <div class="w-full">
                <div class="flex flex-col sm:flex-row items-center justify-center gap-5 lg:gap-10 py-7 w-full px-4">
                   <a href="https://www.instagram.com/ifix_foryou" target="_blank" rel="noopener noreferrer">
@@ -20,7 +20,7 @@
                         <i class="fa fa-eye absolute top-3.5 right-3 cursor-pointer" style="color: #4D4D4D;" @click="alterarCampoSenha"></i>
                      </div>
                      <p style="color: rgb(248, 70, 70); text-align: center;">{{ sErro }}</p>
-                     <Botao sStyle="font-weight: 600;align-self: center;" sTexto="Entrar" sTipo="submit" sId="button_login" sLargura="w-full sm:w-40"/>
+                     <Botao :sStyle="{fontWeight: 600,alignSelf: 'center'}" sCor="textoSecundario" sTexto="Entrar" sTipo="submit" sId="button_login" sLargura="w-full sm:w-40"/>
                   </div>
                </form>
             </div>

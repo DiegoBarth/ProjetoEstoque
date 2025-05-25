@@ -68,17 +68,13 @@ input {
 }
 
 .card-principal {
-   box-shadow: 6px 6px 10px 0px var(--principal);
+   box-shadow: 6px 6px 10px 0px var(--textoSecundario);
    background-color: var(--fundoSecundario);
 }
 
-.botao-card {
-   background-color: var(--textoPrincipal);
-   transition: all 0.4s;
-}
-
-.botao-card:hover {
-   background-color: var(--textoSecundario);
+.card-principal-login {
+   box-shadow: 6px 6px 10px 0px var(--principal);
+   background-color: var(--fundoSecundario);
 }
 
 @media (hover: hover) {

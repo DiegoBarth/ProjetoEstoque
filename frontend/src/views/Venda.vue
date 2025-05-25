@@ -19,9 +19,7 @@
             <Campo v-model="oProduto.iQuantidade" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade*" sStyle="width:40%"/>
             <Campo v-model="oProduto.fValorUnitario" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário*" maxlength="12" sStyle="width:40%"/>
             <Campo v-model="oProduto.fValorDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" maxlength="12" sStyle="width:40%"/>
-            <button class="botao-card cursor-pointer col-span-2 text-white rounded hover:bg-green-700 text-sm px-3 py-1.5 w-fit" @click="adicionarProduto">
-               Adicionar
-            </button>
+            <Botao sTexto="Adicionar" sTipo="text" sId="botao_adicionar_produto" sLargura="w-fit" @click="adicionarProduto"/>
          </div>
       </div>
       <div class="card-principal shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[280px]">
@@ -90,6 +88,7 @@
 import { ref, watch } from 'vue'
 import { useClienteStore } from '../stores/clienteStore';
 import { useProdutoStore } from '../stores/produtoStore';
+import Botao from '../components/UI/Botao.vue';
 import api from '../api';
 import Campo from '../components/UI/Campo.vue';
 import * as utils from "../utils/main.js";

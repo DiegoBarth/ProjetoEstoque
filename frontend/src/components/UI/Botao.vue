@@ -1,9 +1,8 @@
 <template>
-   <button :type="sTipo" :id="sId" :style="sStyle" :disabled="bDesabilitado" :class="[
+   <button :type="sTipo" :id="sId" :style="{backgroundColor: `var(--${sCor})`, ...sStyle }" :disabled="bDesabilitado" :class="[
+      'botao-card',
       'transition-transform duration-150 ease-in-out font-semibold rounded p-2 text-white',
       'hover:scale-95',
-      `bg-[var(--textoSecundario)]`,
-      'hover:bg-[#4A4A4A]',
       sLargura === 'full' ? 'w-full' : sLargura,
       bDesabilitado ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
       sClasses
@@ -26,15 +25,15 @@ const props = defineProps({
    },
    sCor: {
       type: String,
-      default: 'textoSecundario'
+      default: 'principal'
    },
    sLargura: {
       type: String,
       default: 'full'
    },
    sStyle: {
-      type: String,
-      default: ''
+      type: Object,
+      default: () => ({})
    },
    sId: {
       type: String,
@@ -49,6 +48,8 @@ const props = defineProps({
       default: ''
    }
 });
+
+console.log(props.sStyle);
 
 function onClick(event) {
    if (!props.bDesabilitado) {
