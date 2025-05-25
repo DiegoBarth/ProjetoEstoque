@@ -140,3 +140,14 @@ export function formatarCPFCNPJ(sValor) {
 
     return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }
+
+export function converterParaMoeda(valor) {
+   const iValor = parseFloat(valor?.toString().replace(',', '.'));
+
+   if(isNaN(iValor)) {
+      return valor;
+   }
+
+   const valorFormatado = iValor.toFixed(2).replace('.', ',');
+   return 'R$ ' + valorFormatado;
+}

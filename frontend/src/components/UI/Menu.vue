@@ -64,8 +64,6 @@ const aItensMenu = [
 function openModalLogout() {
    const oModal = document.getElementById('modalLogout');
 
-   console.log(oModal)
-
    oModal.style.display = 'flex';
 }
 </script>

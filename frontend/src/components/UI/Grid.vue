@@ -13,6 +13,7 @@
 </template>
 <script setup>
 import { nextTick, onMounted } from "vue";
+import 'datatables.net-dt';
 
 const oPropriedades = defineProps(['aCabecalhos', 'sLayout']);
 

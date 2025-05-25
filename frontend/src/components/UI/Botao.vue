@@ -49,8 +49,6 @@ const props = defineProps({
    }
 });
 
-console.log(props.sStyle);
-
 function onClick(event) {
    if (!props.bDesabilitado) {
       emit('click', event);
