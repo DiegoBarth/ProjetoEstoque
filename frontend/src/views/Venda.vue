@@ -6,7 +6,7 @@
          </div>
          <div class="p-4 grid grid-cols-[auto_auto] gap-x-6 gap-y-6 max-w-4xl mx-auto">
             <div class="flex gap-4 items-end">
-               <Campo v-model="oProduto.iCodigo" sTipo="text" :bObrigatorio="true" sTitulo="Produto*" @change="onChangeCodigoProduto"/>
+               <Campo v-model="oProduto.iCodigo" sTipo="text" :bObrigatorio="true" sTitulo="Produto" @change="onChangeCodigoProduto"/>
                <div class="relative">
                   <Campo sTipo="text" :bObrigatorio="false" sTitulo="Produto" :bLabel="false" v-model="oProduto.sNome" sPlaceholder="Digite o nome do produto"  @input="filtrarSugestoes" @focus="() => {bMostrarSugestoes = true, bFocado = true}" @blur="() => {ocultarSugestoes(); bFocado = false;}" class="w-full"/>
                   <ul v-if="bMostrarSugestoes && aSugestoesFiltradas.length" class="absolute bg-white border border-gray-300 rounded mt-1 max-h-60 overflow-y-auto z-50 w-full">
@@ -16,8 +16,8 @@
                   </ul>
                </div>
             </div>
-            <Campo v-model="oProduto.iQuantidade" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade*" sStyle="width:40%"/>
-            <Campo v-model="oProduto.fValorUnitario" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário*" maxlength="12" sStyle="width:40%"/>
+            <Campo v-model="oProduto.iQuantidade" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade" sStyle="width:40%"/>
+            <Campo v-model="oProduto.fValorUnitario" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário" maxlength="12" sStyle="width:40%"/>
             <Campo v-model="oProduto.fValorDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" maxlength="12" sStyle="width:40%"/>
             <Botao sTexto="Adicionar" sTipo="text" sId="botao_adicionar_produto" sLargura="w-fit" @click="adicionarProduto"/>
          </div>
