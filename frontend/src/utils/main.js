@@ -4,7 +4,7 @@ export function alerta(xMensagem, sTipo = 'ok') {
    let aMensagens = (typeof xMensagem) == 'object' ? xMensagem : [xMensagem];
 
    aMensagens.forEach(sMensagem => {
-      const oAlerta = $('<div>').addClass('alerta').text(sMensagem).css('z-index', 9999);
+      const oAlerta    = $('<div>').addClass('alerta').text(sMensagem);
       const oContainer = $('.alerta-container');
 
       if(sTipo == 'error') {
