@@ -8,8 +8,7 @@
       </Consulta>
       <CadastroClientes v-if="bShowModal" @fecharModal="() => bShowModal = false" @adicionarCliente="adicionarCliente"
          @atualizarCliente="atualizarCliente" :oCliente="oCliente" :iAcaoAtual="iAcaoAtual" />
-      <ModalExclusao v-if="iClienteExclusao" @fecharModal="() => iClienteExclusao = false"
-         @excluirRegistro="excluirCliente" />
+      <ModalExclusao v-if="iClienteExclusao" @fecharModal="() => {iClienteExclusao = false; bShowModal = false}" @excluirRegistro="excluirCliente"/>
    </div>
 </template>
 

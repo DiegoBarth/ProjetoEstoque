@@ -8,7 +8,7 @@
       </Consulta>
       <CadastroProdutos v-if="bShowModal" @fecharModal="() => bShowModal = false" @adicionarProduto="adicionarProduto"
          @atualizarProduto="atualizarProduto" :oProduto="oProduto" :iAcaoAtual="iAcaoAtual" :aOpcoes="aFornecedores" />
-      <ModalExclusao v-if="iProdutoExclusao" @fecharModal="() => iProdutoExclusao = false"
+      <ModalExclusao v-if="iProdutoExclusao" @fecharModal="() => {iProdutoExclusao = false; bShowModal = false}"
          @excluirRegistro="excluirProduto" />
    </div>
 </template>
@@ -71,7 +71,7 @@ async function atualizarProduto() {
 }
 
 async function excluirProduto(iProduto) {
-   await oProdutoStore.excluirProduto(iProduto);
+   await oProdutoStore.excluirProduto(iProdutoExclusao.value);
    utils.alerta('Produto excluído com sucesso!');
    aProdutos.value = await oProdutoStore.getProdutos();
    iProdutoExclusao.value = null;
