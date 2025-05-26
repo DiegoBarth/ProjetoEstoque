@@ -1,6 +1,6 @@
 <template>
-   <div class="fundo-principal grid grid-cols-3 gap-4 min-h-screen box-border w-full items-stretch" style="padding: 30px;">
-      <div class="card-principal col-span-2 shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[280px]">
+   <div class="fundo-principal grid grid-cols-3 gap-4 min-h-screen box-border w-full items-stretch" style="padding: 30px; height: 100%; overflow:auto">
+      <div class="card-principal col-span-2 shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[290px]">
          <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
             <i class="icone-cabecalho fas fa-box mr-2"></i> Produtos
          </div>
@@ -22,23 +22,23 @@
             <Botao sTexto="Adicionar" sTipo="text" sId="botao_adicionar_produto" sLargura="w-fit" @click="adicionarProduto"/>
          </div>
       </div>
-      <div class="card-principal shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[280px]">
+      <div class="card-principal shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[290px]">
          <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
             <i class="icone-cabecalho fas fa-user mr-2"></i> Cliente
          </div>
-         <div class="p-4 w-full">
+         <div class="p-4 w-full" style="overflow: auto; height: calc(100% - 47px);">
             <Campo class="w-1/2" sTipo="text" maxlength="14" :bObrigatorio="false" sTitulo="CPF" v-model="sCpf" @change="onChangeCPF" @input="utils.formatarCPF($event.target)"/>
             <div v-if="oCliente.sNome" class="w-full mt-4 space-y-6 text-sm text-gray-700">
                <div class="flex gap-4">
-                  <p class="w-1/2"><strong>Nome:</strong> {{ oCliente.sNome }}</p>
-                  <p class="w-1/2"><strong>Data de Nascimento:</strong> {{ oCliente.sDataNascimento }}</p>
+                  <p class="w-1/2"><strong style="font-weight: bold;">Nome:</strong> {{ oCliente.sNome }}</p>
+                  <p class="w-1/2"><strong style="font-weight: bold;">Data de Nascimento:</strong> {{ oCliente.sDataNascimento }}</p>
                </div>
-               <p><strong>Endereço:</strong> {{ oCliente.sEndereco }}</p>
-               <p><strong>Telefone:</strong> {{ oCliente.sTelefone }}</p>
+               <p><strong style="font-weight: bold;">Endereço:</strong> {{ oCliente.sEndereco }}</p>
+               <p><strong style="font-weight: bold;">Telefone:</strong> {{ oCliente.sTelefone }}</p>
             </div>
          </div>
       </div>
-      <div class="card-principal col-span-2 shadow-lg rounded-xl overflow-hidden min-h-[40vh]">
+      <div class="card-principal col-span-2 shadow-lg rounded-xl overflow-hidden min-h-[290px]">
          <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
             <i class="icone-cabecalho fas fa-clipboard-list mr-2"></i> Selecionados
          </div>
@@ -60,34 +60,31 @@
             </table>
          </div>
       </div>
-      <div class="card-principal shadow-lg rounded-xl overflow-hidden min-h-[40vh]">
+      <div class="card-principal shadow-lg rounded-xl overflow-hidden min-h-[290px]">
          <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
             <i class="icone-cabecalho fas fa-credit-card mr-2"></i> Pagamento
          </div>
-         <!-- <div class="p-4 space-y-2">
-            <div class="flex justify-between">
-               <label>Valor:</label>
-               <label>Desconto: <input type="text" class="input w-20" /></label>
+         <div class="p-4 w-full flex flex-col" style="overflow: auto; height: calc(100% - 47px);">
+            <div class="mb-4">
+               <Campo v-model="oVenda.iFormaPagamento" sTipo="select" :bObrigatorio="true" sTitulo="Forma de Pagamento" :aOpcoes="aFormasPagamento"/>
             </div>
-            <div>Valor total:</div>
-            <div>
-               <label>Forma de pagamento:</label>
-               <select class="input w-full mt-1">
-                  <option>Selecione</option>
-               </select>
+            <div class="mb-4">
+               <Campo v-model="oProduto.iCodigo" sTipo="text" :bObrigatorio="false" sTitulo="Desconto"/>
             </div>
-            <button class="w-full mt-4 bg-rose-300 hover:bg-rose-400 text-white text-lg py-2 rounded-md">
-               Efetuar pagamento
-            </button>
-         </div> -->
+            <div class="mb-4">
+               <Campo v-model="oProduto.iCodigo" sTipo="text" :bObrigatorio="false" :bDesabilitado="true" sTitulo="Valor total"/>
+            </div>
+            <Botao @click="finalizarVenda" sTexto="Finalizar Venda" sTipo="text" sId="botao_finalizar_venda" sLargura="w-full" sClasses="py-2 px-4 rounded mt-auto"/>
+         </div>
       </div>
    </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useClienteStore } from '../stores/clienteStore';
 import { useProdutoStore } from '../stores/produtoStore';
+import { useVendaStore } from '../stores/vendaStore';
 import Botao from '../components/UI/Botao.vue';
 import api from '../api';
 import Campo from '../components/UI/Campo.vue';
@@ -95,9 +92,11 @@ import * as utils from "../utils/main.js";
 
 const oProdutoStore       = useProdutoStore();
 const oClienteStore       = useClienteStore();
+const oVendaStore         = useVendaStore();
+const bFocado             = ref(false);
 const bMostrarSugestoes   = ref(false)
 const aSugestoesFiltradas = ref([])
-const bFocado             = ref(false);
+const aFormasPagamento    = ref([]);
 let debounceTimeout       = null
 let oProdutoSelecionado   = null;
 let aProdutosFiltrados    = [];
@@ -115,6 +114,15 @@ const oProduto = ref({
    iQuantidade: '',
    fValorUnitario: '',
    fValorDesconto: ''
+});
+const oVenda = ref({
+   iFormaPagamento: '',
+   fValorTotal: '',
+   fDesconto: ''
+});
+
+onMounted(async () => {
+   aFormasPagamento.value = await oVendaStore.getFormasPagamento();
 });
 
 function onChangeCodigoProduto() {
