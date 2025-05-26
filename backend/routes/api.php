@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VendaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProdutoController;
@@ -56,6 +57,14 @@ Route::middleware('auth:sanctum')->group(function () {
    Route::post('/produto',              [ProdutoController::class, 'salvar']);
    Route::put('/produto/{iProduto}',    [ProdutoController::class, 'atualizar']);
    Route::delete('/produto/{iProduto}', [ProdutoController::class, 'excluir']);
+});
+
+#endregion
+
+#region Rotas Venda
+
+Route::middleware('auth:sanctum')->group(function () {
+   Route::get('/forma_pagamento',  [VendaController::class, 'getFormasPagamento']);
 });
 
 #endregion
