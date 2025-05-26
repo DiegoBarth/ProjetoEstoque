@@ -5,7 +5,7 @@
       </label>
       <Input v-bind="$attrs" :modelValue="modelValue" @update:modelValue="$emit('update:modelValue', $event)"
          @change="$emit('change', $event)" :sTipo="sTipo" :sStyle="sStyle" :sPlaceholder="sPlaceholder"
-         :bObrigatorio="bObrigatorio" :aOpcoes="aOpcoes" />
+         :bObrigatorio="bObrigatorio" :bDesabilitado="bDesabilitado" :aOpcoes="aOpcoes" />
    </div>
 </template>
 
@@ -15,6 +15,7 @@ import Input from './Input.vue'
 defineProps({
    sTitulo: String,
    bObrigatorio: Boolean,
+   bDesabilitado: Boolean,
    bLabel: {
       type: Boolean,
       default: true

@@ -2,7 +2,7 @@
    <component :is="inputType" v-bind="$attrs"
       :class="['bg-[color:var(--fundoInput)] focus:bg-white border rounded p-2 w-full']"
       autocomplete="off" :style="`outline: none; ${sStyle}`" :type="sTipo !== 'select' ? sTipo : undefined"
-      :value="modelValue" :placeholder="sPlaceholder" :required="bObrigatorio" @input="onInput" @change="onChange">
+      :value="modelValue" :placeholder="sPlaceholder" :required="bObrigatorio" :disabled="bDesabilitado" @input="onInput" @change="onChange">
       <template v-if="sTipo === 'select'">
          <option value="">Selecione</option>
          <option v-for="(oOpcao, i) in aOpcoes" :key="i" :value="oOpcao.iValor">
@@ -21,6 +21,7 @@ const props = defineProps({
    },
    sStyle: String,
    bObrigatorio: Boolean,
+   bDesabilitado: Boolean,
    sPlaceholder: String,
    aOpcoes: {
       type: Array,
