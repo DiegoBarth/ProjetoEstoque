@@ -79,6 +79,11 @@ select {
    background-color: var(--fundoSecundario);
 }
 
+.div-principal-grid {
+   overflow: auto;
+   height: calc(100vh - 170px);
+}
+
 @media (hover: hover) {
    a:hover {
       // background-color: var(--bordas);

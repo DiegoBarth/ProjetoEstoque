@@ -1,5 +1,5 @@
 <template>
-   <div class="w-full px-30 ">
+   <div class="div-principal-grid w-full px-30">
       <Grid v-if="aProdutos" class="mt-10 text-left"
          :aCabecalhos="['Produto', 'Nome do Produto', 'Valor de Custo', 'Valor de Venda', 'Quantidade', 'Valor de Desconto', 'Fornecedor', 'Ações']"
          sLayout="0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 0.6fr">
