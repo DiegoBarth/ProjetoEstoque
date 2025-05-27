@@ -1,22 +1,24 @@
 <template>
-  <div class="w-full h-full">        
+  <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden"> 
     <Consulta sTitulo='Fornecedores' @showModalCadastro="showModalCadastro(1)">      
       <template #gridConsulta>
-        <Grid v-if="aFornecedores" class="mt-10 text-left" :aCabecalhos="['Fornecedor', 'Razão Social', 'Nome Fantasia', 'CPF/CNPJ', 'Telefone', 'Ações']" sLayout="0.5fr 1fr 1fr 1fr 1fr 0.6fr">
-            <tr class="grid" v-for="(oFornecedor, iIndice) of aFornecedores" :key="iIndice" style="grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 0.6fr;">
-                <td class="p-2">{{ oFornecedor.forcodigo                     }}</td>
-                <td class="p-2">{{ oFornecedor.forrazao_social               }}</td>
-                <td class="p-2">{{ oFornecedor.fornome_fantasia              }}</td>
-                <td class="p-2">{{ formatarCPFCNPJ(oFornecedor.forcpfcnpj)   }}</td>
-                <td class="p-2">{{ formatarTelefone(oFornecedor.fortelefone) }}</td>            
-                <td class="p-2 flex gap-2">
-                    <span class="cursor-pointer" @click="showModalCadastro(3, oFornecedor)"><i class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
-                    <span class="cursor-pointer" @click="showModalCadastro(2, oFornecedor)"><i class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white"></i></span>
-                    <span class="cursor-pointer" @click="() => iFornecedorExclusao = oFornecedor.forcodigo"><i class="fa fa-trash p-2 bg-red-500 rounded-sm text-white"></i></span>
-                </td>
-            </tr>
-        </Grid>
-      </template>      
+         <div class="div-principal-grid w-full px-30">
+            <Grid v-if="aFornecedores" class="mt-10 text-left" :aCabecalhos="['Fornecedor', 'Razão Social', 'Nome Fantasia', 'CPF/CNPJ', 'Telefone', 'Ações']" sLayout="0.5fr 1fr 1fr 1fr 1fr 0.6fr">
+               <tr class="grid" v-for="(oFornecedor, iIndice) of aFornecedores" :key="iIndice" style="grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 0.6fr;">
+                  <td class="p-2">{{ oFornecedor.forcodigo                     }}</td>
+                  <td class="p-2">{{ oFornecedor.forrazao_social               }}</td>
+                  <td class="p-2">{{ oFornecedor.fornome_fantasia              }}</td>
+                  <td class="p-2">{{ formatarCPFCNPJ(oFornecedor.forcpfcnpj)   }}</td>
+                  <td class="p-2">{{ formatarTelefone(oFornecedor.fortelefone) }}</td>            
+                  <td class="p-2 flex gap-2">
+                     <span class="cursor-pointer" @click="showModalCadastro(3, oFornecedor)"><i class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
+                     <span class="cursor-pointer" @click="showModalCadastro(2, oFornecedor)"><i class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white"></i></span>
+                     <span class="cursor-pointer" @click="() => iFornecedorExclusao = oFornecedor.forcodigo"><i class="fa fa-trash p-2 bg-red-500 rounded-sm text-white"></i></span>
+                  </td>
+               </tr>
+            </Grid>
+        </div>
+      </template>
     </Consulta>           
     <ModalCadastro :bModalAberto="bShowModal" class="flex items-center justify-content-center" sTitulo="🚚 Cadastro de fornecedor" :iAcao="iAcaoAtual" @fecharModal="() => {bShowModal = false;}" @incluir="adicionarFornecedor" @alterar="atualizarFornecedor">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">                        
@@ -56,7 +58,7 @@ const oFornecedorStore = useFornecedorStore();
 const iFornecedorExclusao = ref(0);
 const iAcaoAtual = ref(0);
 const bShowModal = ref(false);
-const aFornecedores = ref([]);
+const aFornecedores = ref();
 const oFornecedor = ref({
     iFornecedor:   '',
     sRazaoSocial:  '',

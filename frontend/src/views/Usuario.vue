@@ -1,21 +1,23 @@
 <template>
-  <div class="w-full h-full">        
+  <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden">        
     <Consulta sTitulo='Usuários' @showModalCadastro="showModalCadastro(1)">      
       <template #gridConsulta>
-        <Grid v-if="aUsuarios" class="mt-10 text-left" :aCabecalhos="['Usuário', 'Nome', 'Nome de Usuário', 'Nível de acesso', 'Situação', 'Ações']" sLayout="0.5fr 1fr 1fr 1fr 1fr 0.6fr">
-          <tr class="grid" v-for="(oUsuario, iIndice) of aUsuarios" :key="iIndice" style="grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 0.6fr;">
-            <td class="p-2">{{ oUsuario.usucodigo          }}</td>
-            <td class="p-2">{{ oUsuario.usunome            }}</td>
-            <td class="p-2">{{ oUsuario.usunome_usuario             }}</td>
-            <td class="p-2">{{ oUsuario.usunivel == 1 ? 'Admin' : 'Caixa' }}</td>
-            <td class="p-2">{{ oUsuario.usuativo == 1 ? 'Ativo' : 'Inativo' }}</td>            
-            <td class="p-2 flex gap-2">
-              <span class="cursor-pointer" @click="showModalCadastro(3, oUsuario)"><i class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
-              <span class="cursor-pointer" @click="showModalCadastro(2, oUsuario)"><i class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white"></i></span>
-              <span class="cursor-pointer" @click="() => iUsuarioExclusao = oUsuario.procodigo"><i class="fa fa-trash p-2 bg-red-500 rounded-sm text-white"></i></span>
-            </td>
-          </tr>
-        </Grid>
+         <div class="div-principal-grid w-full px-30">
+         <Grid v-if="aUsuarios" class="mt-10 text-left" :aCabecalhos="['Usuário', 'Nome', 'Nome de Usuário', 'Nível de acesso', 'Situação', 'Ações']" sLayout="0.5fr 1fr 1fr 1fr 1fr 0.6fr">
+            <tr class="grid" v-for="(oUsuario, iIndice) of aUsuarios" :key="iIndice" style="grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 0.6fr;">
+               <td class="p-2">{{ oUsuario.usucodigo          }}</td>
+               <td class="p-2">{{ oUsuario.usunome            }}</td>
+               <td class="p-2">{{ oUsuario.usunome_usuario             }}</td>
+               <td class="p-2">{{ oUsuario.usunivel == 1 ? 'Admin' : 'Caixa' }}</td>
+               <td class="p-2">{{ oUsuario.usuativo == 1 ? 'Ativo' : 'Inativo' }}</td>            
+               <td class="p-2 flex gap-2">
+               <span class="cursor-pointer" @click="showModalCadastro(3, oUsuario)"><i class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
+               <span class="cursor-pointer" @click="showModalCadastro(2, oUsuario)"><i class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white"></i></span>
+               <span class="cursor-pointer" @click="() => iUsuarioExclusao = oUsuario.procodigo"><i class="fa fa-trash p-2 bg-red-500 rounded-sm text-white"></i></span>
+               </td>
+            </tr>
+         </Grid>
+      </div>
       </template>      
     </Consulta>           
     <ModalCadastro :bModalAberto="bShowModal" class="flex items-center justify-content-center" sTitulo="🧑🏻 Cadastro de Usuário" :iAcao="iAcaoAtual" @fecharModal="() => {bShowModal = false;}" @incluir="adicionarUsuario" @alterar="atualizarUsuario">
@@ -57,7 +59,7 @@ const oUsuario = ref({
 const oUsuarioStore = useUsuarioStore();
 const iUsuarioExclusao = ref(null);
 const iAcaoAtual = ref(0);
-const aUsuarios = ref([]);
+const aUsuarios = ref();
 const bShowModal = ref(false);
 
 onMounted(async () => {  
