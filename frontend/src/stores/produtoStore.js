@@ -18,7 +18,7 @@ export const useProdutoStore = defineStore('Produto', {
             iQuantidade  : oProduto.proestoque
          };
       },
-      async cadatrarProduto(payload) {
+      async cadastrarProduto(payload) {
          try {
             const { data } = await api.post('/api/produto', {
                ...payload

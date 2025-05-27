@@ -1,10 +1,10 @@
 <template>
-   <div class="fundo-principal grid grid-cols-3 gap-4 min-h-screen box-border w-full items-stretch" style="padding: 30px; height: 100%; overflow:auto">
-      <div class="card-principal col-span-2 shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[290px]">
+   <div class="fundo-principal grid grid-cols-3 grid-rows-3 gap-4 min-h-screen box-border w-full items-stretch" style="padding: 30px; height: 100%; overflow:auto">
+      <div class="card-principal col-span-2 row-span-1 shadow-lg rounded-xl overflow-hidden max-h-[15vh] min-h-[290px]">
          <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
             <i class="icone-cabecalho fas fa-box mr-2"></i> Produtos
          </div>
-         <div class="p-4 grid grid-cols-[auto_auto] gap-x-6 gap-y-6 max-w-4xl mx-auto">
+         <div class="p-4 grid grid-cols-[auto_auto] row-span-1 gap-x-6 gap-y-6 max-w-4xl mx-auto">
             <div class="flex gap-4 items-end">
                <Campo v-model="oProduto.iProduto" sTipo="text" :bObrigatorio="true" sTitulo="Produto" @change="onChangeCodigoProduto"/>
                <div class="relative">
@@ -22,7 +22,7 @@
             <Botao sTexto="Adicionar" sTipo="text" sId="botao_adicionar_produto" sLargura="w-fit" @click="adicionarProduto"/>
          </div>
       </div>
-      <div class="card-principal shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[290px]">
+      <div class="card-principal shadow-lg rounded-xl row-span-1 overflow-hidden max-h-[15vh] min-h-[290px]">
          <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
             <i class="icone-cabecalho fas fa-user mr-2"></i> Cliente
          </div>
@@ -38,7 +38,7 @@
             </div>
          </div>
       </div>
-      <div class="card-principal col-span-2 shadow-lg rounded-xl overflow-hidden min-h-[290px]">
+      <div class="card-principal col-span-2 shadow-lg row-span-2 rounded-xl overflow-hidden min-h-[290px]">
          <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
             <i class="icone-cabecalho fas fa-clipboard-list mr-2"></i> Selecionados
          </div>
@@ -60,7 +60,7 @@
             </table>
          </div>
       </div>
-      <div class="card-principal shadow-lg rounded-xl overflow-hidden min-h-[290px]">
+      <div class="card-principal shadow-lg rounded-xl row-span-2 overflow-hidden min-h-[290px]">
          <div class="cabecalho-principal text-white font-semibold px-4 py-2 flex items-center">
             <i class="icone-cabecalho fas fa-credit-card mr-2"></i> Pagamento
          </div>

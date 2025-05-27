@@ -1,5 +1,14 @@
 import { format } from 'date-fns';
 
+export function limparCampos() {
+    const aCampos = $('#modalCadastro').find('input, textarea, select');
+
+    for(const oCampo of aCampos) {
+        console.log(oCampo)
+        oCampo.value = '';
+    }
+}
+
 export function alerta(xMensagem, sTipo = 'ok') {
    let aMensagens = (typeof xMensagem) == 'object' ? xMensagem : [xMensagem];
 
@@ -57,24 +66,12 @@ export function formatarCPF(xValor) {
 }
 
 export function formatarTelefone(sValor) {
-    if(sValor.length < 8) {
-        utils.alerta('O valor informado é inválido', 'error');
-        return '';
-    }
+    sValor = sValor.replace(/\D/g, '');
 
-    if(sValor.length < 11) {
-        if(sValor.length == 10) {
-            return sValor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-        }
+    sValor = sValor.replace(/(\d{2})(\d)/,  '($1) $2');    
+    sValor = sValor.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
 
-        if(sValor.length == 8) {
-            return sValor.replace(/(\d{4})(\d{4})/, '(47) $1-$2');
-        }
-
-        return sValor.replace(/(\d{5})(\d{4})/, '(47) $1-$2');
-    }
-
-    return sValor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    return sValor;    
 }
 
 export function formatarDataBR(sData) {
@@ -149,13 +146,22 @@ export function formatarCPFCNPJ(sValor) {
     return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }
 
-export function converterParaMoeda(valor) {
-   const iValor = parseFloat(valor?.toString().replace(',', '.'));
+export function converterParaMoeda(sValor) {    
+    sValor = sValor.replace(/\D/g, '');
 
-   if(isNaN(iValor)) {
-      return valor;
-   }
+    if(sValor.length == 0) {
+        return '';
+    }
 
-   const valorFormatado = iValor.toFixed(2).replace('.', ',');
-   return 'R$ ' + valorFormatado;
+    sValor = sValor.replace(/(\d{1,3})(\d{2})/, '$1,$2');
+    if(sValor.length > 6) {
+        sValor = sValor.replace(/\D/g, '');
+        sValor = sValor.replace(/(\d{1,3})(\d{3})(\d{2})/, '$1.$2,$3')
+    }
+
+    return 'R$ ' + sValor;   
+}
+
+export function normalizarValor(sValor) {
+    return parseFloat(sValor.replace(',', '.').replace(/\D/g, '')) / 100;
 }

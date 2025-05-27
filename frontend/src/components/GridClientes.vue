@@ -8,9 +8,8 @@
             <td class="p-2">{{ oCliente.clinome }}</td>
             <td class="p-2">{{ formatarCPFCNPJ(oCliente.clicpf) }}</td>
             <td class="p-2">{{ formatarData(oCliente.clidata_nascimento) }}</td>
-            <td class="p-2">{{ formatarTelefone(oCliente.clitelefone) }}</td>
-            <td class="p-2" :style="{ 'font-style': oCliente.cliendereco ? '' : 'italic' }">{{ oCliente.cliendereco ??
-               'Sem informação' }}</td>
+            <td class="p-2">{{ formatarTelefone(oCliente.clitelefone)        }}</td>
+            <td class="p-2" :style="{'font-style': oCliente.cliendereco ?? 'italic'}">{{ oCliente.cliendereco ?? 'Sem informação' }}</td>
             <td class="p-2 flex gap-2">
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 3, oCliente)"><i
                      class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
@@ -24,38 +23,10 @@
    </div>
 </template>
 <script setup>
-import { format, parseISO } from 'date-fns';
 import Grid from './UI/Grid.vue';
+import { formatarCPFCNPJ, formatarTelefone, formatarData } from '../utils/main';
 
 defineEmits(['showModalCadastro', 'showModalExclusao']);
 defineProps(['aClientes']);
-
-function formatarData(sValor) {
-   return format(parseISO(sValor), 'dd/MM/yyyy');
-}
-
-function formatarCPFCNPJ(sValor) {
-   if(sValor.length > 11) {
-      return sValor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-   }
-
-   return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-}
-
-function formatarTelefone(sValor) {
-   if(sValor.length < 11) {
-      if(sValor.length == 10) {
-         return sValor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-      }
-
-      if(sValor.length == 8) {
-         return sValor.replace(/(\d{4})(\d{4})/, '(47) $1-$2');
-      }
-
-      return sValor.replace(/(\d{5})(\d{4})/, '(47) $1-$2');
-   }
-
-   return sValor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-}
 
 </script>

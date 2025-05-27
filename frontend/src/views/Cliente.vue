@@ -52,7 +52,8 @@ async function adicionarCliente(oDados) {
    if(utils.validarCamposObrigatorios()) {
       await oClienteStore.cadastrarCliente(formatarDadosCliente(oDados));
       utils.alerta('Cliente cadastrado com sucesso!');
-      await oClienteStore.getClientes();
+      bShowModal.value = false;
+      recarregarGrid();
    }
 }
 
@@ -60,14 +61,16 @@ async function atualizarCliente(oDados, iCliente) {
    if(utils.validarCamposObrigatorios()) {
       await oClienteStore.atualizarCliente(iCliente, formatarDadosCliente(oDados));
       utils.alerta('Cliente alterado com sucesso!');
-      await oClienteStore.getClientes();
+      bShowModal.value = false;
+      recarregarGrid();
    }
 }
 
 async function excluirCliente() {
    await oClienteStore.excluirCliente(iClienteExclusao.value);
    utils.alerta('Cliente excluído com sucesso!');
-   await oClienteStore.getClientes();
+   iClienteExclusao.value = null;
+   recarregarGrid();
 }
 
 function showModalCadastro(iAcao, oClienteSelecionado) {
@@ -98,6 +101,11 @@ function formatarDadosCliente(oDados) {
       clitelefone:        oDados.sTelefone.replace(/\D/g, ''),
       cliendereco:        oDados.sEndereco
    };
+}
+
+async function recarregarGrid() {
+    aClientes.value = null;
+    aClientes.value = await oClienteStore.getClientes();
 }
 
 </script>

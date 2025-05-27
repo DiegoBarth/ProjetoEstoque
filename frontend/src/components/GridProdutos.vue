@@ -6,10 +6,10 @@
          <tr v-for="(oProduto, iIndice) of aProdutos" :key="iIndice">
             <td class="p-2">{{ oProduto.procodigo }}</td>
             <td class="p-2">{{ oProduto.pronome }}</td>
-            <td class="p-2">R$ {{ oProduto.procusto.replace('.', ',') }}</td>
-            <td class="p-2">R$ {{ oProduto.provalor.replace('.', ',') }}</td>
+            <td class="p-2">{{ converterParaMoeda(oProduto.procusto) }}</td>
+            <td class="p-2">{{ converterParaMoeda(oProduto.provalor) }}</td>
             <td class="p-2">{{ oProduto.proestoque }}</td>
-            <td class="p-2">R$ {{ oProduto.provalor_desconto.replace('.', ',') }}</td>
+            <td class="p-2">{{ converterParaMoeda(oProduto.provalor_desconto) }}</td>
             <td class="p-2">{{ oProduto.forrazao_social }}</td>
             <td class="p-2 flex gap-2">
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 3, oProduto)"><i
@@ -24,8 +24,8 @@
    </div>
 </template>
 <script setup>
-import { format, parseISO } from 'date-fns';
 import Grid from './UI/Grid.vue';
+import { converterParaMoeda } from '../utils/main'
 
 defineEmits(['showModalCadastro', 'showModalExclusao']);
 defineProps(['aProdutos']);

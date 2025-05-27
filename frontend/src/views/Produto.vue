@@ -54,26 +54,28 @@ onMounted(async () => {
    aProdutos.value = await oProdutoStore.getProdutos();
 });
 
-async function adicionarProduto() {
+async function adicionarProduto(oDados) {
    if(utils.validarCamposObrigatorios()) {
       await oProdutoStore.cadatrarProduto(tratarDadosProduto(false));
       utils.alerta('Produto cadastrado com sucesso');
-      aProdutos.value = await oProdutoStore.getProdutos();
+      recarregarGrid();
+      bShowModal.value = false;
    }
 }
 
-async function atualizarProduto() {
+async function atualizarProduto(oDados, iProduto) {
    if(utils.validarCamposObrigatorios()) {
-      await oProdutoStore.atualizarProduto(oProduto.value.iProduto, tratarDadosProduto(true));
+      await oProdutoStore.atualizarProduto(iProduto, tratarDadosProduto(oDados));
       utils.alerta('Produto alterado com sucesso');
-      aProdutos.value = await oProdutoStore.getProdutos();
+      recarregarGrid();
+      bShowModal.value = false;
    }
 }
 
 async function excluirProduto(iProduto) {
    await oProdutoStore.excluirProduto(iProdutoExclusao.value);
    utils.alerta('Produto excluído com sucesso!');
-   aProdutos.value = await oProdutoStore.getProdutos();
+   recarregarGrid();
    iProdutoExclusao.value = null;
 }
 
@@ -83,14 +85,15 @@ async function showModalCadastro(iAcao, oProdutoSelecionado) {
    
    if(iAcao != 1) {
       oProduto.value = {
-         sNome: oProdutoSelecionado.pronome,
-         sCodigoBarras: oProdutoSelecionado.procodigo_barras,
-         iQuantidade: oProdutoSelecionado.proestoque,
-         fValorCompra: oProdutoSelecionado.procusto,
-         fValorVenda: oProdutoSelecionado.provalor,
-         fDesconto: oProdutoSelecionado.provalor_desconto,
-         iFornecedor: oProdutoSelecionado.forcodigo,
-         sFornecedor: oProdutoSelecionado.forrazao_social
+            iProduto: oProdutoSelecionado.procodigo,
+            sNome: oProdutoSelecionado.pronome,
+            sCodigoBarras: oProdutoSelecionado.procodigo_barras,
+            iQuantidade: oProdutoSelecionado.proestoque,
+            fValorCompra: oProdutoSelecionado.procusto,
+            fValorVenda: oProdutoSelecionado.provalor,
+            fDesconto: oProdutoSelecionado.provalor_desconto,
+            iFornecedor: oProdutoSelecionado.forcodigo,
+            sFornecedor: oProdutoSelecionado.forrazao_social
       };
    }
 
@@ -111,7 +114,7 @@ function tratarFiltroFornecedores(aFornecedores) {
    if(aFornecedores.length) {
       for(const oFornecedor of aFornecedores) {
          aFiltro.push({
-            iValor: oFornecedor.forcodigo,
+            iValor:     oFornecedor.forcodigo,
             sDescricao: oFornecedor.forrazao_social
          });
       }
@@ -120,33 +123,21 @@ function tratarFiltroFornecedores(aFornecedores) {
    return aFiltro;
 }
 
-function tratarDadosProduto(bAlterar) {
-   if(bAlterar) {
-      return {
-         iProduto: oProduto.value.iProduto,
-         sNome: oProduto.value.sNome,
-         sCodigoBarras: oProduto.value.sCodigoBarras,
-         iQuantidade: oProduto.value.iQuantidade,
-         fValorCompra: normalizarValor(oProduto.value.fValorCompra),
-         fValorVenda: normalizarValor(oProduto.value.fValorVenda),
-         fDesconto: normalizarValor(oProduto.value.fDesconto),
-         iFornecedor: oProduto.value.iFornecedor
-      };
-   }
-
-   return {
-      sNome: oProduto.value.sNome,
-      sCodigoBarras: oProduto.value.sCodigoBarras,
-      iQuantidade: oProduto.value.iQuantidade,
-      fValorCompra: normalizarValor(oProduto.value.fValorCompra),
-      fValorVenda: normalizarValor(oProduto.value.fValorVenda),
-      fDesconto: normalizarValor(oProduto.value.fDesconto),
-      iFornecedor: oProduto.value.iFornecedor
-   };
+function tratarDadosProduto(oDados) {   
+    return {        
+        sNome:          oDados.sNome,
+        sCodigoBarras:  oDados.sCodigoBarras,
+        iQuantidade:    oDados.iQuantidade,
+        fValorCompra:   utils.normalizarValor(oDados.fValorCompra),
+        fValorVenda:    utils.normalizarValor(oDados.fValorVenda),
+        fDesconto:      utils.normalizarValor(oDados.fDesconto),
+        iFornecedor:    oDados.iFornecedor
+    };   
 }
 
-function normalizarValor(sValor) {
-   return sValor.replace(',', '.').replace(/[^\d.]/g, '');
+function recarregarGrid() {
+    aProdutos.value = null;
+    aProdutos.value = oProdutoStore.getProdutos();
 }
 
 </script>

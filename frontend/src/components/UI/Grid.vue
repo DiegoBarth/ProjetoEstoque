@@ -1,12 +1,12 @@
 <template>
-   <table class="divide-y divide-gray-200 shadow-md mx-auto rounded-sm" id="tabela" style="width: 86%;">
-      <thead class="bg-black rounded-t-sm">
+   <table class="shadow-md mx-auto rounded-sm" id="tabela" style="width: 86%;">
+      <thead class="bg-black rounded-t-sm sticky top-0">
          <tr>
             <th v-for="(sCabecalho, iIndice) of aCabecalhos" class="p-2 text-left text-white" :key="iIndice">{{
                sCabecalho }}</th>
          </tr>
       </thead>
-      <tbody>
+      <tbody v-bind="$attrs">
          <slot></slot>
       </tbody>
    </table>

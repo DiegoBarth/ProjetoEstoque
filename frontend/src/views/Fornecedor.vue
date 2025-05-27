@@ -48,7 +48,8 @@ import Grid from '../components/UI/Grid.vue';
 import Consulta from '../components/UI/Consulta.vue';
 import Campo from '../components/UI/Campo.vue';
 import { useFornecedorStore } from '../stores/fornecedorStore';
-import { format } from 'date-fns'
+import { format } from 'date-fns';
+import { formatarCPFCNPJ, formatarTelefone } from '../utils/main';
 
 const oFornecedorStore = useFornecedorStore();
 
@@ -94,30 +95,6 @@ function showModalCadastro(iAcao, oFornecedorSelecionado) {
             sDataFundacao: format(oFornecedorSelecionado.fordata_fundacao, 'dd/MM/yyyy')
         };            
     }  
-}
-
-function formatarCPFCNPJ(sValor) {
-  if(sValor.length > 11) {
-    return sValor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-  }
-
-  return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-}
-
-function formatarTelefone(sValor) {
-  if(sValor.length < 11) {
-    if(sValor.length == 10) {
-      return sValor.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
-    }
-
-    if(sValor.length == 8) {
-      return sValor.replace(/(\d{4})(\d{4})/, '(47) $1-$2')
-    }
-    
-    return sValor.replace(/(\d{5})(\d{4})/, '(47) $1-$2')
-  }
-
-  return sValor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
 }
 
 
