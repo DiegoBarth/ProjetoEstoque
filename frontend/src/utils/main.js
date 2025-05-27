@@ -97,7 +97,15 @@ export function formatarDataBR(sData) {
 
 export function validarCamposObrigatorios() {
    let bCamposPreenchidos = true;
-   const aLabels = document.querySelectorAll('.obrigatorio');
+
+   const oBotao         = document.activeElement;
+   const oCardPrincipal = oBotao?.closest('.card-principal');
+
+   if(!oCardPrincipal) {
+      return false;
+   }
+
+   const aLabels = oCardPrincipal.querySelectorAll('.obrigatorio');
 
    for(const oLabel of aLabels) {
       const oCampo = oLabel.nextElementSibling;
@@ -110,7 +118,7 @@ export function validarCamposObrigatorios() {
 
       if(['input', 'select', 'textarea'].includes(sTipoCampo) && !oCampo.value.trim()) {
          bCamposPreenchidos = false;
-         
+
          utils.alerta(`O campo "${oLabel.innerText}" é obrigatório.`, 'error');
       }
    }
