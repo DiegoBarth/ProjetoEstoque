@@ -29,10 +29,15 @@ error => {
 api.interceptors.response.use(
    response => {
       utils.removerLoading();
+
       return response;
    },
    error => {
       utils.removerLoading();
+
+      if(error.response?.data?.sMensagem) {
+         utils.alerta(error.response.data.sMensagem, 'error');
+      }
 
       if(error.response && error.response.status === 401) {
          if(router.currentRoute.value.name !== 'Login') {
