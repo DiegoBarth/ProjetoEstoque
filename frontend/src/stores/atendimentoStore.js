@@ -1,7 +1,7 @@
 import api from "@/api";
 import { defineStore } from "pinia";
 
-export const useVendaStore = defineStore('Venda', {
+export const useAtendimentoStore = defineStore('Atendimeto', {
    state: () => ({
 
    }),
