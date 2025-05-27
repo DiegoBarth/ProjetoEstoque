@@ -6,8 +6,8 @@
          <tr v-for="(oUsuario, iIndice) of aUsuarios" :key="iIndice">
             <td class="p-2">{{ oUsuario.usucodigo }}</td>
             <td class="p-2">{{ oUsuario.usunome }}</td>
-            <td class="p-2">{{ oUsuario.usunivel }}</td>
-            <td class="p-2">{{ oUsuario.usuativo }}</td>
+            <td class="p-2">{{ oUsuario.sNivel }}</td>
+            <td class="p-2">{{ oUsuario.sSituacao }}</td>
             <td class="p-2 flex gap-2">
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 3, oUsuario)"><i
                      class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>

@@ -54,7 +54,14 @@ class UsuarioController extends Controller {
     * @throws ValidationException
     */
    public function getUsuarios() {
-      $aUsuarios = Usuario::all();
+      $aUsuarios = Usuario::with('nivel')->get();
+
+      $aUsuarios->transform(function ($oUsuario) {
+         $oUsuario->sSituacao = $oUsuario->usuativo ? 'Ativo' : 'Inativo';
+         $oUsuario->sNivel    = $oUsuario->nivel->nunome;
+
+         return $oUsuario;
+      });
 
       return response()->json(['aUsuarios' => $aUsuarios], 200);
    }
