@@ -14,6 +14,12 @@ html {
    font-weight: normal;
 }
 
+.card-menu > a:hover {
+   background-color: var(--principal);
+   border-radius: 4px;
+   color: var(--fundoPrincipal)
+}
+
 a,
 .green {
    text-decoration: none;

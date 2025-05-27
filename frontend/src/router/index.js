@@ -4,6 +4,7 @@ import Produto from '../views/Produto.vue';
 import Login from '../views/Login.vue';
 import Cliente from'../views/Cliente.vue';
 import Fornecedor from'../views/Fornecedor.vue';
+import Atendimento from'../views/Atendimento.vue';
 import Venda from'../views/Venda.vue';
 import Relatorio from'../views/Relatorio.vue';
 import Usuario from '../views/Usuario.vue'
@@ -20,7 +21,7 @@ const router = createRouter({
       {
          path: '/inicio',
          name: 'Inicio',
-         component: Painel
+         component: Atendimento
       },
       {
          path: '/cliente',
@@ -44,7 +45,7 @@ const router = createRouter({
       },
       {
          path: '/venda',
-         name: 'Venda',
+         name: 'Vendas',
          component: Venda
       },
       {
