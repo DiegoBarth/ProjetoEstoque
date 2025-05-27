@@ -8,7 +8,7 @@
          <div>
             <p class="text-l text-gray-500 uppercase mb-2">Cadastros</p>
             <div class="card-menu flex flex-col">
-               <RouterLink v-for="item in aItensMenu.filter(i => i.sGrupo === 'cadastro')" :key="item.sRota"
+               <RouterLink v-for="item in itensCadastro" :key="item.sRota"
                   class="flex items-center gap-2 hover:text-teal-600" :to="{ name: item.sRota }">
                   <i :class="item.sIcone || 'fa fa-circle'"></i> {{ item.sTitulo }}
                </RouterLink>
@@ -17,7 +17,7 @@
          <div>
             <p class="text-l text-gray-500 uppercase mb-2">Gestão</p>
             <div class="card-menu flex flex-col">
-               <RouterLink v-for="item in aItensMenu.filter(i => i.sGrupo === 'gestao')" :key="item.sRota"
+               <RouterLink v-for="item in itensGestao" :key="item.sRota"
                   class="flex items-center gap-2 hover:text-teal-600" :to="{ name: item.sRota }">
                   <i :class="item.sIcone || 'fa fa-circle'"></i> {{ item.sTitulo }}
                </RouterLink>
@@ -39,22 +39,40 @@
 </template>
 <script setup>
 import Cookies from 'js-cookie';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 
 const sUsuario = ref('');
+const iNivel   = ref('');
 
 onMounted(() => {
-   sUsuario.value = Cookies.get('sUsuario')?.split(" ")[0];
+   let oUsuario   = JSON.parse(atob(Cookies.get('oUsuario')));
+   sUsuario.value = oUsuario.usunome?.split(" ")[0];
+   iNivel.value   = Number(oUsuario.usunivel);
 });
+
 const aItensMenu = [
-   { sTitulo: 'Usuários', sRota: 'Usuário', sGrupo: 'cadastro', sIcone: 'fa fa-user' },
-   { sTitulo: 'Fornecedores', sRota: 'Fornecedor', sGrupo: 'cadastro', sIcone: 'fa fa-truck' },
-   { sTitulo: 'Clientes', sRota: 'Cliente', sGrupo: 'cadastro', sIcone: 'fa fa-users' },
-   { sTitulo: 'Produtos', sRota: 'Produto', sGrupo: 'cadastro', sIcone: 'fa fa-box' },
-   { sTitulo: 'Vendas', sRota: 'Vendas', sGrupo: 'gestao', sIcone: 'fa fa-shopping-cart' },
-   { sTitulo: 'Metas', sRota: 'Meta', sGrupo: 'gestao', sIcone: 'fa fa-bullseye' },
-   { sTitulo: 'Relatórios', sRota: 'Relatório', sGrupo: 'gestao', sIcone: 'fa fa-file-alt' }
+   { sTitulo: 'Usuários',     sRota: 'Usuário',    sGrupo: 'cadastro', bControlaVisualizacao: true,  sIcone: 'fa fa-user' },
+   { sTitulo: 'Fornecedores', sRota: 'Fornecedor', sGrupo: 'cadastro', bControlaVisualizacao: true,  sIcone: 'fa fa-truck' },
+   { sTitulo: 'Clientes',     sRota: 'Cliente',    sGrupo: 'cadastro', bControlaVisualizacao: false, sIcone: 'fa fa-users' },
+   { sTitulo: 'Produtos',     sRota: 'Produto',    sGrupo: 'cadastro', bControlaVisualizacao: true,  sIcone: 'fa fa-box' },
+   { sTitulo: 'Vendas',       sRota: 'Vendas',     sGrupo: 'gestao',   bControlaVisualizacao: false, sIcone: 'fa fa-shopping-cart' },
+   { sTitulo: 'Metas',        sRota: 'Meta',       sGrupo: 'gestao',   bControlaVisualizacao: true,  sIcone: 'fa fa-bullseye' },
+   { sTitulo: 'Relatórios',   sRota: 'Relatório',  sGrupo: 'gestao',   bControlaVisualizacao: true,  sIcone: 'fa fa-file-alt' }
 ];
+
+const itensCadastro = computed(() =>
+   aItensMenu.filter(oItem =>
+      oItem.sGrupo === 'cadastro' &&
+      (!oItem.bControlaVisualizacao || (oItem.bControlaVisualizacao && iNivel.value == 1))
+   )
+);
+
+const itensGestao = computed(() =>
+   aItensMenu.filter(oItem =>
+      oItem.sGrupo === 'gestao' &&
+      (!oItem.bControlaVisualizacao || (oItem.bControlaVisualizacao && iNivel.value == 1))
+   )
+);
 
 function openModalLogout() {
    const oModal = document.getElementById('modalLogout');

@@ -81,9 +81,11 @@
    }
 
    function setDadosCookies(oUsuario) {
-      Cookies.set('iUsuario', oUsuario.usucodigo);
-      Cookies.set('sUsuario', oUsuario.usunome);
+      let sUsuarioBase64 = btoa(JSON.stringify(oUsuario));
+      
+      Cookies.set('oUsuario', sUsuarioBase64);
    }
+
 </script>
 <style scoped>
 .cardLogin {
