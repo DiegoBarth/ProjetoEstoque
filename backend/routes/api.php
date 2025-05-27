@@ -15,6 +15,7 @@ Route::post('/logout', [UsuarioController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function () {
    Route::get('/usuario',                  [UsuarioController::class, 'getUsuarios']);
    Route::get('/usuario/{iCodigo}',        [UsuarioController::class, 'getUsuarioByCodigo']);
+   Route::get('/usuario/nivel',            [UsuarioController::class, 'getNiveisUsuario']);
    Route::post('/usuario',                 [UsuarioController::class, 'salvar']);
    Route::put('/usuario/{iCodigo}',        [UsuarioController::class, 'atualizar']);
    Route::delete('/usuario/{iCodigo}',     [UsuarioController::class, 'excluir']);

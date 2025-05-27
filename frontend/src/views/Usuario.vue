@@ -1,91 +1,123 @@
 <template>
-  <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden">        
-    <Consulta sTitulo='Usuários' @showModalCadastro="showModalCadastro(1)">      
-      <template #gridConsulta>
-         <div class="div-principal-grid w-full px-30">
-         <Grid v-if="aUsuarios" class="mt-10 text-left" :aCabecalhos="['Usuário', 'Nome', 'Nome de Usuário', 'Nível de acesso', 'Situação', 'Ações']" sLayout="0.5fr 1fr 1fr 1fr 1fr 0.6fr">
-            <tr class="grid" v-for="(oUsuario, iIndice) of aUsuarios" :key="iIndice" style="grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 0.6fr;">
-               <td class="p-2">{{ oUsuario.usucodigo          }}</td>
-               <td class="p-2">{{ oUsuario.usunome            }}</td>
-               <td class="p-2">{{ oUsuario.usunome_usuario             }}</td>
-               <td class="p-2">{{ oUsuario.usunivel == 1 ? 'Admin' : 'Caixa' }}</td>
-               <td class="p-2">{{ oUsuario.usuativo == 1 ? 'Ativo' : 'Inativo' }}</td>            
-               <td class="p-2 flex gap-2">
-               <span class="cursor-pointer" @click="showModalCadastro(3, oUsuario)"><i class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
-               <span class="cursor-pointer" @click="showModalCadastro(2, oUsuario)"><i class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white"></i></span>
-               <span class="cursor-pointer" @click="() => iUsuarioExclusao = oUsuario.procodigo"><i class="fa fa-trash p-2 bg-red-500 rounded-sm text-white"></i></span>
-               </td>
-            </tr>
-         </Grid>
-      </div>
-      </template>      
-    </Consulta>           
-    <ModalCadastro :bModalAberto="bShowModal" class="flex items-center justify-content-center" sTitulo="🧑🏻 Cadastro de Usuário" :iAcao="iAcaoAtual" @fecharModal="() => {bShowModal = false;}" @incluir="adicionarUsuario" @alterar="atualizarUsuario">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">            
-        <Campo :disabled="iAcaoAtual == 3" sTipo="text" :bObrigatorio="true" sTitulo="Nome"    v-model="oUsuario.sNome"         />
-        <Campo :disabled="iAcaoAtual == 3" sTipo="text" :bObrigatorio="true" sTitulo="Nome de Usuário"                v-model="oUsuario.sNomeUsuario" />
-        <Campo :disabled="iAcaoAtual == 3" sTipo="select" :bObrigatorio="true" sTitulo="Nível de acesso" v-model="oUsuario.iNivel" :aOpcoes="[{iValor: 1, sDescricao: 'Admin'}, {iValor: 2, sDescricao: 'Caixa'}]"  />
-        <Campo :disabled="iAcaoAtual == 3" sTipo="select" :bObrigatorio="true" sTitulo="Situação"           v-model="oUsuario.iAtivo"  :aOpcoes="[{iValor: 1, sDescricao: 'Sim'}, {iValor: 0, sDescricao: 'Não'}]"/>
-      </div>            
-    </ModalCadastro>
-    <Modal v-if="iUsuarioExclusao">
-      <h1>Confirma a exclusão do registro?</h1>
-      <div class="flex items-center gap-4">
-        <button @click="excluirCliente(iUsuarioExclusao)" class="p-2 bg-yellow-400 rounded-sm">Sim</button>
-        <button @click="() => iUsuarioExclusao = null" class="p-2 bg-red-400 rounded-sm">Não</button>
-      </div>
-    </Modal>
-  </div>
+   <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden">        
+      <Consulta sTitulo='Usuários' @showModalCadastro="showModalCadastro(1)">      
+         <template #gridConsulta>
+            <GridUsuarios v-if="aUsuarios" :aUsuarios="aUsuarios" @showModalCadastro="showModalCadastro"
+               @showModalExclusao="showModalExclusao" />
+         </template>      
+      </Consulta>           
+      <CadastroUsuarios v-if="bShowModal" @fecharModal="() => bShowModal = false" @adicionarUsuario="adicionarUsuario"
+         @atualizarUsuario="atualizarUsuario" :oUsuario="oUsuario" :iAcaoAtual="iAcaoAtual" :aOpcoes="aNiveis" />
+      <ModalExclusao v-if="iUsuarioExclusao" @fecharModal="() => {iUsuarioExclusao = false; bShowModal = false}"
+         @excluirRegistro="excluirUsuario" />
+   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import api from '../api';
+
+//#region Componentes
 import ModalCadastro from '../components/UI/ModalCadastro.vue';
-import Modal from '../components/UI/Modal.vue';
-import Grid from '../components/UI/Grid.vue';
+import ModalExclusao from '../components/UI/ModalExclusao.vue';
 import Consulta from '../components/UI/Consulta.vue';
-import Campo from '../components/UI/Campo.vue';
+import GridUsuarios from '../components/GridUsuarios.vue';
+import CadastroUsuarios from '../components/CadastroUsuarios.vue';
+//#endregion
+
+//#region Dependências
+import { onMounted, ref, toRaw } from 'vue';
+import api from '../api';
 import { useUsuarioStore } from '../stores/usuarioStore';
-import { format } from 'date-fns';
+import * as utils from '../utils/main';
+//#endregion
 
 const oUsuario = ref({
-  sNome: '',
-  sNomeUsuario: '',
-  iNivel: '',
-  iAtivo: '',  
-})
-
-const oUsuarioStore = useUsuarioStore();
-const iUsuarioExclusao = ref(null);
-const iAcaoAtual = ref(0);
-const aUsuarios = ref();
-const bShowModal = ref(false);
-
-onMounted(async () => {  
-  aUsuarios.value = await oUsuarioStore .getUsuarios();   
+   iUsuario: '',
+   sNome: '',
+   sNomeUsuario: '',
+   iNivel: '',
+   iAtivo: '', 
+   sSenha: ''
 });
 
-function adicionarUsuario() {
+const oUsuarioStore    = useUsuarioStore();
+const iUsuarioExclusao = ref(null);
+const iAcaoAtual       = ref(0);
+const aUsuarios        = ref();
+const aNiveis          = ref([]);
+const bShowModal       = ref(false);
 
+onMounted(async () => {  
+   aUsuarios.value = await oUsuarioStore.getUsuarios();   
+});
+
+async function adicionarUsuario(oDados) {
+   if(utils.validarCamposObrigatorios()) {
+      await oUsuarioStore.cadastrarUsuario(oDados);
+      utils.alerta('Usuário cadastrado com sucesso');
+      recarregarGrid();
+      bShowModal.value = false;
+   }
 }
 
-function atualizarUsuario() {
-    
+async function atualizarUsuario(oDados, iUsuario) {
+   if(utils.validarCamposObrigatorios()) {
+      await oUsuarioStore.atualizarUsuario(iUsuario, oDados);
+      utils.alerta('Usuário alterado com sucesso');
+      recarregarGrid();
+      bShowModal.value = false;
+   }
+}
+
+async function excluirUsuario(iUsuario) {
+   await oUsuarioStore.excluirUsuario(iUsuarioExclusao.value);
+   utils.alerta('Usuário excluído com sucesso!');
+   recarregarGrid();
+   iUsuarioExclusao.value = null;
 }
 
 function showModalCadastro(iAcao, oUsuarioSelecionado) {
-    bShowModal.value = true;
-    iAcaoAtual.value = iAcao;
+   bShowModal.value = true;
+   iAcaoAtual.value = iAcao;
 
-    if(iAcao != 1) {        
-        oUsuario.value = {            
-            sNome:        oUsuarioSelecionado.usunome,
-            sNomeUsuario: oUsuarioSelecionado.usunome_usuario,
-            iNivel:       oUsuarioSelecionado.usunivel,
-            iAtivo:       Number(oUsuarioSelecionado.usuativo)
-        };            
-    }  
+   if(iAcao != 1) {        
+      oUsuario.value = {            
+         sNome:        oUsuarioSelecionado.usunome,
+         sNomeUsuario: oUsuarioSelecionado.usunome_usuario,
+         iNivel:       oUsuarioSelecionado.usunivel,
+         iAtivo:       Number(oUsuarioSelecionado.usuativo)
+      };            
+   }  
+
+   if(iAcao != 3) {
+      oUsuarioStore.getNiveisUsuario().then((oRetorno) => {
+         aNiveis.value = tratarFiltroNiveis(oRetorno);
+      });
+   }
+}
+
+function showModalExclusao(iCodigo) {
+ const bUsuarioAdministrador = aUsuarios.value.find(oUsuario => oUsuario.usucodigo === iCodigo && oUsuario.usunivel === 1);
+
+   if(bUsuarioAdministrador) {
+      return utils.alerta('Não é possível excluir o usuário administrador', 'error');
+   }
+   
+   iUsuarioExclusao.value = iCodigo;
+}
+
+function tratarFiltroNiveis(aNiveis) {
+   const aFiltro = [];
+
+   if(aNiveis.length) {
+      for(const oNivel of aNiveis) {
+         aFiltro.push({
+            iValor:     oNivel.nucodigo,
+            sDescricao: oNivel.nunome
+         });
+      }
+   }
+
+   return aFiltro;
 }
 
 </script>

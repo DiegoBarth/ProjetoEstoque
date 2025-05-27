@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
+use App\Models\NivelUsuario;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +48,6 @@ class UsuarioController extends Controller {
       return response()->json(['sMensagem' => 'Logout bem-sucedido']);
    }
 
-
    /**
     * Retorna todos os usuários
     * @return JsonResponse
@@ -68,6 +68,17 @@ class UsuarioController extends Controller {
       $oUsuario = $this->getUsuarioOuRetornaMensagemUsuarioNaoEncontrado($iCodigo);
 
       return response()->json(['oUsuario' => $oUsuario], 200);
+   }
+
+   /**
+    * Retorna todos os níveis de usuário
+    * @return JsonResponse
+    * @throws ValidationException
+    */
+   public function getNiveisUsuario() {
+      $aNiveis = NivelUsuario::all();
+
+      return response()->json(['aNiveis' => $aNiveis], 200);
    }
 
    /**
