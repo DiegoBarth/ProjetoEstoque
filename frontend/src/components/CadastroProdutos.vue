@@ -1,5 +1,5 @@
 <template>
-   <ModalCadastro :bModalAberto="true" class="flex items-center justify-content-center" sTitulo="📦 Cadastro de produto" :iAcao="iAcaoAtual" @fecharModal="$emit('fecharModal')" @incluir="$emit('adicionarProduto', oCliente)" @alterar="$emit('atualizarProduto', oProduto, oProduto.iProduto)">
+   <ModalCadastro :bModalAberto="true" class="flex items-center justify-content-center" sTitulo="📦 Cadastro de produto" :iAcao="iAcaoAtual" @fecharModal="$emit('fecharModal')" @incluir="$emit('adicionarProduto', oProduto)" @alterar="$emit('atualizarProduto', oProduto, oProduto.iProduto)">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">            
          <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true"  sTitulo="Produto"          v-model="oProduto.sNome"         maxlength="100" placeholder="Informe uma descrição"/>
          <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true"  sTitulo="Código de barras" v-model="oProduto.sCodigoBarras" maxlength="20"/>

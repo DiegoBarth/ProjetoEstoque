@@ -51,12 +51,12 @@ const aFornecedores = ref([]);
 const bShowModal = ref(false);
 
 onMounted(async () => {
-   aProdutos.value = await oProdutoStore.getProdutos();
+    aProdutos.value = await oProdutoStore.getProdutos();
 });
 
 async function adicionarProduto(oDados) {
    if(utils.validarCamposObrigatorios()) {
-      await oProdutoStore.cadatrarProduto(tratarDadosProduto(false));
+      await oProdutoStore.cadastrarProduto(tratarDadosProduto(oDados));
       utils.alerta('Produto cadastrado com sucesso');
       recarregarGrid();
       bShowModal.value = false;
@@ -85,15 +85,15 @@ async function showModalCadastro(iAcao, oProdutoSelecionado) {
    
    if(iAcao != 1) {
       oProduto.value = {
-            iProduto: oProdutoSelecionado.procodigo,
-            sNome: oProdutoSelecionado.pronome,
+            iProduto:      oProdutoSelecionado.procodigo,
+            sNome:         oProdutoSelecionado.pronome,
             sCodigoBarras: oProdutoSelecionado.procodigo_barras,
-            iQuantidade: oProdutoSelecionado.proestoque,
-            fValorCompra: oProdutoSelecionado.procusto,
-            fValorVenda: oProdutoSelecionado.provalor,
-            fDesconto: oProdutoSelecionado.provalor_desconto,
-            iFornecedor: oProdutoSelecionado.forcodigo,
-            sFornecedor: oProdutoSelecionado.forrazao_social
+            iQuantidade:   oProdutoSelecionado.proestoque,
+            fValorCompra:  utils.converterParaMoeda(oProdutoSelecionado.procusto),
+            fValorVenda:   utils.converterParaMoeda(oProdutoSelecionado.provalor),
+            fDesconto:     utils.converterParaMoeda(oProdutoSelecionado.provalor_desconto),
+            iFornecedor:   oProdutoSelecionado.forcodigo,
+            sFornecedor:   oProdutoSelecionado.forrazao_social
       };
    }
 
@@ -135,9 +135,9 @@ function tratarDadosProduto(oDados) {
     };   
 }
 
-function recarregarGrid() {
+async function recarregarGrid() {
     aProdutos.value = null;
-    aProdutos.value = oProdutoStore.getProdutos();
+    aProdutos.value = await oProdutoStore.getProdutos();
 }
 
 </script>

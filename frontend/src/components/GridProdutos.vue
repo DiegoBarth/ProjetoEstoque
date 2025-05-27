@@ -9,7 +9,7 @@
             <td class="p-2">{{ converterParaMoeda(oProduto.procusto) }}</td>
             <td class="p-2">{{ converterParaMoeda(oProduto.provalor) }}</td>
             <td class="p-2">{{ oProduto.proestoque }}</td>
-            <td class="p-2">{{ converterParaMoeda(oProduto.provalor_desconto) }}</td>
+            <td class="p-2">{{ converterParaMoeda(oProduto.provalor_desconto) ?? 'R$ 0,00' }}</td>
             <td class="p-2">{{ oProduto.forrazao_social }}</td>
             <td class="p-2 flex gap-2">
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 3, oProduto)"><i

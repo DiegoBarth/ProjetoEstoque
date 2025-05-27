@@ -147,11 +147,11 @@ export function formatarCPFCNPJ(sValor) {
 }
 
 export function converterParaMoeda(sValor) {    
-    sValor = sValor.replace(/\D/g, '');
-
-    if(sValor.length == 0) {
-        return '';
+    if(!sValor || sValor.length == 0) {
+        return
     }
+
+    sValor = sValor.replace(/\D/g, '');
 
     sValor = sValor.replace(/(\d{1,3})(\d{2})/, '$1,$2');
     if(sValor.length > 6) {
