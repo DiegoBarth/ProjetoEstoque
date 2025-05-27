@@ -20,6 +20,12 @@ html {
    color: var(--fundoPrincipal)
 }
 
+aside > a:first-child:hover {
+   background-color: var(--principal);
+   font-weight: bold;
+   color: var(--fundoPrincipal);
+}
+
 a,
 .green {
    text-decoration: none;

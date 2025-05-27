@@ -1,9 +1,9 @@
 <template>
    <aside class="min-w-[160px] w-full sm:w-64 bg-white shadow-lg flex flex-col h-full">
-      <div class="p-4 text-l font-bold border-b border-gray-200">
-         Sistema XYZ
-      </div>
-
+      <RouterLink to="/inicio"
+         class="p-4 font-bold border-b border-gray-200 text-center block hover:text-sky-600" style="justify-content: space-around; font-size: 20px;">
+         Atendimento
+      </RouterLink>
       <nav class="flex-1 overflow-y-auto p-4 flex flex-col gap-6 text-sm text-gray-700">
          <div>
             <p class="text-l text-gray-500 uppercase mb-2">Cadastros</p>
@@ -53,7 +53,7 @@ const aItensMenu = [
    { sTitulo: 'Produtos', sRota: 'Produto', sGrupo: 'cadastro', sIcone: 'fa fa-box' },
    { sTitulo: 'Vendas', sRota: 'Vendas', sGrupo: 'gestao', sIcone: 'fa fa-shopping-cart' },
    { sTitulo: 'Metas', sRota: 'Meta', sGrupo: 'gestao', sIcone: 'fa fa-bullseye' },
-   { sTitulo: 'Relatórios', sRota: 'Relatório', sGrupo: 'gestao', sIcone: 'fa fa-file-alt' },
+   { sTitulo: 'Relatórios', sRota: 'Relatório', sGrupo: 'gestao', sIcone: 'fa fa-file-alt' }
 ];
 
 function openModalLogout() {
@@ -72,9 +72,7 @@ aside {
    box-shadow: 4px 0 10px 1px var(--bordas);
    transition: 1s width;
 
-
-   a,
-   span {
+   a {
       display: flex;
       align-items: center;
       border-bottom: 1px solid var(--bordas);
@@ -83,16 +81,6 @@ aside {
       text-align: left;
       padding: 15px;
       font-size: 1rem;
-   }
-
-   span.perfil {
-      border: none;
-      border-top: 1px solid var(--bordas);
-      position: absolute;
-      bottom: 0;
-      height: 20%;
-      width: 100%;
-      justify-content: space-between;
    }
 
    .icone-usuario {
