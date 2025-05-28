@@ -6,7 +6,7 @@
          <tr v-for="(oCliente, iIndice) of aClientes" :key="iIndice">
             <td class="p-2">{{ oCliente.clicodigo }}</td>
             <td class="p-2">{{ oCliente.clinome }}</td>
-            <td class="p-2">{{ formatarCPFCNPJ(oCliente.clicpf) }}</td>
+            <td class="p-2">{{ formatarCPF(oCliente.clicpf) }}</td>
             <td class="p-2">{{ formatarData(oCliente.clidata_nascimento) }}</td>
             <td class="p-2">{{ formatarTelefone(oCliente.clitelefone)        }}</td>
             <td class="p-2" :style="{'font-style': oCliente.cliendereco ?? 'italic'}">{{ oCliente.cliendereco ?? 'Sem informação' }}</td>
@@ -24,7 +24,7 @@
 </template>
 <script setup>
 import Grid from './UI/Grid.vue';
-import { formatarCPFCNPJ, formatarTelefone, formatarData } from '../utils/main';
+import { formatarCPF, formatarTelefone, formatarData } from '../utils/main';
 
 defineEmits(['showModalCadastro', 'showModalExclusao']);
 defineProps(['aClientes']);
