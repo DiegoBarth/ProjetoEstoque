@@ -44,7 +44,7 @@
          </div>
          <div class="overflow-x-auto">
             <table class="table-auto w-full text-sm text-left">
-               <thead class="text-white" style="background-color: black;">
+               <thead class="text-white" style="background-color: var(--textoPrincipal);">
                   <tr>
                      <th class="px-4 py-2">Código</th>
                      <th class="px-4 py-2">Produto</th>

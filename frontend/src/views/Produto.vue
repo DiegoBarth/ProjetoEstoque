@@ -89,15 +89,15 @@ async function showModalCadastro(iAcao, oProdutoSelecionado) {
 
    if(iAcao != 1) {
       oProduto.value = {
-            iProduto:      oProdutoSelecionado.procodigo,
-            sNome:         oProdutoSelecionado.pronome,
-            sCodigoBarras: oProdutoSelecionado.procodigo_barras,
-            iQuantidade:   oProdutoSelecionado.proestoque,
-            fValorCompra:  utils.converterParaMoeda(oProdutoSelecionado.procusto),
-            fValorVenda:   utils.converterParaMoeda(oProdutoSelecionado.provalor),
-            fDesconto:     utils.converterParaMoeda(oProdutoSelecionado.provalor_desconto),
-            iFornecedor:   oProdutoSelecionado.forcodigo,
-            sFornecedor:   oProdutoSelecionado.forrazao_social
+            iProduto:      oProdutoSelecionado.iProduto,
+            sNome:         oProdutoSelecionado.sNome,
+            sCodigoBarras: oProdutoSelecionado.sCodigoBarras,
+            iQuantidade:   oProdutoSelecionado.iQuantidade,
+            fValorCompra:  oProdutoSelecionado.fValorCompra,
+            fValorVenda:   oProdutoSelecionado.fValorVenda,
+            fDesconto:     oProdutoSelecionado.fDesconto,
+            iFornecedor:   oProdutoSelecionado.iFornecedor,
+            sFornecedor:   oProdutoSelecionado.sFornecedor
       };
    }
 

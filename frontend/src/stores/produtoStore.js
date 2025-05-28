@@ -1,5 +1,6 @@
 import api from "@/api";
 import { defineStore } from "pinia";
+import * as utils from '../utils/main';
 
 export const useProdutoStore = defineStore('Produto', {
    state: () => ({
@@ -12,29 +13,18 @@ export const useProdutoStore = defineStore('Produto', {
             sNome        : oProduto.pronome,
             sCodigoBarras: oProduto.procodigo_barras,
             iFornecedor  : oProduto.forcodigo,
-            fValorCompra : oProduto.procusto,
-            fValorVenda  : oProduto.provalor,
-            fDesconto    : oProduto.provalor_desconto,
-            iQuantidade  : oProduto.proestoque
+            fValorCompra : utils.converterParaMoeda(oProduto.procusto),
+            fValorVenda  : utils.converterParaMoeda(oProduto.provalor),
+            fDesconto    : utils.converterParaMoeda(oProduto.provalor_desconto),
+            iQuantidade  : oProduto.proestoque,
+            sFornecedor  : oProduto.forrazao_social
          };
-      },
-      async cadastrarProduto(payload) {
-         try {
-            const { data } = await api.post('/api/produto', {
-               ...payload
-            });
-
-            return data;
-         }
-         catch (error) {
-            throw (error);
-         }
       },
       async getProdutos() {
          try {
             const { data } = await api.get('/api/produto');
 
-            return data.aProdutos;
+            return data.aProdutos.map(this._formatarProduto);
          }
          catch (error) {
             throw (error);
@@ -55,6 +45,18 @@ export const useProdutoStore = defineStore('Produto', {
             const { data } = await api.get(`/api/produto/busca/nome?nome_produto=${encodeURIComponent(sProduto)}`);
 
             return data.aProdutos.map(this._formatarProduto);
+         }
+         catch (error) {
+            throw (error);
+         }
+      },
+      async cadastrarProduto(payload) {
+         try {
+            const { data } = await api.post('/api/produto', {
+               ...payload
+            });
+
+            return data;
          }
          catch (error) {
             throw (error);
