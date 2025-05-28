@@ -24,8 +24,10 @@ export const useUsuarioStore = defineStore('Usuario', {
             password       : sSsenha
          });
 
-         data = data.aProdutos.map(this._formatarProduto);
-         
+         if(data.oUsuario) {
+            data.oUsuario = this._formatarUsuario(data.oUsuario);
+         }
+
          return {data, status};
       },
       async getUsuarios() {

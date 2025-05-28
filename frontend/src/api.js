@@ -35,7 +35,7 @@ api.interceptors.response.use(
    error => {
       utils.removerLoading();
 
-      if(error.response?.data?.sMensagem) {
+      if(error.response?.data?.sMensagem && router.currentRoute.value.name !== 'Login') {
          utils.alerta(error.response.data.sMensagem, 'error');
       }
 

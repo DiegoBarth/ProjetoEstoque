@@ -84,9 +84,8 @@
 import { ref, watch, onMounted } from 'vue'
 import { useClienteStore } from '../stores/clienteStore';
 import { useProdutoStore } from '../stores/produtoStore';
-import { useAtendimentoStore } from '../stores/AtendimentoStore';
+import { useAtendimentoStore } from '../stores/atendimentoStore';
 import Botao from '../components/UI/Botao.vue';
-import api from '../api';
 import Campo from '../components/UI/Campo.vue';
 import * as utils from "../utils/main.js";
 
@@ -94,10 +93,10 @@ const oProdutoStore       = useProdutoStore();
 const oClienteStore       = useClienteStore();
 const oAtendimentoStore   = useAtendimentoStore();
 const bFocado             = ref(false);
-const bMostrarSugestoes   = ref(false)
-const aSugestoesFiltradas = ref([])
+const bMostrarSugestoes   = ref(false);
+const aSugestoesFiltradas = ref([]);
 const aFormasPagamento    = ref([]);
-let debounceTimeout       = null
+let debounceTimeout       = null;
 let oProdutoSelecionado   = null;
 let aProdutosFiltrados    = [];
 
