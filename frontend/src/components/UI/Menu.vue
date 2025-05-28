@@ -46,8 +46,8 @@ const iNivel   = ref('');
 
 onMounted(() => {
    let oUsuario   = JSON.parse(atob(Cookies.get('oUsuario')));
-   sUsuario.value = oUsuario.usunome?.split(" ")[0];
-   iNivel.value   = Number(oUsuario.usunivel);
+   sUsuario.value = oUsuario.sNome?.split(" ")[0];
+   iNivel.value   = Number(oUsuario.iNivel);
 });
 
 const aItensMenu = [
