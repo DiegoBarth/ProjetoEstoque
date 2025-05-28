@@ -3,8 +3,7 @@ import { format } from 'date-fns';
 export function limparCampos() {
     const aCampos = $('#modalCadastro').find('input, textarea, select');
 
-    for(const oCampo of aCampos) {
-        console.log(oCampo)
+    for(const oCampo of aCampos) {        
         oCampo.value = '';
     }
 }
@@ -65,13 +64,43 @@ export function formatarCPF(xValor) {
    return sCpf;
 }
 
-export function formatarTelefone(sValor) {
-    sValor = sValor.replace(/\D/g, '');
+export function formatarCPFCNPJ(xValor) {
+    let sCnpj = xValor;
 
-    sValor = sValor.replace(/(\d{2})(\d)/,  '($1) $2');    
-    sValor = sValor.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+    if(typeof xValor == 'object') {
+        sCnpj = xValor.value;
+    }
 
-    return sValor;    
+    sCnpj = sCnpj.replace(/\D/g, '');
+    sCnpj = sCnpj.replace(/(\d{2})(\d)/, '$1.$2');
+    sCnpj = sCnpj.replace(/(\d{3})(\d)/, '$1.$2');
+    sCnpj = sCnpj.replace(/(\d{3})(\d)/, '$1/$2');
+    sCnpj = sCnpj.replace(/(\d{4})(\d{1,2})/, '$1-$2');
+
+    if(typeof xValor == 'object') {
+        return xValor.value = sCnpj;
+    }
+
+    return sCnpj;
+}
+
+export function formatarTelefone(xValor) {
+    let sTelefone = xValor;
+
+    if(typeof xValor == 'object') {
+        sTelefone = xValor.value;
+    }
+
+    sTelefone = sTelefone.replace(/\D/g, '');
+
+    sTelefone = sTelefone.replace(/(\d{2})(\d)/,  '($1) $2');    
+    sTelefone = sTelefone.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+
+    if(typeof xValor == 'object') {
+        xValor.value = sTelefone;
+    }
+
+    return sTelefone;    
 }
 
 export function formatarDataBR(sData) {
@@ -132,20 +161,6 @@ export function formatarData(sValor) {
     return format(sValor, 'dd/MM/yyyy');
 }
 
-export function formatarCPFCNPJ(sValor) {
-    sValor = sValor.replace(/\D/g, '');
-
-    if(sValor.length < 11 || sValor.length > 14) {
-        utils.alerta('O valor informado é inválido', 'error');
-        return '';
-    }
-    if(sValor.length > 11) {
-        return sValor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-    }
-
-    return sValor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-}
-
 export function converterParaMoeda(sValor) {    
     if(!sValor || sValor.length == 0) {
         return
@@ -163,5 +178,9 @@ export function converterParaMoeda(sValor) {
 }
 
 export function normalizarValor(sValor) {
+    if(!sValor) {
+        return null;
+    }
+
     return parseFloat(sValor.replace(',', '.').replace(/\D/g, '')) / 100;
 }
