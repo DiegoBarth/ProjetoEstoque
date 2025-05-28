@@ -17,9 +17,9 @@
                </div>
             </div>
             <Campo v-model="oProduto.iQuantidade" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade" sStyle="width:40%"/>
-            <Campo v-model="oProduto.fValorVenda" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário" maxlength="12" sStyle="width:40%"/>
-            <Campo v-model="oProduto.fDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" maxlength="12" sStyle="width:40%"/>
-            <Botao sTexto="Adicionar" sTipo="text" sId="botao_adicionar_produto" sLargura="w-fit" @click="adicionarProduto"/>
+            <Campo v-model="oProduto.fValorVenda" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário" maxlength="12" sStyle="width:40%" @input="() => oProduto.fDesconto = utils.converterParaMoeda(oProduto.fDesconto)"/>
+            <Campo v-model="oProduto.fDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" maxlength="12" sStyle="width:40%"  @input="() => oProduto.fDesconto = utils.converterParaMoeda(oProduto.fDesconto)"/>
+            <Botao sTexto="Adicionar" sTipo="text" sId="botao_adicionar_produto" sLargura="w-fit" @click="adicionarProdutoGrid"/>
          </div>
       </div>
       <div class="card-principal shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[290px]">
@@ -45,17 +45,34 @@
          <div class="overflow-x-auto">
             <table class="table-auto w-full text-sm text-left">
                <thead class="text-white" style="background-color: var(--textoPrincipal);">
-                  <tr>
-                     <th class="px-4 py-2">Código</th>
-                     <th class="px-4 py-2">Produto</th>
-                     <th class="px-4 py-2">Quantidade</th>
-                     <th class="px-4 py-2">Valor</th>
-                     <th class="px-4 py-2">Desconto</th>
-                     <th class="px-4 py-2">Valor total</th>
-                     <th class="px-4 py-2">Ações</th>
-                  </tr>
+               <tr>
+                  <th class="px-4 py-2">Código</th>
+                  <th class="px-4 py-2">Produto</th>
+                  <th class="px-4 py-2">Quantidade</th>
+                  <th class="px-4 py-2">Valor</th>
+                  <th class="px-4 py-2">Desconto</th>
+                  <th class="px-4 py-2">Valor total</th>
+                  <th class="px-4 py-2">Ações</th>
+               </tr>
                </thead>
                <tbody>
+                  <tr v-for="(produto, index) in aProdutos" :key="index">
+                     <td class="p-2">{{ produto.iProduto }}</td>
+                     <td class="p-2">{{ produto.sNome }}</td>
+                     <td class="p-2">{{ produto.iQuantidade }}</td>
+                     <td class="p-2">{{ produto.sValor }}</td>
+                     <td class="p-2">{{ produto.sDesconto }}</td>
+                     <td class="p-2">{{ produto.sValorTotal }}</td>
+                     <td class="p-2 flex gap-2">
+                        <span v-if="!bGridBloqueado" class="cursor-pointer"><i
+                              class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white" @click="alterarProdutoGrid(produto)"></i></span>
+                        <span v-if="!bGridBloqueado" class="cursor-pointer"><i
+                           class="fa fa-trash p-2 bg-red-500 rounded-sm text-white" @click="excluirProdutoGrid(produto)"></i></span>
+                     </td>
+                  </tr>
+                  <tr v-if="aProdutos.length === 0">
+                     <td colspan="7" class="p-4 text-center text-gray-500">Nenhum produto adicionado.</td>
+                  </tr>
                </tbody>
             </table>
          </div>
@@ -96,6 +113,8 @@ const bFocado             = ref(false);
 const bMostrarSugestoes   = ref(false);
 const aSugestoesFiltradas = ref([]);
 const aFormasPagamento    = ref([]);
+const aProdutos           = ref([]);
+let bGridBloqueado        = ref(false)
 let debounceTimeout       = null;
 let oProdutoSelecionado   = null;
 let aProdutosFiltrados    = [];
@@ -131,6 +150,7 @@ async function onChangeCodigoProduto() {
 
    try {
       oProduto.value = await oProdutoStore.getProdutoByCodigo(oProduto.value.iProduto);
+      oProduto.value.iQuantidade = 1;
    }
    catch(e) {
       oProduto.value.iProduto = null;
@@ -212,7 +232,6 @@ function selecionarSugestao(sSugestao) {
       oProduto.value = {
          iProduto      : oResultadoProduto.iProduto,
          sNome         : oResultadoProduto.sNome,
-         iQuantidade   : oResultadoProduto.iQuantidade,
          fValorVenda   : oResultadoProduto.fValorVenda,
          fDesconto     : oResultadoProduto.fDesconto
       };
@@ -230,10 +249,6 @@ function ocultarSugestoes() {
    setTimeout(() => {
       bMostrarSugestoes.value = false;
    }, 100)
-}
-
-function adicionarProduto() {
-   utils.validarCamposObrigatorios();
 }
 
 function finalizarVenda() {
@@ -258,4 +273,44 @@ function resetarProduto() {
       fDesconto:      ''
    };
 }
+
+function adicionarProdutoGrid() {
+   if(utils.validarCamposObrigatorios()) {
+      addTrGrid();
+      resetarProduto();
+   }
+}
+
+function addTrGrid() {
+   let sValor      = (utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade);
+   let sDesconto   = ((oProduto.value.fDesconto) ? utils.normalizarValor(oProduto.value.fDesconto) : '0') * oProduto.value.iQuantidade;
+   let sValorTotal = (sValor - sDesconto);
+
+   sValor      = utils.converterParaMoeda(sValor      + '.00');
+   sDesconto   = utils.converterParaMoeda(sDesconto   + '.00');
+   sValorTotal = utils.converterParaMoeda(sValorTotal + '.00');
+
+   const produto = {
+      ...oProduto.value,
+      sValor,
+      sDesconto,
+      sValorTotal
+   }
+
+   aProdutos.value.push(produto);
+}
+
+function alterarProdutoGrid(produto) {
+   oProduto.value = {...produto};
+   bGridBloqueado = true;
+}
+
+function excluirProdutoGrid(produto) {
+  const iIndice = aProdutos.value.findIndex(oProduto => oProduto.iProduto === produto.iProduto)
+
+   if(iIndice !== -1) {
+      aProdutos.value.splice(iIndice, 1)
+   }
+}
+
 </script>
