@@ -42,7 +42,7 @@ export const useUsuarioStore = defineStore('Usuario', {
       },
       async getNiveisUsuario() {
          try {
-            const { data } = await api.get('/api/usuario/nivel');
+            const { data } = await api.get('/api/usuario/busca/nivel');
 
             return data.aNiveis;
          }
