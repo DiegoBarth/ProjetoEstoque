@@ -10,7 +10,17 @@
 <script setup>
 import Botao from '../UI/Botao.vue';
 
-defineProps(['sTitulo', 'bMostraBotao']);
+const props = defineProps({
+   sTitulo: {
+      type: String,
+      default: ''
+   },
+   bMostraBotao: {
+      type: Boolean,
+      default: true
+   }
+});
+
 defineEmits(['showModalCadastro']);
 </script>
 <style lang="scss" scoped></style>
