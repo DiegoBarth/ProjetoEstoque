@@ -66,6 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
    Route::get('/forma_pagamento',  [VendaController::class, 'getFormasPagamento']);
+   Route::get('/venda',            [VendaController::class, 'getVendas']);
 });
 
 #endregion

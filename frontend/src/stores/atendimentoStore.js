@@ -1,7 +1,7 @@
 import api from "@/api";
 import { defineStore } from "pinia";
 
-export const useAtendimentoStore = defineStore('Atendimeto', {
+export const useAtendimentoStore = defineStore('Atendimento', {
    state: () => ({
 
    }),
@@ -20,6 +20,17 @@ export const useAtendimentoStore = defineStore('Atendimeto', {
          catch (error) {
             throw (error);
          }
+      },
+      async getVendas() {
+         try {
+            const { data } = await api.get('/api/venda');
+            
+            return data.aVendas;
+         }
+         catch (error) {
+            throw (error);
+         }
       }
+
    }
 }); 
