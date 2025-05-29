@@ -16,10 +16,14 @@
                   </ul>
                </div>
             </div>
-            <Campo v-model="oProduto.iQuantidade" sTipo="text" :bObrigatorio="true" sTitulo="Quantidade" sStyle="width:40%"/>
-            <Campo v-model="oProduto.fValorVenda" sTipo="text" :bObrigatorio="true" sTitulo="Valor unitário" maxlength="12" sStyle="width:40%" @input="() => oProduto.fDesconto = utils.converterParaMoeda(oProduto.fDesconto)"/>
-            <Campo v-model="oProduto.fDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Valor desconto" maxlength="12" sStyle="width:40%"  @input="() => oProduto.fDesconto = utils.converterParaMoeda(oProduto.fDesconto)"/>
-            <Botao sTexto="Adicionar" sTipo="text" sId="botao_adicionar_produto" sLargura="w-fit" @click="adicionarProdutoGrid"/>
+            <Campo v-model="oProduto.iQuantidade" sTipo="number" :bObrigatorio="true"  sTitulo="Quantidade"     sStyle="width:40%" :max="iEstoque" min="1" @change="validarQuantidadeInformada"/>
+            <Campo v-model="oProduto.fValorVenda" sTipo="text"   :bObrigatorio="true"  sTitulo="Valor unitário" maxlength="12" sStyle="width:40%"  @input="() => oProduto.fValorVenda = utils.converterParaMoeda(oProduto.fValorVenda)"/>
+            <Campo v-model="oProduto.fDesconto"   sTipo="text"   :bObrigatorio="false" sTitulo="Valor desconto" maxlength="12" sStyle="width:40%"  @input="() => oProduto.fDesconto   = utils.converterParaMoeda(oProduto.fDesconto)"/>
+            <Botao sTexto="Adicionar" sTipo="text" sId="botao_adicionar_produto" :bVisivel=bBotaoVisivel  sLargura="w-fit" @click="adicionarProdutoGrid"/>
+            <div class="flex space-x-2">
+               <Botao sTexto="Alterar"  sCor="botaoAzul"     sTipo="text" sId="botao_alterar_produto"   :bVisivel=!bBotaoVisivel sLargura="w-fit" @click="confirmarAlteracaoProdutoGrid"/>
+               <Botao sTexto="Cancelar" sCor="botaoVermelho" sTipo="text" sId="botao_cancelar_produto"  :bVisivel=!bBotaoVisivel sLargura="w-fit" @click="cancelarAlteracaoProdutoGrid"/>
+            </div>
          </div>
       </div>
       <div class="card-principal shadow-lg rounded-xl overflow-hidden max-h-[35vh] min-h-[290px]">
@@ -83,13 +87,16 @@
          </div>
          <div class="p-4 w-full flex flex-col" style="overflow: auto; height: calc(100% - 47px);">
             <div class="mb-4">
-               <Campo v-model="oVenda.iFormaPagamento" sTipo="select" :bObrigatorio="true" sTitulo="Forma de Pagamento" :aOpcoes="aFormasPagamento"/>
+               <Campo v-model="oVenda.iFormaPagamento" sTipo="select" :bObrigatorio="true" sTitulo="Forma de Pagamento" :aOpcoes="aFormasPagamento" />
+            </div>
+            <div class="mb-4" v-if="bIsPagamentoCredito">
+               <Campo v-model="oVenda.iNumeroParcelas" sTipo="select" :bObrigatorio="true" sTitulo="Número de Parcelas" :aOpcoes="aParcelas"/>
             </div>
             <div class="mb-4">
-               <Campo v-model="oVenda.fDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Desconto"/>
+               <Campo v-model="oVenda.fDesconto" sTipo="text" :bObrigatorio="false" sTitulo="Desconto" @input="() => oVenda.fDesconto = utils.converterParaMoeda(oVenda.fDesconto)" @change="onChangeCampoDescontoVenda"/>
             </div>
             <div class="mb-4">
-               <Campo v-model="oVenda.fValorTotal" sTipo="text" :bObrigatorio="false" :bDesabilitado="true" sTitulo="Valor total"/>
+               <Campo v-model="oVenda.fValorFinal" sTipo="text" :bObrigatorio="false" :bDesabilitado="true" sTitulo="Valor total"/>
             </div>
             <Botao @click="finalizarVenda" sTexto="Finalizar Venda" sTipo="text" sId="botao_finalizar_venda" sLargura="w-full" sClasses="py-2 px-4 rounded mt-auto"/>
          </div>
@@ -98,7 +105,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed  } from 'vue'
 import { useClienteStore } from '../stores/clienteStore';
 import { useProdutoStore } from '../stores/produtoStore';
 import { useAtendimentoStore } from '../stores/atendimentoStore';
@@ -115,28 +122,38 @@ const aSugestoesFiltradas = ref([]);
 const aFormasPagamento    = ref([]);
 const aProdutos           = ref([]);
 let bGridBloqueado        = ref(false)
+let bBotaoVisivel         = ref(true);
 let debounceTimeout       = null;
 let oProdutoSelecionado   = null;
+let iEstoque              = 1;
 let aProdutosFiltrados    = [];
+let bIsPagamentoCredito   = computed(() => oVenda.value.iFormaPagamento == 1);
+
+const aParcelas = Array.from({ length: 12 }, (_, i) => ({
+  iValor: String(i + 1),
+  sDescricao: `${i + 1}`
+}));
+
 
 const sCpf     = ref('');
 const oCliente = ref({
-   sNome: '',
-   sEndereco: '',
-   sTelefone: '',
+   sNome:           '',
+   sEndereco:       '',
+   sTelefone:       '',
    sDataNascimento: ''
 });
 const oProduto = ref({
-   iProduto: '',
-   sNome: '',
+   iProduto:    '',
+   sNome:       '',
    iQuantidade: '',
    fValorVenda: '',
-   fDesconto: ''
+   fDesconto:   ''
 });
 const oVenda = ref({
    iFormaPagamento: '',
-   fValorTotal: '',
-   fDesconto: ''
+   fValorTotal:     '',
+   fValorFinal:     '',
+   fDesconto:       ''
 });
 
 onMounted(async () => {
@@ -150,6 +167,7 @@ async function onChangeCodigoProduto() {
 
    try {
       oProduto.value = await oProdutoStore.getProdutoByCodigo(oProduto.value.iProduto);
+      iEstoque = oProduto.value.iQuantidade;
       oProduto.value.iQuantidade = 1;
    }
    catch(e) {
@@ -180,6 +198,17 @@ async function onChangeCPF() {
    if(!sValorCpf) {
       resetarCliente();
    }
+}
+
+function onChangeCampoDescontoVenda() {
+   let fDesconto   = utils.normalizarValor(oVenda.value.fDesconto);
+   let fValorVenda = utils.normalizarValor(oVenda.value.fValorTotal) - fDesconto;
+
+   if(!fDesconto) {
+      oVenda.value.fValorFinal = oVenda.value.fValorTotal;   
+   }
+
+   oVenda.value.fValorFinal = utils.converterParaMoeda(fValorVenda + '.00');
 }
 
 function filtrarSugestoes() {
@@ -257,14 +286,16 @@ function finalizarVenda() {
 
 function resetarCliente() {
    oCliente.value = {
-      sNome: '',
-      sEndereco: '',
-      sTelefone: '',
+      sNome:           '',
+      sEndereco:       '',
+      sTelefone:       '',
       sDataNascimento: ''
    };
 }
 
 function resetarProduto() {
+   iEstoque = 1;
+
    oProduto.value = {
       iProduto:       '',
       sNome:          '',
@@ -274,17 +305,34 @@ function resetarProduto() {
    };
 }
 
+function validarQuantidadeInformada() {
+   if(oProduto.value.iQuantidade > iEstoque) {
+      oProduto.value.iQuantidade = 1;
+      utils.alerta('A quantidade informada é maior do que a disponível em estoque', 'error');
+   }
+}
+
+function valorDescontoValido() {
+   if(utils.normalizarValor(oProduto.value.fDesconto) > utils.normalizarValor(oProduto.value.fValorVenda)) {
+      utils.alerta('O desconto não pode ser maior do que o valor de venda', 'error');
+      return false;
+   }
+
+   return true;
+}
+
 function adicionarProdutoGrid() {
-   if(utils.validarCamposObrigatorios()) {
-      addTrGrid();
+   if(utils.validarCamposObrigatorios() && valorDescontoValido()) {
+      adicionarProduto();
       resetarProduto();
    }
 }
 
-function addTrGrid() {
-   let sValor      = (utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade);
-   let sDesconto   = ((oProduto.value.fDesconto) ? utils.normalizarValor(oProduto.value.fDesconto) : '0') * oProduto.value.iQuantidade;
-   let sValorTotal = (sValor - sDesconto);
+function adicionarProduto() {
+   let sValor      = utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade;
+   let sDesconto   = (oProduto.value.fDesconto ? utils.normalizarValor(oProduto.value.fDesconto) : 0) * oProduto.value.iQuantidade;
+   let sValorTotal = sValor - sDesconto;
+   let idRegistro  = Date.now() + Math.random();
 
    sValor      = utils.converterParaMoeda(sValor      + '.00');
    sDesconto   = utils.converterParaMoeda(sDesconto   + '.00');
@@ -294,19 +342,59 @@ function addTrGrid() {
       ...oProduto.value,
       sValor,
       sDesconto,
-      sValorTotal
+      sValorTotal,
+      idRegistro
    }
 
    aProdutos.value.push(produto);
+
+   const fTotal = aProdutos.value.reduce((fSoma, oProduto) => {
+      return fSoma + utils.normalizarValor(oProduto.sValorTotal);
+   }, 0);
+
+   oVenda.value.fValorTotal = utils.converterParaMoeda(fTotal + '.00');
+   oVenda.value.fValorFinal = utils.converterParaMoeda(fTotal + '.00');
 }
 
 function alterarProdutoGrid(produto) {
    oProduto.value = {...produto};
    bGridBloqueado = true;
+   bBotaoVisivel  = false;
+}
+
+function confirmarAlteracaoProdutoGrid() {
+   const iIndice = aProdutos.value.findIndex(p => p.idRegistro === oProduto.value.idRegistro);
+
+   if (iIndice !== -1) {
+      let sValor      = utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade;
+      let sDesconto   = (oProduto.value.fDesconto ? utils.normalizarValor(oProduto.value.fDesconto) : 0) * oProduto.value.iQuantidade;
+      let sValorTotal = sValor - sDesconto;
+
+      sValor      = utils.converterParaMoeda(sValor      + '.00');
+      sDesconto   = utils.converterParaMoeda(sDesconto   + '.00');
+      sValorTotal = utils.converterParaMoeda(sValorTotal + '.00');
+
+      aProdutos.value[iIndice] = {
+         ...oProduto.value,
+         sValor,
+         sDesconto,
+         sValorTotal
+      };
+
+      resetarProduto();
+      bGridBloqueado = false;
+      bBotaoVisivel  = true;
+   }
+}
+
+function cancelarAlteracaoProdutoGrid() {
+   resetarProduto();
+   bGridBloqueado = false;
+   bBotaoVisivel  = true;
 }
 
 function excluirProdutoGrid(produto) {
-  const iIndice = aProdutos.value.findIndex(oProduto => oProduto.iProduto === produto.iProduto)
+  const iIndice = aProdutos.value.findIndex(oProduto => oProduto.idRegistro === produto.idRegistro)
 
    if(iIndice !== -1) {
       aProdutos.value.splice(iIndice, 1)
