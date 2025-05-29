@@ -1,5 +1,5 @@
 <template>
-   <button :type="sTipo" :id="sId" :style="{backgroundColor: `var(--${sCor})`, ...sStyle }" :disabled="bDesabilitado" :class="[
+   <button v-if="bVisivel" :type="sTipo" :id="sId" :style="{backgroundColor: `var(--${sCor})`, ...sStyle }" :disabled="bDesabilitado" :class="[
       'botao-card',
       'transition-transform duration-150 ease-in-out font-semibold rounded p-2 text-white',
       'hover:scale-95',
@@ -46,6 +46,10 @@ const props = defineProps({
    sClasses: {
       type: String,
       default: ''
+   },
+   bVisivel: {
+      type: Boolean,
+      default: true
    }
 });
 
