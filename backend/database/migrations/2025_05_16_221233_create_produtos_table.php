@@ -16,6 +16,7 @@ return new class extends Migration {
          $table->decimal('provalor', 10, 2);
          $table->decimal('provalor_desconto', 10, 2)->nullable();
          $table->integer('proestoque');
+         $table->date('prodata_hora_cadastro')->default(now());
       });
    }
 

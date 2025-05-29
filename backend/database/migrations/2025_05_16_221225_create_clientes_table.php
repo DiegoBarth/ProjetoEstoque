@@ -12,6 +12,7 @@ return new class extends Migration {
          $table->string('clinome', 100);
          $table->string('clicpf', 11);
          $table->date('clidata_nascimento');
+         $table->date('clidata_hora_criacao')->default(now());
          $table->string('clitelefone', 11)->nullable();
          $table->text('cliendereco')->nullable();
       });

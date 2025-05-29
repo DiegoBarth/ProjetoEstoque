@@ -13,6 +13,7 @@ return new class extends Migration {
          $table->string('usunome_usuario', 20);
          $table->foreignId('usunivel')->constrained('niveis_usuarios', 'nucodigo');
          $table->boolean('usuativo')->default(true);
+         $table->date('usudata_hora_criacao')->default(now());
          $table->text('ususenha');
       });
    }
