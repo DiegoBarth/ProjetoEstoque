@@ -3,7 +3,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">            
          <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true"  sTitulo="Produto"          v-model="oProduto.sNome"         maxlength="100" placeholder="Informe uma descrição"/>
          <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true"  sTitulo="Código de barras" v-model="oProduto.sCodigoBarras" maxlength="20"/>
-         <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true"  sTitulo="Quantidade"       v-model="oProduto.iQuantidade"   maxlength="4"  />
+         <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true"  sTitulo="Quantidade"       v-model="oProduto.iQuantidade"   maxlength="6"  @input="() => oProduto.iQuantidade = oProduto.iQuantidade.replace(/\D/g, '')"/>
          <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true"  sTitulo="Valor compra"     v-model="oProduto.fValorCompra"  maxlength="13" @input="() => oProduto.fValorCompra = converterParaMoeda(oProduto.fValorCompra)"/>
          <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true"  sTitulo="Valor venda"      v-model="oProduto.fValorVenda"   maxlength="13" @input="() => oProduto.fValorVenda = converterParaMoeda(oProduto.fValorVenda)"/>
          <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="false" sTitulo="Valor desconto"   v-model="oProduto.fDesconto"     maxlength="13" @input="() => oProduto.fDesconto = converterParaMoeda(oProduto.fDesconto)"/>                                
