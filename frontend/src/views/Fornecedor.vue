@@ -6,7 +6,7 @@
       </template>
    </Consulta>
    <CadastroFornecedores v-if="bShowModal" @fecharModal="() => bShowModal = false" @adicionarFornecedor="adicionarFornecedor" @atualizarFornecedor="atualizarFornecedor" :oFornecedor="oFornecedor" :iAcaoAtual="iAcaoAtual" />
-   <ModalExclusao v-if="iFornecedorExclusao" @fecharModal="() => iProdutoExclusao = false" @excluirRegistro="excluirFornecedor" />   
+   <ModalExclusao v-if="iFornecedorExclusao" @fecharModal="() => iFornecedorExclusao = false" @excluirRegistro="excluirFornecedor" />   
 </div>
 </template>
 
@@ -22,7 +22,7 @@ import CadastroFornecedores from '../components/CadastroFornecedores.vue';
 import { onMounted, ref } from 'vue';
 import { useFornecedorStore } from '../stores/fornecedorStore';
 import { format, parseISO } from 'date-fns';
-import { formatarCPFCNPJ, formatarTelefone } from '../utils/main';
+import { formatarCPFCNPJ, formatarTelefone, formatarData } from '../utils/main';
 // #endregion
 
 const oFornecedorStore = useFornecedorStore();
@@ -84,7 +84,7 @@ function showModalCadastro(iAcao, oFornecedorSelecionado) {
          sTelefone:     formatarTelefone(oFornecedorSelecionado.fortelefone),
          sEmail:        oFornecedorSelecionado.foremail,
          sEndereco:     oFornecedorSelecionado.forendereco,
-         sDataFundacao: format(parseISO(oFornecedorSelecionado.fordata_fundacao), 'dd/MM/yyyy')
+         sDataFundacao: formatarData(oFornecedorSelecionado.fordata_fundacao)
       };            
    }  
 }

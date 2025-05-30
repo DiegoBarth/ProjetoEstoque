@@ -5,7 +5,7 @@
         <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true" sTitulo="Nome de Usuário" v-model="oUsuario.sNomeUsuario"/>
         <Campo :disabled="iAcaoAtual == 3" sTipo="select" :bObrigatorio="true" sTitulo="Nível de acesso" v-model="oUsuario.iNivel" :aOpcoes="aOpcoes"/>
         <Campo :disabled="iAcaoAtual == 3" sTipo="select" :bObrigatorio="true" sTitulo="Situação"        v-model="oUsuario.iAtivo" :aOpcoes="[{iValor: 1, sDescricao: 'Ativo'}, {iValor: 0, sDescricao: 'Inativo'}]"/>
-        <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true" sTitulo="Senha"           v-model="oUsuario.sSenha"/>
+        <Campo v-if="iAcaoAtual != 3" sTipo="text"   :bObrigatorio="true" sTitulo="Senha"           v-model="oUsuario.sSenha"/>
       </div>            
    </ModalCadastro>
 </template>

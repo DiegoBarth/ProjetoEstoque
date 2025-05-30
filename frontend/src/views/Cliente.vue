@@ -26,7 +26,7 @@ import { onMounted, ref } from 'vue';
 import api from '../api';
 import { useClienteStore } from '../stores/clienteStore';
 import { format, parseISO } from 'date-fns';
-import { formatarCPFCNPJ, formatarData, formatarTelefone } from '../utils/main';
+import { formatarCPF, formatarData, formatarTelefone } from '../utils/main';
 //#endregion
 
 const oCliente = ref({
@@ -81,7 +81,7 @@ function showModalCadastro(iAcao, oClienteSelecionado) {
       oCliente.value = {
          iCliente:        oClienteSelecionado.clicodigo,
          sNome:           oClienteSelecionado.clinome,
-         sCpf:            formatarCPFCNPJ(oClienteSelecionado.clicpf),
+         sCpf:            formatarCPF(oClienteSelecionado.clicpf),
          sDataNascimento: format(parseISO(oClienteSelecionado.clidata_nascimento), 'yyyy-MM-dd'),
          sTelefone:       formatarTelefone(oClienteSelecionado.clitelefone),
          sEndereco:       oClienteSelecionado.cliendereco

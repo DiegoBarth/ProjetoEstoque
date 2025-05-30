@@ -1,11 +1,11 @@
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 export function limparCampos() {
-    const aCampos = $('#modalCadastro').find('input, textarea, select');
+   const aCampos = $('#modalCadastro').find('input, textarea, select');
 
-    for(const oCampo of aCampos) {        
-        oCampo.value = '';
-    }
+   for(const oCampo of aCampos) {        
+      oCampo.value = '';
+   }
 }
 
 export function alerta(xMensagem, sTipo = 'ok') {
@@ -65,42 +65,42 @@ export function formatarCPF(xValor) {
 }
 
 export function formatarCPFCNPJ(xValor) {
-    let sCnpj = xValor;
+   let sCnpj = xValor;
 
-    if(typeof xValor == 'object') {
-        sCnpj = xValor.value;
-    }
+   if(typeof xValor == 'object') {
+      sCnpj = xValor.value;
+   }
 
-    sCnpj = sCnpj.replace(/\D/g, '');
-    sCnpj = sCnpj.replace(/(\d{2})(\d)/, '$1.$2');
-    sCnpj = sCnpj.replace(/(\d{3})(\d)/, '$1.$2');
-    sCnpj = sCnpj.replace(/(\d{3})(\d)/, '$1/$2');
-    sCnpj = sCnpj.replace(/(\d{4})(\d{1,2})/, '$1-$2');
+   sCnpj = sCnpj.replace(/\D/g, '');
+   sCnpj = sCnpj.replace(/(\d{2})(\d)/, '$1.$2');
+   sCnpj = sCnpj.replace(/(\d{3})(\d)/, '$1.$2');
+   sCnpj = sCnpj.replace(/(\d{3})(\d)/, '$1/$2');
+   sCnpj = sCnpj.replace(/(\d{4})(\d{1,2})/, '$1-$2');
 
-    if(typeof xValor == 'object') {
-        return xValor.value = sCnpj;
-    }
+   if(typeof xValor == 'object') {
+      return xValor.value = sCnpj;
+   }
 
-    return sCnpj;
+   return sCnpj;
 }
 
 export function formatarTelefone(xValor) {
-    let sTelefone = xValor;
+   let sTelefone = xValor;
 
-    if(typeof xValor == 'object') {
-        sTelefone = xValor.value;
-    }
+   if(typeof xValor == 'object') {
+      sTelefone = xValor.value;
+   }
 
-    sTelefone = sTelefone.replace(/\D/g, '');
+   sTelefone = sTelefone.replace(/\D/g, '');
 
-    sTelefone = sTelefone.replace(/(\d{2})(\d)/,  '($1) $2');    
-    sTelefone = sTelefone.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+   sTelefone = sTelefone.replace(/(\d{2})(\d)/,  '($1) $2');    
+   sTelefone = sTelefone.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
 
-    if(typeof xValor == 'object') {
-        xValor.value = sTelefone;
-    }
+   if(typeof xValor == 'object') {
+      xValor.value = sTelefone;
+   }
 
-    return sTelefone;    
+   return sTelefone;    
 }
 
 export function formatarDataBR(sData) {
@@ -153,34 +153,34 @@ export function validarCamposObrigatorios() {
 }
 
 export function formatarData(sValor) {
-    if(sValor.length < 10) {
-        utils.alerta('Data inválida', 'error');
-        return '';
-    }
-    
-    return format(sValor, 'dd/MM/yyyy');
+   if(sValor.length < 10) {
+      utils.alerta('Data inválida', 'error');
+      return '';
+   }
+   
+   return format(parseISO(sValor), 'dd/MM/yyyy');
 }
 
 export function converterParaMoeda(sValor) {    
-    if(!sValor || sValor.length == 0) {
-        return
-    }
+   if(!sValor || sValor.length == 0) {
+      return
+   }   
 
-    sValor = sValor.replace(/\D/g, '');
+   sValor = sValor.replace(/\D/g, '');
 
-    sValor = sValor.replace(/(\d{1,3})(\d{2})/, '$1,$2');
-    if(sValor.length > 6) {
-        sValor = sValor.replace(/\D/g, '');
-        sValor = sValor.replace(/(\d{1,3})(\d{3})(\d{2})/, '$1.$2,$3')
-    }
+   sValor = sValor.replace(/(\d{1,3})(\d{2})/, '$1,$2');
+   if(sValor.length > 6) {
+      sValor = sValor.replace(/\D/g, '');
+      sValor = sValor.replace(/(\d{1,3})(\d{3})(\d{2})/, '$1.$2,$3')
+   }
 
-    return 'R$ ' + sValor;   
+   return 'R$ ' + sValor;   
 }
 
 export function normalizarValor(sValor) {
-    if(!sValor) {
-        return null;
-    }
+   if(!sValor) {
+      return null;
+   }
 
-    return parseFloat(sValor.replace(',', '.').replace(/\D/g, '')) / 100;
+   return parseFloat(sValor.replace(',', '.').replace(/[^\d\.]/g, ''));
 }

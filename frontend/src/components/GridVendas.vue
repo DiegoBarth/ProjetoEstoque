@@ -10,13 +10,13 @@
             <td class="p-2">{{ oVenda.venumero_parcelas                            }}</td>
             <td class="p-2">{{ converterParaMoeda(oVenda.vedesconto)               }}</td>
             <td class="p-2">{{ converterParaMoeda(oVenda.vevalor_total)            }}</td>
-            <td class="p-2">{{ format(parseISO(oVenda.vedata_venda), 'dd/MM/yyyy') }}</td>
-            <td class="p-2"><p class="text-center text-white p-1 rounded" :class="{'bg-green-700': oVenda.vesituacao == 1, 'bg-blue-700': oVenda.vesituacao == 2, 'bg-red-500': oVenda.vesituacao == 3}">{{ oVenda.vesituacao_nome }} </p></td>            
+            <td class="p-2">{{ formatarData(oVenda.vedata_venda) }}</td>
+            <td class="p-2"><p class="text-center text-white p-1 rounded" :class="{'bg-green-700': oVenda.vesituacao == 2, 'bg-blue-700': oVenda.vesituacao == 1, 'bg-red-500': oVenda.vesituacao == 3}">{{ oVenda.vesituacao_nome }} </p></td>            
             <td class="p-2 flex gap-2">
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 2, oVenda)"><i
                      class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
                <span :class="oVenda.vesituacao == 1 ? 'cursor-pointer' : 'cursor-not-allowed'" @click="$emit('showModalCadastro', 3, oVenda)"><i
-                     class="fa fa-receipt p-2 px-[1.1vh] bg-green-700 rounded-sm text-white"></i></span>
+                     class="fa-solid fa-dollar-sign p-2 px-[0.7rem] bg-green-700 rounded-sm text-white"></i></span>
                <span :class="oVenda.vesituacao == 1 ? 'cursor-pointer' : 'cursor-not-allowed'" @click="$emit('showModalExclusao', oVenda.clicodigo)"><i
                      class="fa fa-xmark p-2 px-2.5 bg-red-500 rounded-sm text-white"></i></span>
             </td>
@@ -28,7 +28,7 @@
 import Grid from './UI/Grid.vue';
 
 import { parseISO, format } from 'date-fns'
-import { converterParaMoeda } from '../utils/main'
+import { converterParaMoeda, formatarData } from '../utils/main'
 
 defineProps(['aVendas']);
 

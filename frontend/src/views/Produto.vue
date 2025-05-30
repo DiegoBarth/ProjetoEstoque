@@ -55,6 +55,7 @@ onMounted(async () => {
 async function adicionarProduto(oDados) {
    console.log(parseFloat(oDados.fDesconto), parseFloat(oDados.fValorVenda))
    console.log(oDados.fDesconto, oDados.fValorVenda)
+   console.log(utils.normalizarValor(oDados.fDesconto), utils.normalizarValor(oDados.fValorVenda))
    if(utils.normalizarValor(oDados.fDesconto) > utils.normalizarValor(oDados.fValorVenda)) {
       return utils.alerta('O valor de desconto não pode ser maior que o valor de venda', 'error')
    }
