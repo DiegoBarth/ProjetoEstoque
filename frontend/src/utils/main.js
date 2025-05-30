@@ -143,20 +143,22 @@ export function formatarData(sValor) {
    return format(parseISO(sValor), 'dd/MM/yyyy');
 }
 
-export function converterParaMoeda(sValor) {    
-   if(!sValor || sValor.length == 0) {
-      return
-   }   
-
-   sValor = sValor.replace(/\D/g, '');
-
-   sValor = sValor.replace(/(\d{1,3})(\d{2})/, '$1,$2');
-   if(sValor.length > 6) {
-      sValor = sValor.replace(/\D/g, '');
-      sValor = sValor.replace(/(\d{1,3})(\d{3})(\d{2})/, '$1.$2,$3')
+export function converterParaMoeda(sValor) {
+   if(!sValor) {
+      return 'R$ 0,00';
    }
 
-   return 'R$ ' + sValor;   
+   sValor = sValor.toString().replace(/\D/g, '');
+
+   let iValorNumerico = parseInt(sValor, 10);
+
+   if(isNaN(iValorNumerico)) {
+      return 'R$ 0,00';
+   }
+
+   let fValorFloat = iValorNumerico / 100;
+
+   return fValorFloat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 export function normalizarValor(sValor) {
