@@ -294,8 +294,6 @@ function resetarCliente() {
 }
 
 function resetarProduto() {
-   iEstoque = 1;
-
    oProduto.value = {
       iProduto:       '',
       sNome:          '',
@@ -357,6 +355,7 @@ function adicionarProduto() {
 }
 
 function alterarProdutoGrid(produto) {
+   console.log(produto);
    oProduto.value = {...produto};
    bGridBloqueado = true;
    bBotaoVisivel  = false;
