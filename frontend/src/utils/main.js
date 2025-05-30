@@ -103,24 +103,6 @@ export function formatarTelefone(xValor) {
    return sTelefone;    
 }
 
-export function formatarDataBR(sData) {
-   if(!sData) {
-      return '';
-   }
-
-   const aPartes = sData.split('-');
-
-   if(aPartes.length !== 3) {
-      return '';
-   }
-
-   const sAno = aPartes[0];
-   const sMes = aPartes[1];
-   const sDia = aPartes[2];
-
-   return `${sDia}/${sMes}/${sAno}`;
-}
-
 export function validarCamposObrigatorios() {
    let bCamposPreenchidos = true;
 

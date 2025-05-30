@@ -11,7 +11,7 @@ export const useClienteStore = defineStore('Cliente', {
             iCliente       : oCliente.clicodigo,
             sNome          : oCliente.clinome,
             sCpf           : utils.formatarCPF(oCliente.clicpf),
-            sDataNascimento: utils.formatarDataBR(oCliente.clidata_nascimento),
+            sDataNascimento: utils.formatarData(oCliente.clidata_nascimento),
             sEndereco      : oCliente.cliendereco,
             sTelefone      : utils.formatarTelefone(oCliente.clitelefone)
          };
