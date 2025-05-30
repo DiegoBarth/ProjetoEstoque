@@ -13,6 +13,7 @@ return new class extends Migration {
          $table->foreignId('usucodigo')->constrained('usuarios', 'usucodigo');
          $table->string('demotivo', 50)->nullable();
          $table->decimal('devalor_total', 10, 2)->nullable();
+         $table->date('dedata_hora_devolucao')->default(now());
       });
    }
 
