@@ -146,6 +146,7 @@ const oProduto = ref({
    iProduto:    '',
    sNome:       '',
    iQuantidade: '',
+   iEstoque:    '',
    fValorVenda: '',
    fDesconto:   ''
 });
@@ -167,7 +168,8 @@ async function onChangeCodigoProduto() {
 
    try {
       oProduto.value = await oProdutoStore.getProdutoByCodigo(oProduto.value.iProduto);
-      iEstoque = oProduto.value.iQuantidade;
+      iEstoque                   = oProduto.value.iQuantidade;
+      oProduto.value.iEstoque    = oProduto.value.iQuantidade;
       oProduto.value.iQuantidade = 1;
    }
    catch(e) {
@@ -294,10 +296,13 @@ function resetarCliente() {
 }
 
 function resetarProduto() {
+   iEstoque = 1;
+
    oProduto.value = {
       iProduto:       '',
       sNome:          '',
       iQuantidade:    '',
+      iEstoque:       '',
       fValorVenda:    '',
       fDesconto:      ''
    };
@@ -355,10 +360,10 @@ function adicionarProduto() {
 }
 
 function alterarProdutoGrid(produto) {
-   console.log(produto);
    oProduto.value = {...produto};
    bGridBloqueado = true;
    bBotaoVisivel  = false;
+   iEstoque = oProduto.value.iEstoque;
 }
 
 function confirmarAlteracaoProdutoGrid() {
