@@ -351,12 +351,7 @@ function adicionarProduto() {
 
    aProdutos.value.push(produto);
 
-   const fTotal = aProdutos.value.reduce((fSoma, oProduto) => {
-      return fSoma + utils.normalizarValor(oProduto.sValorTotal);
-   }, 0);
-
-   oVenda.value.fValorTotal = utils.converterParaMoeda(fTotal + '.00');
-   oVenda.value.fValorFinal = utils.converterParaMoeda(fTotal + '.00');
+   atualizarValorTotal();
 }
 
 function alterarProdutoGrid(produto) {
@@ -369,7 +364,7 @@ function alterarProdutoGrid(produto) {
 function confirmarAlteracaoProdutoGrid() {
    const iIndice = aProdutos.value.findIndex(p => p.idRegistro === oProduto.value.idRegistro);
 
-   if (iIndice !== -1) {
+   if(iIndice !== -1) {
       let sValor      = utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade;
       let sDesconto   = (oProduto.value.fDesconto ? utils.normalizarValor(oProduto.value.fDesconto) : 0) * oProduto.value.iQuantidade;
       let sValorTotal = sValor - sDesconto;
@@ -388,6 +383,8 @@ function confirmarAlteracaoProdutoGrid() {
       resetarProduto();
       bGridBloqueado = false;
       bBotaoVisivel  = true;
+
+      atualizarValorTotal();
    }
 }
 
@@ -402,7 +399,17 @@ function excluirProdutoGrid(produto) {
 
    if(iIndice !== -1) {
       aProdutos.value.splice(iIndice, 1)
+      atualizarValorTotal();
    }
+}
+
+function atualizarValorTotal() {
+   const fTotal = aProdutos.value.reduce((fSoma, oProduto) => {
+      return fSoma + utils.normalizarValor(oProduto.sValorTotal);
+   }, 0);
+
+   oVenda.value.fValorTotal = utils.converterParaMoeda(fTotal + '.00');
+   oVenda.value.fValorFinal = utils.converterParaMoeda(fTotal + '.00');
 }
 
 </script>
