@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 
 export const useAtendimentoStore = defineStore('Atendimento', {
    state: () => ({
-
+      oDadosVenda: null
    }),
    actions: {
       async getFormasPagamento() {
@@ -29,6 +29,42 @@ export const useAtendimentoStore = defineStore('Atendimento', {
          }
          catch (error) {
             throw (error);
+         }
+      },
+      async finalizarVenda(iVenda) {
+         try {
+            const { data } = await api.post(`/api/venda/finalizar/${iVenda}`);
+
+            return !!data;
+         }
+         catch(error) {
+            throw(error);
+         }
+      },
+      async cancelarVenda(iVenda) {
+         try {
+            const { data } = await api.post(`/api/venda/cancelar/${iVenda}`);
+
+            return !!data;
+         }
+         catch(error) {
+            throw(error);
+         }
+      },
+      setDadosVenda(oDados) {
+         this.oDadosVenda = oDados;
+      },
+      getDadosVenda() {
+         return this.oDadosVenda;
+      },
+      async getItensVenda(iVenda) {
+         try {
+            const { data } = await api.post(`/api/venda/itens/${iVenda}`);
+
+            return data.aItensVenda;
+         }
+         catch(error) {
+            throw(error)
          }
       }
 

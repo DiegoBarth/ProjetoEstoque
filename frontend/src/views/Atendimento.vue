@@ -105,7 +105,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, computed  } from 'vue'
+import { ref, watch, onMounted, computed, onUnmounted  } from 'vue'
 import { useClienteStore } from '../stores/clienteStore';
 import { useProdutoStore } from '../stores/produtoStore';
 import { useAtendimentoStore } from '../stores/atendimentoStore';
@@ -156,10 +156,37 @@ const oVenda = ref({
    fValorFinal:     '',
    fDesconto:       ''
 });
+const oDadosAtendimento = ref(null);
 
 onMounted(async () => {
    aFormasPagamento.value = await oAtendimentoStore.getFormasPagamento();
+   oDadosAtendimento.value = await oAtendimentoStore.getDadosVenda(); 
+
+   if(oDadosAtendimento.value) {
+      oVenda.value = {
+         iFormaPagamento: oDadosAtendimento.value.forma_pagamento.fpcodigo,
+         fValorTotal:     utils.converterParaMoeda(oDadosAtendimento.value.vevalor_total),
+         fDesconto:       utils.converterParaMoeda(oDadosAtendimento.value.vedesconto),
+         fValorFinal:     utils.converterParaMoeda(oDadosAtendimento.value.vevalor_total - oDadosAtendimento.value.vedesconto),
+         iNumeroParcelas: oDadosAtendimento.value.venumero_parcelas
+      };
+      aProdutos.value = oDadosAtendimento.value.aProdutos;
+      sCpf.value = utils.formatarCPF(oDadosAtendimento.value.cliente.clicpf);
+      onChangeCPF();
+      bGridBloqueado.value = true;
+      desabilitarCampos();
+   }
 });
+
+onUnmounted(() => {
+   oAtendimentoStore.setDadosVenda(null);
+})
+
+function desabilitarCampos() {
+   setTimeout(() => {
+      $('input, select, button').attr('disabled', true);
+   }, 1000)
+}
 
 async function onChangeCodigoProduto() {
    if(!oProduto.value.iProduto) {

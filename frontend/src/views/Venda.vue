@@ -2,17 +2,22 @@
    <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden">
       <Consulta sTitulo='Vendas' :bMostraBotao="false">
          <template #gridConsulta>
-            <GridVendas v-if="aVendas" :aVendas="aVendas" />
+            <GridVendas v-if="aVendas" :aVendas="aVendas" @showModal="showModal"/>
          </template>
-      </Consulta>      
-      <!-- <ModalExclusao v-if="iVendaExclusao" @fecharModal="() => {iVendaExclusao = false; bShowModal = false}" @excluirRegistro="excluirVenda"/> -->
+      </Consulta>
+      <Modal v-if="bShowModal">
+         <h1 class="text-xl mb-4">{{ sTextoModal }}</h1>
+         <div class="flex items-center gap-4 w-2/5">                        
+            <button @click="iAcaoAtual == 1 ? finalizarVenda() : cancelarVenda()" class="text-white cursor-pointer p-2 bg-green-500 rounded-sm w-1/2">Sim</button>
+            <button @click="() => bShowModal = false" class="text-white cursor-pointer p-2 bg-red-500 rounded-sm w-1/2">Não</button>
+         </div>
+      </Modal>
    </div>
 </template>
 
 <script setup>
 //#region Componentes
-import ModalCadastro from '../components/UI/ModalCadastro.vue';
-import ModalExclusao from '../components/UI/ModalExclusao.vue';
+import Modal from '../components/UI/Modal.vue'
 import Consulta from '../components/UI/Consulta.vue';
 import GridVendas from '../components/GridVendas.vue';
 //#endregion
@@ -31,15 +36,37 @@ const oVenda = ref({
    sTelefone:       '',
    sEndereco:       ''
 });
-
-const oVendaStore = useAtendimentoStore();
-const iVendaExclusao = ref(null);
-const iAcaoAtual = ref(0);
-const aVendas = ref();
-const bShowModal = ref(false);
+const sTextoModal      = ref('');
+const iVenda           = ref();
+const bShowModal       = ref(false);
+const oVendaStore      = useAtendimentoStore();
+const iVendaExclusao   = ref(null);
+const iAcaoAtual       = ref(0);
+const aVendas          = ref();
 
 onMounted(async () => {
    aVendas.value = await oVendaStore.getVendas();
 });
 
+function showModal(iAcao, iCodigo) {
+   iAcao == 1 ? 
+      sTextoModal.value = 'Realmente deseja finalizar a venda?' :
+      sTextoModal.value = 'Realmente deseja cancelar a venda?';
+   iAcaoAtual.value = iAcao;
+   iVenda.value = iCodigo;
+
+   bShowModal.value = true;
+}
+
+async function finalizarVenda() {
+   await oVendaStore.finalizarVenda(iVenda.value);
+   bShowModal.value = false;
+   aVendas.value = await oVendaStore.getVendas();
+}
+
+async function cancelarVenda() {
+   await oVendaStore.cancelarVenda(iVenda.value);
+   bShowModal.value = false;
+   aVendas.value = await oVendaStore.getVendas();
+}
 </script>
