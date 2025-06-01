@@ -16,7 +16,7 @@ return new class extends Migration {
          $table->string('foremail', 30)->nullable();
          $table->text('forendereco')->nullable();
          $table->date('fordata_fundacao')->nullable();
-         $table->date('fordata_hora_criacao')->default(now());
+         $table->timestamp('fordata_hora_criacao')->default(now()->format('d/m/Y H:i:s'));
       });
    }
 

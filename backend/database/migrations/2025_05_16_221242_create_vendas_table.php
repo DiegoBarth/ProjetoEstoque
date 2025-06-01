@@ -16,7 +16,7 @@ return new class extends Migration {
          $table->decimal('vedesconto', 10, 2)->nullable();
          $table->decimal('vevalor_total', 10, 2);
          $table->smallInteger('vesituacao')->default(1)->comment('1 - Aberto, 2 - Finalizada, 3 - Cancelada');
-         $table->date('vedata_hora_venda')->default(now());
+         $table->timestamp('vedata_hora_venda')->default(now()->format('d/m/Y H:i:s'));
       });
    }
 
