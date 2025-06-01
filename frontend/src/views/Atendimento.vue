@@ -112,6 +112,7 @@ import { useAtendimentoStore } from '../stores/atendimentoStore';
 import Botao from '../components/UI/Botao.vue';
 import Campo from '../components/UI/Campo.vue';
 import * as utils from "../utils/main.js";
+import Cookies from 'js-cookie';
 
 const oProdutoStore       = useProdutoStore();
 const oClienteStore       = useClienteStore();
@@ -137,6 +138,7 @@ const aParcelas = Array.from({ length: 12 }, (_, i) => ({
 
 const sCpf     = ref('');
 const oCliente = ref({
+   iCodigo:         '',
    sNome:           '',
    sEndereco:       '',
    sTelefone:       '',
@@ -154,7 +156,8 @@ const oVenda = ref({
    iFormaPagamento: '',
    fValorTotal:     '',
    fValorFinal:     '',
-   fDesconto:       ''
+   fDesconto:       '',
+   iNumeroParcelas: ''
 });
 const oDadosAtendimento = ref(null);
 
@@ -212,6 +215,7 @@ async function onChangeCPF() {
          const oDados = await oClienteStore.getClienteByCPF(sValorCpf);
 
          oCliente.value = {
+            iCodigo        : oDados.iCliente,
             sNome          : oDados.sNome,
             sEndereco      : oDados.sEndereco,
             sTelefone      : oDados.sTelefone,
@@ -231,13 +235,13 @@ async function onChangeCPF() {
 
 function onChangeCampoDescontoVenda() {
    let fDesconto   = utils.normalizarValor(oVenda.value.fDesconto);
-   let fValorVenda = utils.normalizarValor(oVenda.value.fValorTotal) - fDesconto;
+   let fValorVenda = (utils.normalizarValor(oVenda.value.fValorTotal) - fDesconto).toFixed(2);
 
    if(!fDesconto) {
       oVenda.value.fValorFinal = oVenda.value.fValorTotal;   
    }
 
-   oVenda.value.fValorFinal = utils.converterParaMoeda(fValorVenda + '.00');
+   oVenda.value.fValorFinal = utils.converterParaMoeda(fValorVenda);
 }
 
 function filtrarSugestoes() {
@@ -309,12 +313,55 @@ function ocultarSugestoes() {
    }, 100)
 }
 
-function finalizarVenda() {
-   utils.validarCamposObrigatorios();
+async function finalizarVenda() {
+   if(utils.validarCamposObrigatorios()) {
+      if(!aProdutos.value.length) {
+         return utils.alerta('Para finalizar a venda é necessário inserir ao menos um produto.', 'error');
+      }
+
+      // await oAtendimentoStore.cadastrarVenda(tratarDadosVenda());
+
+      utils.alerta('Venda finalizada com sucesso');
+      resetarElementos();
+   }
+}
+
+function tratarDadosVenda() {
+   let oUsuario = JSON.parse(atob(Cookies.get('oUsuario')));
+
+   return {
+      iCodigoCliente : Number(oCliente.value.iCodigo),
+      iCodigoUsuario : Number(oUsuario.iUsuario),
+      iFormaPagamento: Number(oVenda.value.iFormaPagamento),
+      iNumeroParcelas: oVenda.value.iNumeroParcelas ? Number(oVenda.value.iNumeroParcelas) : null,
+      fDesconto      : utils.normalizarValor(oVenda.value.fDesconto) ? parseFloat(utils.normalizarValor(oVenda.value.fDesconto)) : null,
+      fValorTotal    : parseFloat(utils.normalizarValor(oVenda.value.fValorFinal)),
+      iSituacao      : 1,
+      aProdutos      : aProdutos.value.map(function(oProduto) {return tratarProdutoGrid(oProduto);})
+   }
+}
+
+function tratarProdutoGrid(oProduto) {
+   return {
+      iCodigoProduto: oProduto.iProduto,
+      iQuantidade   : oProduto.iQuantidade,
+      fValorVenda   : parseFloat(utils.normalizarValor(oProduto.fValorVenda)),
+      fValorTotal   : parseFloat(utils.normalizarValor(oProduto.sValorTotal))
+   }
+}
+
+function resetarElementos() {
+   resetarCliente();
+   resetarProduto();
+   resetarGridProdutos();
+   resetarVenda();
 }
 
 function resetarCliente() {
+   sCpf.value = '';
+
    oCliente.value = {
+      iCodigo:         '',
       sNome:           '',
       sEndereco:       '',
       sTelefone:       '',
@@ -332,6 +379,20 @@ function resetarProduto() {
       iEstoque:       '',
       fValorVenda:    '',
       fDesconto:      ''
+   };
+}
+
+function resetarGridProdutos() {
+   aProdutos.value = [];
+}
+
+function resetarVenda() {
+   oVenda.value = {
+      iFormaPagamento: '',
+      fValorTotal:     '',
+      fValorFinal:     '',
+      fDesconto:       '',
+      iNumeroParcelas: ''
    };
 }
 
@@ -359,14 +420,14 @@ function adicionarProdutoGrid() {
 }
 
 function adicionarProduto() {
-   let sValor      = utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade;
-   let sDesconto   = (oProduto.value.fDesconto ? utils.normalizarValor(oProduto.value.fDesconto) : 0) * oProduto.value.iQuantidade;
-   let sValorTotal = sValor - sDesconto;
+   let sValor      = (utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade).toFixed(2);
+   let sDesconto   = ((oProduto.value.fDesconto ? utils.normalizarValor(oProduto.value.fDesconto) : 0) * oProduto.value.iQuantidade).toFixed(2);
+   let sValorTotal = (sValor - sDesconto).toFixed(2);
    let idRegistro  = Date.now() + Math.random();
 
-   sValor      = utils.converterParaMoeda(sValor      + '.00');
-   sDesconto   = utils.converterParaMoeda(sDesconto   + '.00');
-   sValorTotal = utils.converterParaMoeda(sValorTotal + '.00');
+   sValor      = utils.converterParaMoeda(sValor);
+   sDesconto   = utils.converterParaMoeda(sDesconto);
+   sValorTotal = utils.converterParaMoeda(sValorTotal);
 
    const produto = {
       ...oProduto.value,
@@ -392,13 +453,13 @@ function confirmarAlteracaoProdutoGrid() {
    const iIndice = aProdutos.value.findIndex(p => p.idRegistro === oProduto.value.idRegistro);
 
    if(iIndice !== -1) {
-      let sValor      = utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade;
-      let sDesconto   = (oProduto.value.fDesconto ? utils.normalizarValor(oProduto.value.fDesconto) : 0) * oProduto.value.iQuantidade;
-      let sValorTotal = sValor - sDesconto;
+      let sValor      = (utils.normalizarValor(oProduto.value.fValorVenda) * oProduto.value.iQuantidade).toFixed(2);
+      let sDesconto   = ((oProduto.value.fDesconto ? utils.normalizarValor(oProduto.value.fDesconto) : 0) * oProduto.value.iQuantidade).toFixed(2);
+      let sValorTotal = (sValor - sDesconto).toFixed(2);
 
-      sValor      = utils.converterParaMoeda(sValor      + '.00');
-      sDesconto   = utils.converterParaMoeda(sDesconto   + '.00');
-      sValorTotal = utils.converterParaMoeda(sValorTotal + '.00');
+      sValor      = utils.converterParaMoeda(sValor);
+      sDesconto   = utils.converterParaMoeda(sDesconto);
+      sValorTotal = utils.converterParaMoeda(sValorTotal);
 
       aProdutos.value[iIndice] = {
          ...oProduto.value,
@@ -432,11 +493,23 @@ function excluirProdutoGrid(produto) {
 
 function atualizarValorTotal() {
    const fTotal = aProdutos.value.reduce((fSoma, oProduto) => {
-      return fSoma + utils.normalizarValor(oProduto.sValorTotal);
+      return (parseFloat(fSoma) + parseFloat(utils.normalizarValor(oProduto.sValorTotal))).toFixed(2);
    }, 0);
 
-   oVenda.value.fValorTotal = utils.converterParaMoeda(fTotal + '.00');
-   oVenda.value.fValorFinal = utils.converterParaMoeda(fTotal + '.00');
+   let fDesconto   = utils.normalizarValor(oVenda.value.fDesconto);
+
+   oVenda.value.fValorTotal = utils.converterParaMoeda(fTotal);
+
+   if(!fDesconto) {
+      oVenda.value.fValorFinal = utils.converterParaMoeda(fTotal);
+      return;
+   }
+
+   if(!fTotal) {
+      return oVenda.value.fValorFinal = null;
+   }
+
+   oVenda.value.fValorFinal = utils.converterParaMoeda((parseFloat(fTotal) - parseFloat(fDesconto)).toFixed(2));
 }
 
 </script>

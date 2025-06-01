@@ -9,7 +9,7 @@ return new class extends Migration {
    public function up(): void {
       Schema::create('vendas', function (Blueprint $table) {
          $table->id('vecodigo');
-         $table->foreignId('clicodigo')->constrained('clientes', 'clicodigo');
+         $table->foreignId('clicodigo')->constrained('clientes', 'clicodigo')->nullable();
          $table->foreignId('usucodigo')->constrained('usuarios', 'usucodigo');
          $table->foreignId('fpcodigo')->constrained('formas_pagamento', 'fpcodigo');
          $table->smallInteger('venumero_parcelas')->nullable();

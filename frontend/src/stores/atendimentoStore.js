@@ -31,6 +31,9 @@ export const useAtendimentoStore = defineStore('Atendimento', {
             throw (error);
          }
       },
+      async cadastrarVenda() {
+
+      },
       async finalizarVenda(iVenda) {
          try {
             const { data } = await api.post(`/api/venda/finalizar/${iVenda}`);
