@@ -135,12 +135,24 @@ export function validarCamposObrigatorios() {
 }
 
 export function formatarData(sValor) {
+   if(!sValor) {
+      return null;
+   }
+   
    if(sValor.length < 10) {
       utils.alerta('Data inválida', 'error');
       return '';
    }
    
    return format(parseISO(sValor), 'dd/MM/yyyy');
+}
+
+export function formatarDataHora(dataHoraStr) {
+  const [sData, sHora] = dataHoraStr.split(' ');
+  
+  const [sAno, sMes, sDia] = sData.split('-');
+  
+  return `${sDia}/${sMes}/${sAno} ${sHora}`;
 }
 
 export function converterParaMoeda(sValor) {
