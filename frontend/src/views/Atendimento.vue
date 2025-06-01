@@ -319,10 +319,14 @@ async function finalizarVenda() {
          return utils.alerta('Para finalizar a venda é necessário inserir ao menos um produto.', 'error');
       }
 
-      // await oAtendimentoStore.cadastrarVenda(tratarDadosVenda());
+      try {
+         await oAtendimentoStore.cadastrarVenda(tratarDadosVenda());
+         resetarElementos();
+      }
+      catch(error) {
+         console.error(error);
+      }
 
-      utils.alerta('Venda finalizada com sucesso');
-      resetarElementos();
    }
 }
 

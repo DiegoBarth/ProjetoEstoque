@@ -67,9 +67,10 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
    Route::get('/forma_pagamento',           [VendaController::class, 'getFormasPagamento']);
    Route::get('/venda',                     [VendaController::class, 'getVendas']);
+   Route::post('/venda',                    [VendaController::class, 'cadastrarVenda']);
    Route::post('/venda/finalizar/{iVenda}', [VendaController::class, 'finalizarVenda']);
    Route::post('/venda/cancelar/{iVenda}',  [VendaController::class, 'cancelarVenda']);
-   Route::post('/venda/itens/{iVenda}',      [VendaController::class, 'getItensVenda']);
+   Route::post('/venda/itens/{iVenda}',     [VendaController::class, 'getItensVenda']);
 });
 
 #endregion
