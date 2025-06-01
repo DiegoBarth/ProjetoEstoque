@@ -166,5 +166,6 @@ export function normalizarValor(sValor) {
       return null;
    }
 
-   return parseFloat(sValor.replace(',', '.').replace(/[^\d\.]/g, ''));
+   const valor = parseFloat(sValor.replace(',', '.').replace(/[^\d\.]/g, ''));
+   return isNaN(valor) ? null : valor.toFixed(2);
 }
