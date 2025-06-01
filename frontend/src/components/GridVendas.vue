@@ -10,7 +10,7 @@
             <td class="p-2">{{ oVenda.venumero_parcelas                            }}</td>
             <td class="p-2">{{ converterParaMoeda(oVenda.vedesconto)               }}</td>
             <td class="p-2">{{ converterParaMoeda(oVenda.vevalor_total)            }}</td>
-            <td class="p-2">{{ formatarData(oVenda.vedata_venda) }}</td>
+            <td class="p-2">{{ formatarDataHora(oVenda.vedata_hora_venda) }}</td>
             <td class="p-2"><p class="text-center text-white p-1 rounded" :class="{'bg-green-700': oVenda.vesituacao == 2, 'bg-blue-700': oVenda.vesituacao == 1, 'bg-red-500': oVenda.vesituacao == 3}">{{ oVenda.vesituacao_nome }} </p></td>            
             <td class="p-2 flex gap-2">
                <span class="cursor-pointer" @click="visualizarVenda(oVenda)"><i
@@ -27,8 +27,7 @@
 <script setup>
 import Grid from './UI/Grid.vue';
 
-import { parseISO, format } from 'date-fns'
-import { converterParaMoeda, formatarData } from '../utils/main'
+import { converterParaMoeda, formatarDataHora } from '../utils/main'
 import { useAtendimentoStore } from '../stores/atendimentoStore';
 import { useRouter } from 'vue-router';
 
