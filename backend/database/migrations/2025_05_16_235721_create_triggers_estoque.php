@@ -12,7 +12,7 @@ return new class extends Migration {
         BEGIN
            IF NEW.vesituacao = 2 AND OLD.vesituacao IS DISTINCT FROM 2 THEN
               UPDATE produtos p
-              SET forestoque = forestoque - iv.ivquantidade
+              SET proestoque = proestoque - iv.ivquantidade
               FROM itens_vendas iv
               WHERE iv.vecodigo = NEW.vecodigo
               AND iv.procodigo = p.procodigo;
@@ -38,7 +38,7 @@ return new class extends Migration {
            WHERE ivcodigo = NEW.ivcodigo;
 
            UPDATE produtos
-           SET forestoque = forestoque + NEW.idquantidade
+           SET proestoque = proestoque + NEW.idquantidade
            WHERE procodigo = v_procodigo;
 
            RETURN NEW;
