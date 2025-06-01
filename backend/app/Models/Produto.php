@@ -17,7 +17,8 @@ class Produto extends Model {
       'procusto',
       'provalor',
       'provalor_desconto',
-      'proestoque'
+      'proestoque',
+      'prodata_hora_cadastro'
    ];
 
    public function fornecedor() {

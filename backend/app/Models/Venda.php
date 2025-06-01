@@ -17,7 +17,7 @@ class Venda extends Model {
       'vedesconto',
       'vevalor_total',
       'vesituacao',
-      'vedata_venda'
+      'vedata_hora_venda'
    ];
 
    public function cliente() {
