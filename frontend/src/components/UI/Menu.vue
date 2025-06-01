@@ -46,11 +46,14 @@ const sUsuario = ref('');
 const iNivel   = ref('');
 
 onMounted(() => {
-   if(router.currentRoute.value.path !== '/') {
-      let oUsuario   = JSON.parse(atob(Cookies.get('oUsuario')));
+   let oUsuario = Cookies.get('oUsuario');
+
+   if(oUsuario) {
+      oUsuario       = JSON.parse(atob(Cookies.get('oUsuario')));
       sUsuario.value = oUsuario.sNome?.split(" ")[0];
       iNivel.value   = Number(oUsuario.iNivel);
    }
+   
 });
 
 const aItensMenu = [
