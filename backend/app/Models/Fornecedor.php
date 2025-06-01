@@ -17,7 +17,8 @@ class Fornecedor extends Model {
       'fortelefone',
       'foremail',
       'forendereco',
-      'fordata_fundacao'
+      'fordata_fundacao',
+      'fordata_hora_criacao'
    ];
 
    public function produtos() {

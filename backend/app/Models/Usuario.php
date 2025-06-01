@@ -20,6 +20,7 @@ class Usuario extends Authenticatable {
       'usunivel',
       'usuativo',
       'ususenha',
+      'usudata_hora_criacao'
    ];
 
    protected $hidden = [

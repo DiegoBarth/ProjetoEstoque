@@ -15,7 +15,8 @@ class Cliente extends Model {
       'clicpf',
       'clidata_nascimento',
       'clitelefone',
-      'cliendereco'
+      'cliendereco',
+      'clidata_hora_criacao'
    ];
 
    public function vendas() {
