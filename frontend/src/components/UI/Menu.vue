@@ -40,14 +40,17 @@
 <script setup>
 import Cookies from 'js-cookie';
 import { onMounted, ref, computed } from 'vue';
+import router from '@/router';
 
 const sUsuario = ref('');
 const iNivel   = ref('');
 
 onMounted(() => {
-   let oUsuario   = JSON.parse(atob(Cookies.get('oUsuario')));
-   sUsuario.value = oUsuario.sNome?.split(" ")[0];
-   iNivel.value   = Number(oUsuario.iNivel);
+   if(router.currentRoute.value.path !== '/') {
+      let oUsuario   = JSON.parse(atob(Cookies.get('oUsuario')));
+      sUsuario.value = oUsuario.sNome?.split(" ")[0];
+      iNivel.value   = Number(oUsuario.iNivel);
+   }
 });
 
 const aItensMenu = [
