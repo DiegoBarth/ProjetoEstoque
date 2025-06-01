@@ -88,6 +88,7 @@ class VendaController extends Controller {
 
          foreach($aValidacao['aProdutos'] as $oProduto) {
             $oVenda->itens()->create([
+               'vecodigo'        => $oVenda->vecodigo,
                'procodigo'       => $oProduto['iCodigoProduto'],
                'ivquantidade'    => $oProduto['iQuantidade'],
                'ivpreco_unitario'=> $oProduto['fValorVenda'],
