@@ -31,21 +31,12 @@ class VendaController extends Controller {
       $aVendas = Venda::with([
          'usuario:usucodigo,usunome',
          'cliente:clicodigo,clinome,clicpf',
-         'formaPagamento:fpcodigo,fpnome',
-      ])->get([
-         'vecodigo',
-         'usucodigo',
-         'clicodigo',
-         'fpcodigo',
-         'venumero_parcelas',
-         'vedesconto',
-         'vevalor_total',
-         'vesituacao',
-         'vedata_hora_venda'
-      ]);
+         'formaPagamento:fpcodigo,fpnome'
+      ])->get();
 
-      foreach ($aVendas as $venda) {
-         $venda->vesituacao_nome = ($venda->vesituacao == 1) ? 'Aberto' : (($venda->vesituacao == 2) ? 'Finalizada' : 'Cancelada');
+      foreach($aVendas as $oVenda) {
+         $oVenda->vesituacao_nome = ($oVenda->vesituacao == 1) ? 'Aberto' : (($oVenda->vesituacao == 2) ? 'Finalizada' : 'Cancelada');
+         $oVenda->aProdutos = $this->getItensVenda($oVenda->vecodigo, false);
       }
 
       return response()->json(['aVendas' => $aVendas], 200);
@@ -140,9 +131,10 @@ class VendaController extends Controller {
    /**
     * 
     * @param mixed $iVenda
+    * @param boolean $bRetornaJson
     * @return JsonResponse|mixed
     */
-   public function getItensVenda($iVenda) {
+   public function getItensVenda($iVenda, $bRetornaJson = true) {
       $aItensVenda = ItemVenda::where('vecodigo', '=', $iVenda)->with('produto', 'venda')->get();
 
       if($aItensVenda->isEmpty()) {
@@ -160,11 +152,15 @@ class VendaController extends Controller {
             'sValor'       => $item->produto->provalor ?? '',      // Supondo relacionamento com Produto
             'sDesconto'    => $item->produto->provalor_desconto ?? '',
             'sValorTotal'  => ($item->produto->provalor * $item->ivquantidade) - $item->produto->provalor_desconto ?? ''
-        ];
-    });
+         ];
+      });
 
-      return response()->json([
-         'aItensVenda' => $aItensTratados
-      ], 200); 
+      if($bRetornaJson) {
+         return response()->json([
+            'aItensVenda' => $aItensTratados
+         ], 200); 
+      }
+
+      return $aItensTratados;
    }
 }

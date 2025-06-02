@@ -2,7 +2,7 @@
    <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden">
       <Consulta sTitulo='Vendas' :bMostraBotao="false">
          <template #gridConsulta>
-            <GridVendas v-if="aVendas" :aVendas="aVendas" @showModal="showModal"/>
+            <GridVendas v-if="aVendas" :aVendas="aVendas" @showModal="showModal" @showModalDevolucao="showModalDevolucao"/>
          </template>
       </Consulta>
       <Modal v-if="bShowModal">
@@ -12,6 +12,7 @@
             <button @click="() => bShowModal = false" class="text-white cursor-pointer p-2 bg-red-500 rounded-sm w-1/2">Não</button>
          </div>
       </Modal>
+      <ModalDevolucao v-if="bExibirModalDevolucao" :aProdutos="aProdutos" @fecharModalDevolucao="() => {aProdutos.value = []; bExibirModalDevolucao = false}" />
    </div>
 </template>
 
@@ -26,23 +27,18 @@ import GridVendas from '../components/GridVendas.vue';
 import { onMounted, ref } from 'vue';
 import api from '../api';
 import { useAtendimentoStore } from '../stores/atendimentoStore';
+import ModalDevolucao from '@/components/UI/ModalDevolucao.vue';
 //#endregion
 
-const oVenda = ref({
-   iVenda:        '',
-   sNome:           '',
-   sCpf:            '',
-   sDataNascimento: '',
-   sTelefone:       '',
-   sEndereco:       ''
-});
-const sTextoModal      = ref('');
-const iVenda           = ref();
-const bShowModal       = ref(false);
-const oVendaStore      = useAtendimentoStore();
-const iVendaExclusao   = ref(null);
-const iAcaoAtual       = ref(0);
-const aVendas          = ref();
+const sTextoModal           = ref('');
+const iVenda                = ref();
+const bShowModal            = ref(false);
+const bExibirModalDevolucao = ref(false);
+const oVendaStore           = useAtendimentoStore();
+const iVendaExclusao        = ref(null);
+const iAcaoAtual            = ref(0);
+const aVendas               = ref();
+const aProdutos             = ref([]);
 
 onMounted(async () => {
    aVendas.value = await oVendaStore.getVendas();
@@ -56,6 +52,11 @@ function showModal(iAcao, iCodigo) {
    iVenda.value = iCodigo;
 
    bShowModal.value = true;
+}
+
+function showModalDevolucao(oVenda) {
+   bExibirModalDevolucao.value = true;
+   aProdutos.value = oVenda.aProdutos;
 }
 
 async function finalizarVenda() {
