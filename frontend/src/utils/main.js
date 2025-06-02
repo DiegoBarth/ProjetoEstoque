@@ -151,12 +151,16 @@ export function formatarData(sValor, bFormatoBr = true) {
    return format(parseISO(sValor), 'dd/MM/yyyy');
 }
 
-export function formatarDataHora(dataHoraStr) {
-  const [sData, sHora] = dataHoraStr.split(' ');
-  
-  const [sAno, sMes, sDia] = sData.split('-');
-  
-  return `${sDia}/${sMes}/${sAno} ${sHora}`;
+export function formatarDataHora(sDataHoraStr) {
+   if(!sDataHoraStr) {
+      return
+   }
+
+   const [sData, sHora] = sDataHoraStr.split(' ');
+   
+   const [sAno, sMes, sDia] = sData.split('-');
+   
+   return `${sDia}/${sMes}/${sAno} ${sHora}`;
 }
 
 export function converterParaMoeda(sValor) {

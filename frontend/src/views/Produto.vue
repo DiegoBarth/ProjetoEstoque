@@ -52,10 +52,7 @@ onMounted(async () => {
    aProdutos.value = await oProdutoStore.getProdutos();
 });
 
-async function adicionarProduto(oDados) {
-   console.log(parseFloat(oDados.fDesconto), parseFloat(oDados.fValorVenda))
-   console.log(oDados.fDesconto, oDados.fValorVenda)
-   console.log(utils.normalizarValor(oDados.fDesconto), utils.normalizarValor(oDados.fValorVenda))
+async function adicionarProduto(oDados) {      
    if(utils.normalizarValor(oDados.fDesconto) > utils.normalizarValor(oDados.fValorVenda)) {
       return utils.alerta('O valor de desconto não pode ser maior que o valor de venda', 'error')
    }
@@ -69,6 +66,10 @@ async function adicionarProduto(oDados) {
 }
 
 async function atualizarProduto(oDados, iProduto) {
+   if(utils.normalizarValor(oDados.fDesconto) > utils.normalizarValor(oDados.fValorVenda)) {
+      return utils.alerta('O valor de desconto não pode ser maior que o valor de venda', 'error')
+   }
+
    if(utils.validarCamposObrigatorios()) {
       await oProdutoStore.atualizarProduto(iProduto, tratarDadosProduto(oDados));
       utils.alerta('Produto alterado com sucesso');
