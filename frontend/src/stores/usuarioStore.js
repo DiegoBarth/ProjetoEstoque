@@ -52,9 +52,7 @@ export const useUsuarioStore = defineStore('Usuario', {
       },
       async cadastrarUsuario(payload) {
          try {
-            const { data } = await api.post('/api/usuario', {
-               ...payload
-            });
+            const { data } = await api.post('/api/usuario', payload);
 
             return data;
          }
@@ -64,9 +62,7 @@ export const useUsuarioStore = defineStore('Usuario', {
       },
       async atualizarUsuario(iUsuario, oDados) {
          try {
-            const { data } = await api.put(`/api/usuario/${iUsuario}`, {
-               ...oDados
-            });
+            const { data } = await api.put(`/api/usuario/${iUsuario}`, oDados);
 
             return data;
          }
