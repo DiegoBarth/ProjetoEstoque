@@ -37,7 +37,7 @@
 <script setup>
 import Modal from './Modal.vue'
 import Consulta from './Consulta.vue';
-import * as utils from '../../utils/main';
+import * as utils from '../utils/main';
 import Botao from '../UI/Botao.vue';
 
 defineEmits(['fecharModalDevolucao', 'confirmarDevolucao']);
