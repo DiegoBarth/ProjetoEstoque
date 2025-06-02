@@ -120,7 +120,7 @@ class UsuarioController extends Controller {
     * @throws ValidationException
     */
    public function atualizar(Request $oRequest, $iCodigo) {
-      $oUsuario = $this->getUsuarioOuRetornaMensagemUsuarioNaoEncontrado($iCodigo);
+      $oUsuario = $this->getUsuarioOuRetornaMensagemUsuarioNaoEncontrado($iCodigo, false);
 
       $aValidacao = $oRequest->validate([
          'usunome'         => 'sometimes|string|max:100',
@@ -129,7 +129,7 @@ class UsuarioController extends Controller {
          'ususenha'        => 'sometimes|string|min:6',
          'usuativo'        => 'sometimes|boolean'
       ]);
-
+      
       if(isset($aValidacao['ususenha'])) {
          $aValidacao['ususenha'] = bcrypt($aValidacao['ususenha']);
       }
