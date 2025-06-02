@@ -26,7 +26,7 @@ import { onMounted, ref } from 'vue';
 import api from '../api';
 import { useClienteStore } from '../stores/clienteStore';
 import { format, parseISO } from 'date-fns';
-import { formatarCPF, formatarData, formatarTelefone } from '../utils/main';
+import { formatarCPF, formatarData, formatarTelefone, isDataMaiorAtual } from '../utils/main';
 //#endregion
 
 const oCliente = ref({
@@ -49,6 +49,10 @@ onMounted(async () => {
 });
 
 async function adicionarCliente(oDados) {
+   if(isDataMaiorAtual(oDados.sDataNascimento)) {
+      return utils.alerta('A data de nascimento não pode ser maior que a data atual', 'error');
+   }
+
    if(utils.validarCamposObrigatorios()) {
       await oClienteStore.cadastrarCliente(formatarDadosCliente(oDados));
       utils.alerta('Cliente cadastrado com sucesso!');
@@ -58,17 +62,19 @@ async function adicionarCliente(oDados) {
 }
 
 async function atualizarCliente(oDados, iCliente) {
+   if(isDataMaiorAtual(oDados.sDataNascimento)) {
+      return utils.alerta('A data de nascimento não pode ser maior que a data atual', 'error');
+   }
+
    if(utils.validarCamposObrigatorios()) {
-      await oClienteStore.atualizarCliente(iCliente, formatarDadosCliente(oDados));
-      utils.alerta('Cliente alterado com sucesso!');
+      await oClienteStore.atualizarCliente(iCliente, formatarDadosCliente(oDados));      
       bShowModal.value = false;
       recarregarGrid();
    }
 }
 
 async function excluirCliente() {
-   await oClienteStore.excluirCliente(iClienteExclusao.value);
-   utils.alerta('Cliente excluído com sucesso!');
+   await oClienteStore.excluirCliente(iClienteExclusao.value);   
    iClienteExclusao.value = null;
    recarregarGrid();
 }

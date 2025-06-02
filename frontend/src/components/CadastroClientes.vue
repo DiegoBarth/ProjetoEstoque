@@ -16,7 +16,7 @@ import { formatarCPF, formatarTelefone, limparCampos } from '../utils/main'
 import { onBeforeMount, onMounted } from 'vue';
 
 const oProps = defineProps(['iAcaoAtual', 'oCliente']);
-defineEmits(['adicionarProduto', 'atualizarProduto', 'fecharModal']);
+defineEmits(['adicionarCliente', 'atualizarCliente', 'fecharModal']);
 
 onMounted(() => {
     if(oProps.iAcaoAtual == 1) {

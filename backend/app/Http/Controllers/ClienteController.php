@@ -79,7 +79,7 @@ class ClienteController extends Controller {
          'cliendereco'        => $aValidacao['cliendereco'],
       ]);
 
-      return response()->json(['oCliente' => $oCliente], 201);
+      return response()->json(['oCliente' => $oCliente, 'sMensagem' => 'Cliente cadastrado com sucesso.'], 201);
    }
 
    /**
@@ -101,12 +101,12 @@ class ClienteController extends Controller {
          'clicpf'             => "required|string|max:11|unique:clientes,clicpf,$iCliente,clicodigo",
          'clidata_nascimento' => 'string|max:150',
          'clitelefone'        => 'string|max:11',
-         'cliendereco'        => 'string'
+         'cliendereco'        => 'nullable|string'
       ]);
 
       $oCliente->update($aValidacao);
 
-      return response()->json(['oCliente' => $oCliente], 201);
+      return response()->json(['oCliente' => $oCliente, 'sMensagem' => "Cliente {$iCliente} - {$oCliente->clinome} alterado com sucesso."], 201);
    }
 
    /**

@@ -134,7 +134,7 @@ export function validarCamposObrigatorios() {
    return bCamposPreenchidos;
 }
 
-export function formatarData(sValor) {
+export function formatarData(sValor, bFormatoBr = true) {
    if(!sValor) {
       return null;
    }
@@ -144,6 +144,10 @@ export function formatarData(sValor) {
       return '';
    }
    
+   if(!bFormatoBr) {
+      return format(parseISO(sValor), 'yyyy-MM-dd');
+   }
+
    return format(parseISO(sValor), 'dd/MM/yyyy');
 }
 
@@ -180,4 +184,14 @@ export function normalizarValor(sValor) {
 
    const valor = parseFloat(sValor.replace(',', '.').replace(/[^\d\.]/g, ''));
    return isNaN(valor) ? null : valor.toFixed(2);
+}
+
+export function isDataMaiorAtual(sData) {
+   const oDataAtual = new Date();
+   const oData      = new Date(sData);   
+
+   oDataAtual.setHours(0, 0, 0, 0);
+   oData.setUTCHours(0, 0, 0, 0);
+
+   return oData.getTime() > oDataAtual.getTime();
 }
