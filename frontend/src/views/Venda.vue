@@ -27,7 +27,7 @@ import GridVendas from '../components/GridVendas.vue';
 import { onMounted, ref } from 'vue';
 import api from '../api';
 import { useAtendimentoStore } from '../stores/atendimentoStore';
-import ModalDevolucao from '@/components/UI/ModalDevolucao.vue';
+import ModalDevolucao from '@/components/ModalDevolucao.vue';
 //#endregion
 
 const sTextoModal           = ref('');
