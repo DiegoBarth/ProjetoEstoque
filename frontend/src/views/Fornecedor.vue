@@ -22,7 +22,7 @@ import CadastroFornecedores from '../components/CadastroFornecedores.vue';
 import { onMounted, ref } from 'vue';
 import { useFornecedorStore } from '../stores/fornecedorStore';
 import { format, parseISO } from 'date-fns';
-import { formatarCPFCNPJ, formatarTelefone, formatarData } from '../utils/main';
+import { formatarCPFCNPJ, formatarTelefone, formatarData, isDataMaiorAtual } from '../utils/main';
 // #endregion
 
 const oFornecedorStore = useFornecedorStore();
@@ -47,6 +47,10 @@ onMounted(async () => {
 })
 
 async function adicionarFornecedor(oDados) {
+   if(isDataMaiorAtual(oDados.sDataFundacao)) {
+      return utils.alerta('A data de fundação não pode ser maior que a data atual.', 'error')
+   }
+
    if(utils.validarCamposObrigatorios()) {
       await oFornecedorStore.cadastrarFornecedor(tratarDadosFornecedor(oDados));
       utils.alerta('Fornecedor cadastrado com sucesso');
@@ -56,6 +60,10 @@ async function adicionarFornecedor(oDados) {
 }
 
 async function atualizarFornecedor(oDados, iFornecedor) {
+   if(isDataMaiorAtual(oDados.sDataFundacao)) {
+      return utils.alerta('A data de fundação não pode ser maior que a data atual.', 'error')
+   }
+
    if(utils.validarCamposObrigatorios()) {
       await oFornecedorStore.atualizarFornecedor(iFornecedor, tratarDadosFornecedor(oDados));
       utils.alerta('Fornecedor alterado com sucesso');
@@ -84,7 +92,7 @@ function showModalCadastro(iAcao, oFornecedorSelecionado) {
          sTelefone:     formatarTelefone(oFornecedorSelecionado.fortelefone),
          sEmail:        oFornecedorSelecionado.foremail,
          sEndereco:     oFornecedorSelecionado.forendereco,
-         sDataFundacao: formatarData(oFornecedorSelecionado.fordata_fundacao)
+         sDataFundacao: formatarData(oFornecedorSelecionado.fordata_fundacao, false)
       };            
    }  
 }
