@@ -60,8 +60,8 @@ async function adicionarUsuario(oDados) {
 }
 
 async function atualizarUsuario(oDados, iUsuario) {
-   if(utils.validarCamposObrigatorios()) {
-      await oUsuarioStore.atualizarUsuario(iUsuario, oDados);
+   if(utils.validarCamposObrigatorios()) {      
+      await oUsuarioStore.atualizarUsuario(iUsuario, tratarDadosUsuario(oDados));
       utils.alerta('Usuário alterado com sucesso');
       recarregarGrid();
       bShowModal.value = false;
@@ -80,12 +80,15 @@ function showModalCadastro(iAcao, oUsuarioSelecionado) {
    iAcaoAtual.value = iAcao;
 
    if(iAcao != 1) {        
-      oUsuario.value = {            
+      oUsuario.value = {       
+         iUsuario:     oUsuarioSelecionado.usucodigo,     
          sNome:        oUsuarioSelecionado.usunome,
          sNomeUsuario: oUsuarioSelecionado.usunome_usuario,
          iNivel:       oUsuarioSelecionado.usunivel,
+         sNivel:       oUsuarioSelecionado.sNivel,
+         sSituacao:    oUsuarioSelecionado.sSituacao,
          iAtivo:       Number(oUsuarioSelecionado.usuativo)
-      };            
+      };
    }  
 
    if(iAcao != 3) {
@@ -118,6 +121,21 @@ function tratarFiltroNiveis(aNiveis) {
    }
 
    return aFiltro;
+}
+
+function tratarDadosUsuario(oDados) {
+   return {
+      usunome: oDados.sNome,
+      usunome_usuario: oDados.sNomeUsuario,
+      usunivel: oDados.iNivel,
+      ususenha: oDados.sSenha,
+      usuativo: oDados.iAtivo
+   }
+}
+
+async function recarregarGrid() {
+   aUsuarios.value = null;
+   aUsuarios.value = await oUsuarioStore.getUsuarios();
 }
 
 </script>
