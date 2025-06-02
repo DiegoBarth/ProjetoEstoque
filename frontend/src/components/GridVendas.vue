@@ -19,6 +19,8 @@
                      class="fa-solid fa-dollar-sign p-2 px-[0.7rem] bg-green-700 rounded-sm text-white"></i></span>
                <span :class="oVenda.vesituacao == 1 ? 'cursor-pointer' : 'cursor-not-allowed'" @click="$emit('showModal', 2, oVenda.vecodigo)"><i
                      class="fa fa-xmark p-2 px-2.5 bg-red-500 rounded-sm text-white"></i></span>
+               <span class="cursor-pointer" @click="$emit('showModalDevolucao', oVenda)"><i
+                     class="fa fa-undo p-2 px-2.5 bg-blue-500 rounded-sm text-white"></i></span>
             </td>
          </tr>
       </Grid>   
@@ -35,7 +37,7 @@ const oAtendimentoStore = useAtendimentoStore();
 const router = useRouter();
 
 defineProps(['aVendas']);
-defineEmits(['showModal'])
+defineEmits(['showModal', 'showModalDevolucao'])
 
 async function visualizarVenda(oDados) {   
    const aItensVenda = await oAtendimentoStore.getItensVenda(oDados.vecodigo);
