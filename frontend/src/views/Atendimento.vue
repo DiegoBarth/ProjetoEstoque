@@ -193,7 +193,7 @@ function desabilitarCampos() {
 
 async function onChangeCodigoProduto() {
    if(!oProduto.value.iProduto) {
-      resetarProduto();
+      return resetarProduto();
    }
 
    try {
@@ -294,9 +294,13 @@ function selecionarSugestao(sSugestao) {
       oProduto.value = {
          iProduto      : oResultadoProduto.iProduto,
          sNome         : oResultadoProduto.sNome,
+         iQuantidade   : 1,
+         iEstoque      : oResultadoProduto.iQuantidade,
          fValorVenda   : oResultadoProduto.fValorVenda,
          fDesconto     : oResultadoProduto.fDesconto
       };
+
+      iEstoque = oResultadoProduto.iQuantidade;
    }
    else {
       resetarProduto();
