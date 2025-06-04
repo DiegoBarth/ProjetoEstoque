@@ -64,9 +64,9 @@
                      <td class="p-2">{{ produto.iProduto }}</td>
                      <td class="p-2">{{ produto.sNome }}</td>
                      <td class="p-2">{{ produto.iQuantidade }}</td>
-                     <td class="p-2">{{ produto.sValor }}</td>
-                     <td class="p-2">{{ produto.sDesconto }}</td>
-                     <td class="p-2">{{ produto.sValorTotal }}</td>
+                     <td class="p-2">{{ utils.converterParaMoeda(parseFloat(produto.sValor).toFixed(2)) }}</td>
+                     <td class="p-2">{{ utils.converterParaMoeda(parseFloat(produto.sDesconto).toFixed(2)) }}</td>
+                     <td class="p-2">{{ utils.converterParaMoeda(parseFloat(produto.sValorTotal).toFixed(2)) }}</td>
                      <td class="p-2 flex gap-2">
                         <span v-if="!bGridBloqueado" class="cursor-pointer"><i
                               class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white" @click="alterarProdutoGrid(produto)"></i></span>
@@ -170,7 +170,7 @@ onMounted(async () => {
          iFormaPagamento: oDadosAtendimento.value.forma_pagamento.fpcodigo,
          fValorTotal:     utils.converterParaMoeda(oDadosAtendimento.value.vevalor_total),
          fDesconto:       utils.converterParaMoeda(oDadosAtendimento.value.vedesconto),
-         fValorFinal:     utils.converterParaMoeda(oDadosAtendimento.value.vevalor_total - oDadosAtendimento.value.vedesconto),
+         fValorFinal:     utils.converterParaMoeda(parseFloat(oDadosAtendimento.value.vevalor_total - oDadosAtendimento.value.vedesconto).toFixed(2)),
          iNumeroParcelas: oDadosAtendimento.value.venumero_parcelas
       };
       aProdutos.value = oDadosAtendimento.value.aProdutos;
