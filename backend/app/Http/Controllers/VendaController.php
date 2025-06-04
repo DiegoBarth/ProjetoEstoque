@@ -147,11 +147,11 @@ class VendaController extends Controller {
       $aItensTratados = $aItensVenda->map(function ($item) {
         return [
             'iProduto'     => $item->procodigo ?? '',
-            'sNome'        => $item->produto->pronome ?? '',         // Supondo relacionamento com Produto
+            'sNome'        => $item->produto->pronome ?? '',
             'iQuantidade'  => $item->ivquantidade ?? '',
-            'sValor'       => $item->produto->provalor ?? '',      // Supondo relacionamento com Produto
-            'sDesconto'    => $item->produto->provalor_desconto ?? '',
-            'sValorTotal'  => ($item->produto->provalor * $item->ivquantidade) - $item->produto->provalor_desconto ?? ''
+            'sValor'       => $item->ivpreco_unitario ?? '',
+            'sDesconto'    => (($item->ivquantidade * $item->ivpreco_unitario) - $item->ivsubtotal) / $item->ivquantidade  ?? '',
+            'sValorTotal'  => $item->ivsubtotal
          ];
       });
 

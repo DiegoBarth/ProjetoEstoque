@@ -129,6 +129,14 @@ class UsuarioController extends Controller {
          'ususenha'        => 'sometimes|string|min:6',
          'usuativo'        => 'sometimes|boolean'
       ]);
+
+      if($aValidacao['usunivel'] != 1 || $aValidacao['usuativo'] != 1) {
+         $xRetorno = $this->validaUsuarioAdmin($iCodigo);
+
+         if($xRetorno) {
+            return response()->json(['sMensagem' => $xRetorno], 500);      
+         }
+      }
       
       if(isset($aValidacao['ususenha'])) {
          $aValidacao['ususenha'] = bcrypt($aValidacao['ususenha']);
@@ -148,9 +156,27 @@ class UsuarioController extends Controller {
       $oUsuario     = $this->getUsuarioOuRetornaMensagemUsuarioNaoEncontrado($iCodigo);
       $sNomeUsuario = $oUsuario->usunome_usuario;
 
+      $xRetorno = $this->validaUsuarioAdmin($iCodigo);
+
+      if($xRetorno) {
+         return response()->json(['sMensagem' => $xRetorno], 500);
+      }
+
       $oUsuario->delete();
 
       return response()->json(['sMensagem' => "Usuário {$iCodigo} - {$sNomeUsuario} excluído com sucesso"], 200);
+   }
+
+   private function validaUsuarioAdmin($iCodigo) {      
+      $oUsuario = Usuario::where('usucodigo', '<>', $iCodigo)
+         ->where('usunivel', 1)
+         ->get();
+
+      if($oUsuario->isEmpty()) {
+         return "Não é possível realizar a ação, pois este é o único usuário 'Administrador'";
+      }      
+
+      return false;
    }
 
    /**
