@@ -22,7 +22,7 @@ import CadastroFornecedores from '../components/CadastroFornecedores.vue';
 import { onMounted, ref } from 'vue';
 import { useFornecedorStore } from '../stores/fornecedorStore';
 import { format, parseISO } from 'date-fns';
-import { formatarCPFCNPJ, formatarTelefone, formatarData, isDataMaiorAtual } from '../utils/main';
+import { formatarCPFCNPJ, formatarTelefone, formatarData, isDataMaiorAtual, limparCampos } from '../utils/main';
 // #endregion
 
 const oFornecedorStore = useFornecedorStore();
@@ -55,7 +55,7 @@ async function adicionarFornecedor(oDados) {
       await oFornecedorStore.cadastrarFornecedor(tratarDadosFornecedor(oDados));
       utils.alerta('Fornecedor cadastrado com sucesso');
       recarregarGrid();
-      bShowModal.value = false;
+      limparCampos();      
    }
 }
 

@@ -52,10 +52,10 @@ onMounted(async () => {
 
 async function adicionarUsuario(oDados) {
    if(utils.validarCamposObrigatorios()) {
-      await oUsuarioStore.cadastrarUsuario(oDados);
+      await oUsuarioStore.cadastrarUsuario(tratarDadosUsuario(oDados));
       utils.alerta('Usuário cadastrado com sucesso');
       recarregarGrid();
-      bShowModal.value = false;
+      utils.limparCampos();
    }
 }
 
@@ -98,13 +98,7 @@ function showModalCadastro(iAcao, oUsuarioSelecionado) {
    }
 }
 
-function showModalExclusao(iCodigo) {
- const bUsuarioAdministrador = aUsuarios.value.find(oUsuario => oUsuario.usucodigo === iCodigo && oUsuario.usunivel === 1);
-
-   if(bUsuarioAdministrador) {
-      return utils.alerta('Não é possível excluir o usuário administrador', 'error');
-   }
-   
+function showModalExclusao(iCodigo) { 
    iUsuarioExclusao.value = iCodigo;
 }
 

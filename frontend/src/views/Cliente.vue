@@ -26,7 +26,7 @@ import { onMounted, ref } from 'vue';
 import api from '../api';
 import { useClienteStore } from '../stores/clienteStore';
 import { format, parseISO } from 'date-fns';
-import { formatarCPF, formatarData, formatarTelefone, isDataMaiorAtual } from '../utils/main';
+import { formatarCPF, formatarData, formatarTelefone, isDataMaiorAtual, limparCampos } from '../utils/main';
 //#endregion
 
 const oCliente = ref({
@@ -55,9 +55,9 @@ async function adicionarCliente(oDados) {
 
    if(utils.validarCamposObrigatorios()) {
       await oClienteStore.cadastrarCliente(formatarDadosCliente(oDados));
-      utils.alerta('Cliente cadastrado com sucesso!');
-      bShowModal.value = false;
+      utils.alerta('Cliente cadastrado com sucesso!');      
       recarregarGrid();
+      limparCampos();
    }
 }
 
