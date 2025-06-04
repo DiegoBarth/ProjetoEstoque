@@ -61,7 +61,7 @@ async function adicionarProduto(oDados) {
       await oProdutoStore.cadastrarProduto(tratarDadosProduto(oDados));
       utils.alerta('Produto cadastrado com sucesso');
       recarregarGrid();
-      bShowModal.value = false;
+      utils.limparCampos();      
    }
 }
 
