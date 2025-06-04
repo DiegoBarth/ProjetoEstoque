@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Venda;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
@@ -124,9 +125,29 @@ class ClienteController extends Controller {
 
       $sNomeCliente = $oCliente->clinome;
 
+      $xRetorno = $this->validaVendasPendentes($iCliente);
+
+      if($xRetorno) {
+         return response()->json(['sMensagem' => $xRetorno], 404);   
+      }
+
       $oCliente->delete();
 
       return response()->json(['sMensagem' => "Cliente {$iCliente} - $sNomeCliente excluído com sucesso."], 200);
+   }
+
+   private function validaVendasPendentes($iCliente) {
+      $aVendas = Venda::where([
+         "clicodigo"  => $iCliente,
+         "vesituacao" => 1
+      ])
+      ->count();
+
+      if($aVendas) {
+         return "O cliente não pode ser excluído, pois tem vendas pendentes";
+      }
+
+      return false;
    }
 
 }
