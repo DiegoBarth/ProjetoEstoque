@@ -98,7 +98,7 @@
             <div class="mb-4">
                <Campo v-model="oVenda.fValorFinal" sTipo="text" :bObrigatorio="false" :bDesabilitado="true" sTitulo="Valor total"/>
             </div>
-            <Botao @click="finalizarVenda" sTexto="Finalizar Venda" sTipo="text" sId="botao_finalizar_venda" sLargura="w-full" sClasses="py-2 px-4 rounded mt-auto"/>
+            <Botao v-if="!oDadosAtendimento" @click="finalizarVenda" sTexto="Finalizar Venda" sTipo="text" sId="botao_finalizar_venda" sLargura="w-full" sClasses="py-2 px-4 rounded mt-auto"/>
          </div>
       </div>
    </div>
