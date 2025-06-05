@@ -10,7 +10,7 @@
                <td class="p-2">{{ utils.converterParaMoeda(oProduto.sValor) }}</td>
                <td class="p-2">{{ utils.converterParaMoeda(parseFloat(oProduto.sDesconto).toFixed(2)) }}</td>
                <td class="p-2">{{ utils.converterParaMoeda(oProduto.sValorTotal) }}</td>
-               <td class="p-2"><Campo class="text-right" @change="printDevolucoes" v-model="aDevolucoes[iIndice]" sTipo="number" :max="oProduto.iQuantidade" min="0" :bObrigatorio="false" /></td>
+               <td class="p-2"><Campo class="text-right" v-model="aDevolucoes[iIndice]" sTipo="number" :max="oProduto.iQuantidade" min="0" :bObrigatorio="false" /></td>
             </tr>
          </Grid>         
       </div>
@@ -32,9 +32,5 @@ defineEmits(['fecharModalDevolucao', 'confirmarDevolucao']);
 defineProps(['aProdutos']);
 
 const aDevolucoes = ref([]);
-
-function printDevolucoes() {
-   console.log(aDevolucoes.value)
-}
 
 </script>
