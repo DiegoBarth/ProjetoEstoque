@@ -15,7 +15,8 @@ class ItemVenda extends Model {
       'procodigo',
       'ivquantidade',
       'ivpreco_unitario',
-      'ivsubtotal',
+      'ivdesconto',
+      'ivsubtotal'
    ];
 
    public function venda() {

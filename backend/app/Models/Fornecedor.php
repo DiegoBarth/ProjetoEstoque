@@ -13,6 +13,7 @@ class Fornecedor extends Model {
    protected $fillable = [
       'forrazao_social',
       'fornome_fantasia',
+      'forinscricao_estadual',
       'forcpfcnpj',
       'fortelefone',
       'foremail',

@@ -9,8 +9,9 @@ return new class extends Migration {
    public function up(): void {
       Schema::create('fornecedores', function (Blueprint $table) {
          $table->id('forcodigo');
-         $table->string('forrazao_social', 150);
-         $table->string('fornome_fantasia', 150)->nullable();
+         $table->string('forrazao_social', 150)->nullable();
+         $table->string('fornome_fantasia', 150);
+         $table->integer('forinscricao_estadual', 14)->nullable();
          $table->string('forcpfcnpj', 14)->unique();
          $table->string('fortelefone', 11)->nullable();
          $table->string('foremail', 30)->nullable();
