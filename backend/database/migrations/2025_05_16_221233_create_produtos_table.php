@@ -17,6 +17,7 @@ return new class extends Migration {
          $table->decimal('provalor_desconto', 10, 2)->nullable();
          $table->integer('proestoque');
          $table->timestamp('prodata_hora_cadastro')->default(now()->format('d/m/Y H:i:s'));
+         $table->integer('proestoque_minimo_ideal')->nullable();
       });
    }
 

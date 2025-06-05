@@ -13,6 +13,7 @@ return new class extends Migration {
          $table->foreignId('procodigo')->constrained('produtos', 'procodigo');
          $table->smallInteger('ivquantidade');
          $table->decimal('ivpreco_unitario', 10, 2);
+         $table->decimal('ivdesconto', 10, 2)->nullable();
          $table->decimal('ivsubtotal', 10, 2);
       });
    }
