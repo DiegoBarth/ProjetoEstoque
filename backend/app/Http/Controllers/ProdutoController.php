@@ -89,7 +89,7 @@ class ProdutoController extends Controller {
          'proestoque_minimo_ideal' => $aValidacao['iEstoqueMinimoIdeal']
       ]);         
 
-      return response()->json(['oProduto' => $oProduto], 201);
+      return response()->json(['oProduto' => $oProduto, 'sMensagem' => 'Produto cadastrado com sucesso.'], 201);
    }
 
    /**
@@ -98,7 +98,8 @@ class ProdutoController extends Controller {
     * @throws ValidationException
     */
    public function atualizar(Request $oRequest, $iCodigo) {
-      $oProduto = $this->getProdutoOuRetornaMensagemProdutoNaoEncontrado($iCodigo);
+      $oProduto     = $this->getProdutoOuRetornaMensagemProdutoNaoEncontrado($iCodigo);
+      $sNomeProduto = $oProduto->pronome;
 
       $aValidacao = $oRequest->validate([
          'sNome'               => 'sometimes|required|string|max:50',
@@ -122,7 +123,7 @@ class ProdutoController extends Controller {
          'proestoque_minimo_ideal' => $aValidacao['iEstoqueMinimoIdeal']
       ]);
 
-      return response()->json(['oProduto' => $oProduto], 200);
+      return response()->json(['sMensagem' => "Produto {$iCodigo} - {$sNomeProduto} alterado com sucesso"], 200);
    }
 
    /**

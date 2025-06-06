@@ -54,7 +54,6 @@ async function adicionarFornecedor(oDados) {
 
    if(utils.validarCamposObrigatorios()) {
       await oFornecedorStore.cadastrarFornecedor(tratarDadosFornecedor(oDados));
-      utils.alerta('Fornecedor cadastrado com sucesso');
       recarregarGrid();
       limparCampos();      
    }
@@ -67,7 +66,6 @@ async function atualizarFornecedor(oDados, iFornecedor) {
 
    if(utils.validarCamposObrigatorios()) {
       await oFornecedorStore.atualizarFornecedor(iFornecedor, tratarDadosFornecedor(oDados));
-      utils.alerta('Fornecedor alterado com sucesso');
       recarregarGrid();
       bShowModal.value = false;
    }
@@ -75,7 +73,6 @@ async function atualizarFornecedor(oDados, iFornecedor) {
 
 async function excluirFornecedor(iFornecedor) {
    await oFornecedorStore.excluirFornecedor(iFornecedorExclusao.value);
-   utils.alerta('Fornecedor excluído com sucesso!');
    recarregarGrid();
    iFornecedorExclusao.value = null;
 }

@@ -60,7 +60,6 @@ async function adicionarProduto(oDados) {
 
    if(utils.validarCamposObrigatorios()) {
       await oProdutoStore.cadastrarProduto(tratarDadosProduto(oDados));
-      utils.alerta('Produto cadastrado com sucesso');
       recarregarGrid();
       utils.limparCampos();      
    }
@@ -73,7 +72,6 @@ async function atualizarProduto(oDados, iProduto) {
 
    if(utils.validarCamposObrigatorios()) {
       await oProdutoStore.atualizarProduto(iProduto, tratarDadosProduto(oDados));
-      utils.alerta('Produto alterado com sucesso');
       recarregarGrid();
       bShowModal.value = false;
    }
@@ -81,7 +79,6 @@ async function atualizarProduto(oDados, iProduto) {
 
 async function excluirProduto(iProduto) {
    await oProdutoStore.excluirProduto(iProdutoExclusao.value);
-   utils.alerta('Produto excluído com sucesso!');
    recarregarGrid();
    iProdutoExclusao.value = null;
 }

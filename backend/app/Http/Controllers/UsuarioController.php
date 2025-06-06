@@ -112,7 +112,7 @@ class UsuarioController extends Controller {
          'usudata_hora_criacao' => now()->format('d/m/Y H:i:s')
       ]);
 
-      return response()->json(['oUsuario' => $oUsuario], 201);
+      return response()->json(['oUsuario' => $oUsuario, 'sMensagem' => 'Usuário cadastrado com sucesso.'], 201);
    }
 
    /**
@@ -145,7 +145,7 @@ class UsuarioController extends Controller {
 
       $oUsuario->update($aValidacao);
 
-      return response()->json(['oUsuario' => $oUsuario], 200);
+      return response()->json(['oUsuario' => $oUsuario, 'sMensagem' => "Usuário {$iCodigo} - {$oUsuario->usunome} alterado com sucesso."], 201);
    }
 
    /**

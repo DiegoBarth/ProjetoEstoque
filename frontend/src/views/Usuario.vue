@@ -16,7 +16,6 @@
 <script setup>
 
 //#region Componentes
-import ModalCadastro from '../components/UI/ModalCadastro.vue';
 import ModalExclusao from '../components/UI/ModalExclusao.vue';
 import Consulta from '../components/UI/Consulta.vue';
 import GridUsuarios from '../components/GridUsuarios.vue';
@@ -24,8 +23,7 @@ import CadastroUsuarios from '../components/CadastroUsuarios.vue';
 //#endregion
 
 //#region Dependências
-import { onMounted, ref, toRaw } from 'vue';
-import api from '../api';
+import { onMounted, ref } from 'vue';
 import { useUsuarioStore } from '../stores/usuarioStore';
 import * as utils from '../utils/main';
 //#endregion
@@ -53,7 +51,6 @@ onMounted(async () => {
 async function adicionarUsuario(oDados) {
    if(utils.validarCamposObrigatorios()) {
       await oUsuarioStore.cadastrarUsuario(tratarDadosUsuario(oDados));
-      utils.alerta('Usuário cadastrado com sucesso');
       recarregarGrid();
       utils.limparCampos();
    }
@@ -62,7 +59,6 @@ async function adicionarUsuario(oDados) {
 async function atualizarUsuario(oDados, iUsuario) {
    if(utils.validarCamposObrigatorios()) {      
       await oUsuarioStore.atualizarUsuario(iUsuario, tratarDadosUsuario(oDados));
-      utils.alerta('Usuário alterado com sucesso');
       recarregarGrid();
       bShowModal.value = false;
    }
@@ -70,7 +66,6 @@ async function atualizarUsuario(oDados, iUsuario) {
 
 async function excluirUsuario(iUsuario) {
    await oUsuarioStore.excluirUsuario(iUsuarioExclusao.value);
-   utils.alerta('Usuário excluído com sucesso!');
    recarregarGrid();
    iUsuarioExclusao.value = null;
 }

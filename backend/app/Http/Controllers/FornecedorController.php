@@ -39,7 +39,7 @@ class FornecedorController extends Controller {
          'fordata_hora_criacao'  => now()->format('d/m/Y H:i:s')
       ]);
 
-      return response()->json(['oFornecedor' => $oFornecedor], 201);
+      return response()->json(['oFornecedor' => $oFornecedor, 'sMensagem' => 'Fornecedor cadastrado com sucesso.'], 201);
    }
 
    /**
@@ -108,7 +108,7 @@ class FornecedorController extends Controller {
          'fordata_fundacao'      => $aValidacao['sDataFundacao']
       ]);      
 
-      return response()->json(['oFornecedor' => $oFornecedor], 201);
+      return response()->json(['oFornecedor' => $oFornecedor, 'sMensagem' => "Fornecedor {$iFornecedor} - {$oFornecedor->fornome_fantasia} alterado com sucesso."], 201);
    }
 
    /**
@@ -124,11 +124,11 @@ class FornecedorController extends Controller {
          return response()->json(['sMensagem' => 'Fornecedor não encontrado.'], 404);
       }
 
-      $sRazaoSocial = $oFornecedor->forrazao_social;
+      $sNomeFantasia = $oFornecedor->fornome_fantasia;
 
       $oFornecedor->delete();
 
-      return response()->json(['sMensagem' => "Fornecedor {$iFornecedor} - {$sRazaoSocial} excluído com sucesso."], 200);
+      return response()->json(['sMensagem' => "Fornecedor {$iFornecedor} - {$sNomeFantasia} excluído com sucesso."], 200);
    }
 
 }
