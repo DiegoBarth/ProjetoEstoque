@@ -168,12 +168,13 @@ const oClienteCadastro = ref({
 });
 
 const oProduto = ref({
-   iProduto:    '',
-   sNome:       '',
-   iQuantidade: '',
-   iEstoque:    '',
-   fValorVenda: '',
-   fDesconto:   ''
+   iProduto:            '',
+   sNome:               '',
+   iQuantidade:         '',
+   iEstoqueMinimoIdeal: '',
+   iEstoque:            '',
+   fValorVenda:         '',
+   fDesconto:           ''
 });
 const oVenda = ref({
    iFormaPagamento: '',
@@ -255,6 +256,11 @@ async function onChangeCodigoProduto() {
 
    try {
       oProduto.value = await oProdutoStore.getProdutoByCodigo(oProduto.value.iProduto);
+
+      if(oProduto.value.iQuantidade <= oProduto.value.iEstoqueMinimoIdeal) {
+         utils.alerta(`O estoque atual do produto está igual ou menor do que o mínimo ideal de ${oProduto.value.iEstoqueMinimoIdeal} itens`, 'error');
+      }
+
       iEstoque                   = oProduto.value.iQuantidade;
       oProduto.value.iEstoque    = oProduto.value.iQuantidade;
       oProduto.value.iQuantidade = 1;
@@ -348,12 +354,13 @@ function selecionarSugestao(sSugestao) {
       oProdutoSelecionado     = oResultadoProduto;
 
       oProduto.value = {
-         iProduto      : oResultadoProduto.iProduto,
-         sNome         : oResultadoProduto.sNome,
-         iQuantidade   : 1,
-         iEstoque      : oResultadoProduto.iQuantidade,
-         fValorVenda   : oResultadoProduto.fValorVenda,
-         fDesconto     : oResultadoProduto.fDesconto
+         iProduto           : oResultadoProduto.iProduto,
+         sNome              : oResultadoProduto.sNome,
+         iQuantidade        : 1,
+         iEstoqueMinimoIdeal: oResultadoProduto.iEstoqueMinimoIdeal,
+         iEstoque           : oResultadoProduto.iQuantidade,
+         fValorVenda        : oResultadoProduto.fValorVenda,
+         fDesconto          : oResultadoProduto.fDesconto
       };
 
       iEstoque = oResultadoProduto.iQuantidade;
@@ -441,12 +448,13 @@ function resetarProduto() {
    iEstoque = 1;
 
    oProduto.value = {
-      iProduto:       '',
-      sNome:          '',
-      iQuantidade:    '',
-      iEstoque:       '',
-      fValorVenda:    '',
-      fDesconto:      ''
+      iProduto:            '',
+      sNome:               '',
+      iQuantidade:         '',
+      iEstoqueMinimoIdeal: '',
+      iEstoque:            '',
+      fValorVenda:         '',
+      fDesconto:           ''
    };
 }
 
