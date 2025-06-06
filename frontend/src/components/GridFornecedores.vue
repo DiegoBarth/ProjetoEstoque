@@ -1,13 +1,14 @@
 <template>
    <div class="div-principal-grid w-full px-30">
       <Grid v-if="aFornecedores" class="mt-10 text-left"
-         :aCabecalhos="['Fornecedor', 'Razão Social', 'Nome Fantasia', 'CPF/CNPJ', 'Telefone', 'Ações']"
-         sLayout="0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 0.6fr">
+         :aCabecalhos="['Fornecedor', 'Nome Fantasia', 'CPF/CNPJ', 'Razão Social', 'Inscrição Estadual', 'Telefone', 'Ações']"
+         sLayout="0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.6fr">
          <tr v-for="(oFornecedor, iIndice) of aFornecedores" :key="iIndice">
             <td class="p-2">{{ oFornecedor.forcodigo }}</td>
-            <td class="p-2">{{ oFornecedor.forrazao_social }}</td>
             <td class="p-2">{{ oFornecedor.fornome_fantasia }}</td>
             <td class="p-2">{{ formatarCPFCNPJ(oFornecedor.forcpfcnpj) }}</td>
+            <td class="p-2">{{ oFornecedor.forrazao_social }}</td>
+            <td class="p-2">{{ oFornecedor.forinscricao_estadual }}</td>
             <td class="p-2">{{ formatarTelefone(oFornecedor.fortelefone) }}</td>            
             <td class="p-2 flex gap-2">
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 3, oFornecedor)"><i

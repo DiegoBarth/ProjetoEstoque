@@ -32,14 +32,15 @@ const iAcaoAtual = ref(0);
 const bShowModal = ref(false);
 const aFornecedores = ref();
 const oFornecedor = ref({
-   iFornecedor:   '',
-   sRazaoSocial:  '',
-   sNomeFantasia: '',
-   sCpfCnpj:      '',
-   sTelefone:     '',
-   sEmail:        '',
-   sEndereco:     '',
-   sDataFundacao: ''
+   iFornecedor:        '',
+   sRazaoSocial:       '',
+   sNomeFantasia:      '',
+   sInscricaoEstadual: '',
+   sCpfCnpj:           '',
+   sTelefone:          '',
+   sEmail:             '',
+   sEndereco:          '',
+   sDataFundacao:      ''
 });
 
 onMounted(async () => {
@@ -85,14 +86,15 @@ function showModalCadastro(iAcao, oFornecedorSelecionado) {
 
    if(iAcao != 1) {        
       oFornecedor.value = {            
-         iFornecedor:   oFornecedorSelecionado.forcodigo,
-         sRazaoSocial:  oFornecedorSelecionado.forrazao_social,
-         sNomeFantasia: oFornecedorSelecionado.fornome_fantasia,
-         sCpfCnpj:      formatarCPFCNPJ(oFornecedorSelecionado.forcpfcnpj),
-         sTelefone:     formatarTelefone(oFornecedorSelecionado.fortelefone),
-         sEmail:        oFornecedorSelecionado.foremail,
-         sEndereco:     oFornecedorSelecionado.forendereco,
-         sDataFundacao: formatarData(oFornecedorSelecionado.fordata_fundacao, false)
+         iFornecedor:        oFornecedorSelecionado.forcodigo,
+         sRazaoSocial:       oFornecedorSelecionado.forrazao_social,
+         sNomeFantasia:      oFornecedorSelecionado.fornome_fantasia,
+         sInscricaoEstadual: oFornecedorSelecionado.forinscricao_estadual,
+         sCpfCnpj:           formatarCPFCNPJ(oFornecedorSelecionado.forcpfcnpj),
+         sTelefone:          formatarTelefone(oFornecedorSelecionado.fortelefone),
+         sEmail:             oFornecedorSelecionado.foremail,
+         sEndereco:          oFornecedorSelecionado.forendereco,
+         sDataFundacao:      formatarData(oFornecedorSelecionado.fordata_fundacao, false)
       };            
    }  
 }
@@ -108,14 +110,15 @@ async function recarregarGrid() {
 
 function tratarDadosFornecedor(oDados) {
    return {
-      iFornecedor:   oDados.iFornecedor,
-      sRazaoSocial:  oDados.sRazaoSocial,
-      sNomeFantasia: oDados.sNomeFantasia,
-      sCpfCnpj:      oDados.sCpfCnpj.replace(/\D/g, ''),
-      sTelefone:     oDados.sTelefone.replace(/\D/g, ''),
-      sEmail:        oDados.sEmail,
-      sEndereco:     oDados.sEndereco,
-      sDataFundacao: oDados.sDataFundacao
+      iFornecedor:        oDados.iFornecedor,
+      sRazaoSocial:       oDados.sRazaoSocial,
+      sNomeFantasia:      oDados.sNomeFantasia,
+      sInscricaoEstadual: oDados.sInscricaoEstadual,
+      sCpfCnpj:           oDados.sCpfCnpj.replace(/\D/g, ''),
+      sTelefone:          oDados.sTelefone.replace(/\D/g, ''),
+      sEmail:             oDados.sEmail,
+      sEndereco:          oDados.sEndereco,
+      sDataFundacao:      oDados.sDataFundacao
    }
 }
 

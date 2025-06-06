@@ -17,24 +17,26 @@ class FornecedorController extends Controller {
     */
    public function salvar(Request $oRequest) {
       $aValidacao = $oRequest->validate([
-         'sRazaoSocial'  => 'required|string|max:150',
-         'sNomeFantasia' => 'string|max:150',
-         'sCpfCnpj'      => 'required|string|max:14|min:11|unique:fornecedores,forcpfcnpj',
-         'sTelefone'     => 'string|max:11',
-         'sEmail'        => 'nullable|string|max:30',
-         'sEndereco'     => 'nullable|string',
-         'sDataFundacao' => 'nullable|date|before_or_equal:today'
+         'sRazaoSocial'       => 'nullable|string|max:150',
+         'sNomeFantasia'      => 'required|string|max:150',
+         'sInscricaoEstadual' => 'nullable|string|max:14',
+         'sCpfCnpj'           => 'required|string|max:14|min:11|unique:fornecedores,forcpfcnpj',
+         'sTelefone'          => 'string|max:11',
+         'sEmail'             => 'nullable|string|max:30',
+         'sEndereco'          => 'nullable|string',
+         'sDataFundacao'      => 'nullable|date|before_or_equal:today'
       ]);
 
       $oFornecedor = Fornecedor::create([
-         'forrazao_social'      => $aValidacao['sRazaoSocial'],
-         'fornome_fantasia'     => $aValidacao['sNomeFantasia'],
-         'forcpfcnpj'           => $aValidacao['sCpfCnpj'],
-         'fortelefone'          => $aValidacao['sTelefone'],
-         'foremail'             => $aValidacao['sEmail'],
-         'forendereco'          => $aValidacao['sEndereco'],
-         'fordata_fundacao'     => $aValidacao['sDataFundacao'],
-         'fordata_hora_criacao' => now()->format('d/m/Y H:i:s')
+         'forrazao_social'       => $aValidacao['sRazaoSocial'],
+         'fornome_fantasia'      => $aValidacao['sNomeFantasia'],
+         'forinscricao_estadual' => $aValidacao['sInscricaoEstadual'],
+         'forcpfcnpj'            => $aValidacao['sCpfCnpj'],
+         'fortelefone'           => $aValidacao['sTelefone'],
+         'foremail'              => $aValidacao['sEmail'],
+         'forendereco'           => $aValidacao['sEndereco'],
+         'fordata_fundacao'      => $aValidacao['sDataFundacao'],
+         'fordata_hora_criacao'  => now()->format('d/m/Y H:i:s')
       ]);
 
       return response()->json(['oFornecedor' => $oFornecedor], 201);
@@ -85,23 +87,25 @@ class FornecedorController extends Controller {
       }
 
       $aValidacao = $oRequest->validate([
-         'sRazaoSocial'  => 'required|string|max:150',
-         'sNomeFantasia' => 'string|max:150',
-         'sCpfCnpj'      => "required|string|max:14|min:11|unique:fornecedores,forcpfcnpj,$iFornecedor,forcodigo",
-         'sTelefone'     => 'string|max:11',
-         'sEmail'        => 'nullable|string|max:30',
-         'sEndereco'     => 'nullable|string',
-         'sDataFundacao' => 'nullable|date|before_or_equal:today'
+         'sRazaoSocial'       => 'nullable|string|max:150',
+         'sNomeFantasia'      => 'required|string|max:150',
+         'sInscricaoEstadual' => 'nullable|string|max:14',
+         'sCpfCnpj'           => "required|string|max:14|min:11|unique:fornecedores,forcpfcnpj,$iFornecedor,forcodigo",
+         'sTelefone'          => 'string|max:11',
+         'sEmail'             => 'nullable|string|max:30',
+         'sEndereco'          => 'nullable|string',
+         'sDataFundacao'      => 'nullable|date|before_or_equal:today'
       ]);
 
       $oFornecedor->update([
-         'forrazao_social'  => $aValidacao['sRazaoSocial'],
-         'fornome_fantasia' => $aValidacao['sNomeFantasia'],
-         'forcpfcnpj'       => $aValidacao['sCpfCnpj'],
-         'fortelefone'      => $aValidacao['sTelefone'],
-         'foremail'         => $aValidacao['sEmail'],
-         'forendereco'      => $aValidacao['sEndereco'],
-         'fordata_fundacao' => $aValidacao['sDataFundacao']
+         'forrazao_social'       => $aValidacao['sRazaoSocial'],
+         'fornome_fantasia'      => $aValidacao['sNomeFantasia'],
+         'forinscricao_estadual' => $aValidacao['sInscricaoEstadual'],
+         'forcpfcnpj'            => $aValidacao['sCpfCnpj'],
+         'fortelefone'           => $aValidacao['sTelefone'],
+         'foremail'              => $aValidacao['sEmail'],
+         'forendereco'           => $aValidacao['sEndereco'],
+         'fordata_fundacao'      => $aValidacao['sDataFundacao']
       ]);      
 
       return response()->json(['oFornecedor' => $oFornecedor], 201);
