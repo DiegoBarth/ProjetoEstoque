@@ -29,15 +29,16 @@ import * as utils from '../utils/main';
 //#endregion
 
 const oProduto = ref({
-iProduto: '',
-sNome: '',
-sCodigoBarras: '',
-iQuantidade: '',
-fValorCompra: '',
-fValorVenda: '',
-fDesconto: '',
-iFornecedor: '',
-sFornecedor: ''
+   iProduto:            '',
+   sNome:               '',
+   sCodigoBarras:       '',
+   iQuantidade:         '',
+   iEstoqueMinimoIdeal: '',
+   fValorCompra:        '',
+   fValorVenda:         '',
+   fDesconto:           '',
+   iFornecedor:         '',
+   sFornecedor:         ''
 });
 
 const oProdutoStore = useProdutoStore();
@@ -91,15 +92,16 @@ async function showModalCadastro(iAcao, oProdutoSelecionado) {
 
    if(iAcao != 1) {
       oProduto.value = {
-            iProduto:      oProdutoSelecionado.iProduto,
-            sNome:         oProdutoSelecionado.sNome,
-            sCodigoBarras: oProdutoSelecionado.sCodigoBarras,
-            iQuantidade:   oProdutoSelecionado.iQuantidade,
-            fValorCompra:  oProdutoSelecionado.fValorCompra,
-            fValorVenda:   oProdutoSelecionado.fValorVenda,
-            fDesconto:     oProdutoSelecionado.fDesconto,
-            iFornecedor:   oProdutoSelecionado.iFornecedor,
-            sFornecedor:   oProdutoSelecionado.sFornecedor
+            iProduto:            oProdutoSelecionado.iProduto,
+            sNome:               oProdutoSelecionado.sNome,
+            sCodigoBarras:       oProdutoSelecionado.sCodigoBarras,
+            iQuantidade:         oProdutoSelecionado.iQuantidade,
+            iEstoqueMinimoIdeal: oProdutoSelecionado.iEstoqueMinimoIdeal,
+            fValorCompra:        oProdutoSelecionado.fValorCompra,
+            fValorVenda:         oProdutoSelecionado.fValorVenda,
+            fDesconto:           oProdutoSelecionado.fDesconto,
+            iFornecedor:         oProdutoSelecionado.iFornecedor,
+            sFornecedor:         oProdutoSelecionado.sFornecedor
       };
    }
 
@@ -107,7 +109,7 @@ async function showModalCadastro(iAcao, oProdutoSelecionado) {
       oFornecedorStore.getFornecedores().then((oRetorno) => {
          aFornecedores.value = tratarFiltroFornecedores(oRetorno);
       });
-}
+   }
 }
 
 function showModalExclusao(iCodigo) {
@@ -131,13 +133,14 @@ function tratarFiltroFornecedores(aFornecedores) {
 
 function tratarDadosProduto(oDados) {   
    return {        
-      sNome:          oDados.sNome,
-      sCodigoBarras:  oDados.sCodigoBarras,
-      iQuantidade:    oDados.iQuantidade,
-      fValorCompra:   utils.normalizarValor(oDados.fValorCompra),
-      fValorVenda:    utils.normalizarValor(oDados.fValorVenda),
-      fDesconto:      utils.normalizarValor(oDados.fDesconto),
-      iFornecedor:    oDados.iFornecedor
+      sNome:               oDados.sNome,
+      sCodigoBarras:       oDados.sCodigoBarras,
+      iQuantidade:         oDados.iQuantidade,
+      iEstoqueMinimoIdeal: oDados.iEstoqueMinimoIdeal,
+      fValorCompra:        utils.normalizarValor(oDados.fValorCompra),
+      fValorVenda:         utils.normalizarValor(oDados.fValorVenda),
+      fDesconto:           utils.normalizarValor(oDados.fDesconto),
+      iFornecedor:         oDados.iFornecedor
    };   
 }
 

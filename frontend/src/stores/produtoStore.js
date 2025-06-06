@@ -9,15 +9,16 @@ export const useProdutoStore = defineStore('Produto', {
    actions: {
       _formatarProduto(oProduto) {
          return {
-            iProduto     : oProduto.procodigo,
-            sNome        : oProduto.pronome,
-            sCodigoBarras: oProduto.procodigo_barras,
-            iFornecedor  : oProduto.forcodigo,
-            fValorCompra : utils.converterParaMoeda(oProduto.procusto),
-            fValorVenda  : utils.converterParaMoeda(oProduto.provalor),
-            fDesconto    : utils.converterParaMoeda(oProduto.provalor_desconto),
-            iQuantidade  : oProduto.proestoque,
-            sFornecedor  : oProduto.forrazao_social
+            iProduto           : oProduto.procodigo,
+            sNome              : oProduto.pronome,
+            sCodigoBarras      : oProduto.procodigo_barras,
+            iFornecedor        : oProduto.forcodigo,
+            fValorCompra       : utils.converterParaMoeda(oProduto.procusto),
+            fValorVenda        : utils.converterParaMoeda(oProduto.provalor),
+            fDesconto          : utils.converterParaMoeda(oProduto.provalor_desconto),
+            iQuantidade        : oProduto.proestoque,
+            iEstoqueMinimoIdeal: oProduto.proestoque_minimo_ideal,
+            sFornecedor        : oProduto.forrazao_social
          };
       },
       async getProdutos() {
