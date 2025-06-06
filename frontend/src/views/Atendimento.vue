@@ -31,7 +31,7 @@
             <i class="icone-cabecalho fas fa-user mr-2"></i> Cliente
          </div>
          <div class="p-4 w-full" style="overflow: auto; height: calc(100% - 47px);">
-            <Campo class="w-1/2" sTipo="text" maxlength="14" :bObrigatorio="false" sTitulo="CPF" v-model="sCpf" @change="onChangeCPF" @input="utils.formatarCPF($event.target)"/>
+            <Campo class="w-1/2" sTipo="text" maxlength="14" :bObrigatorio="true" sTitulo="CPF" v-model="sCpf" @change="onChangeCPF" @input="utils.formatarCPF($event.target)"/>
             <div v-if="oCliente.sNome" class="w-full mt-4 space-y-6 text-sm text-gray-700">
                <div class="flex gap-4">
                   <p class="w-1/2"><strong style="font-weight: bold;">Nome:</strong> {{ oCliente.sNome }}</p>
@@ -223,7 +223,6 @@ async function onChangeCPF() {
          };
       }
       catch(e) {
-         console.error('Erro ao buscar cliente', e);
          resetarCliente();
       }
    }
@@ -271,8 +270,7 @@ function filtrarSugestoes() {
 
          aProdutosFiltrados = aProdutos;
       }
-      catch (error) {
-         console.error('Erro ao buscar sugestões:', error);
+      catch(error) {
          aSugestoesFiltradas.value = [];
       }
    }, 1500);
@@ -319,6 +317,10 @@ function ocultarSugestoes() {
 
 async function finalizarVenda() {
    if(utils.validarCamposObrigatorios()) {
+      if(!sCpf.value) {
+         return utils.alerta('É obrigatório informar um cliente.', 'error');
+      }
+
       if(!aProdutos.value.length) {
          return utils.alerta('Para finalizar a venda é necessário inserir ao menos um produto.', 'error');
       }
