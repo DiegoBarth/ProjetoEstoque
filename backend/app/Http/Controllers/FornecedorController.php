@@ -27,13 +27,14 @@ class FornecedorController extends Controller {
       ]);
 
       $oFornecedor = Fornecedor::create([
-         'forrazao_social'  => $aValidacao['sRazaoSocial'],
-         'fornome_fantasia' => $aValidacao['sNomeFantasia'],
-         'forcpfcnpj'       => $aValidacao['sCpfCnpj'],
-         'fortelefone'      => $aValidacao['sTelefone'],
-         'foremail'         => $aValidacao['sEmail'],
-         'forendereco'      => $aValidacao['sEndereco'],
-         'fordata_fundacao' => $aValidacao['sDataFundacao']
+         'forrazao_social'      => $aValidacao['sRazaoSocial'],
+         'fornome_fantasia'     => $aValidacao['sNomeFantasia'],
+         'forcpfcnpj'           => $aValidacao['sCpfCnpj'],
+         'fortelefone'          => $aValidacao['sTelefone'],
+         'foremail'             => $aValidacao['sEmail'],
+         'forendereco'          => $aValidacao['sEndereco'],
+         'fordata_fundacao'     => $aValidacao['sDataFundacao'],
+         'fordata_hora_criacao' => now()->format('d/m/Y H:i:s')
       ]);
 
       return response()->json(['oFornecedor' => $oFornecedor], 201);

@@ -77,13 +77,14 @@ class ProdutoController extends Controller {
       ]);            
 
       $oProduto = Produto::create([
-         'pronome'           => $aValidacao['sNome'],
-         'procodigo_barras'  => $aValidacao['sCodigoBarras'],
-         'forcodigo'         => $aValidacao['iFornecedor'],
-         'procusto'          => $aValidacao['fValorCompra'],
-         'provalor'          => $aValidacao['fValorVenda'],
-         'provalor_desconto' => $aValidacao['fDesconto'] ?: null,
-         'proestoque'        => $aValidacao['iQuantidade']
+         'pronome'               => $aValidacao['sNome'],
+         'procodigo_barras'      => $aValidacao['sCodigoBarras'],
+         'forcodigo'             => $aValidacao['iFornecedor'],
+         'procusto'              => $aValidacao['fValorCompra'],
+         'provalor'              => $aValidacao['fValorVenda'],
+         'provalor_desconto'     => $aValidacao['fDesconto'] ?: null,
+         'proestoque'            => $aValidacao['iQuantidade'],
+         'prodata_hora_cadastro' => now()->format('d/m/Y H:i:s')
       ]);         
 
       return response()->json(['oProduto' => $oProduto], 201);

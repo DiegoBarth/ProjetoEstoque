@@ -73,11 +73,12 @@ class ClienteController extends Controller {
       ]);
 
       $oCliente = Cliente::create([
-         'clinome'            => $aValidacao['clinome'],
-         'clicpf'             => $aValidacao['clicpf'],
-         'clidata_nascimento' => $aValidacao['clidata_nascimento'],
-         'clitelefone'        => $aValidacao['clitelefone'],
-         'cliendereco'        => $aValidacao['cliendereco'],
+         'clinome'              => $aValidacao['clinome'],
+         'clicpf'               => $aValidacao['clicpf'],
+         'clidata_nascimento'   => $aValidacao['clidata_nascimento'],
+         'clitelefone'          => $aValidacao['clitelefone'],
+         'cliendereco'          => $aValidacao['cliendereco'],
+         'clidata_hora_criacao' => now()->format('d/m/Y H:i:s')
       ]);
 
       return response()->json(['oCliente' => $oCliente, 'sMensagem' => 'Cliente cadastrado com sucesso.'], 201);

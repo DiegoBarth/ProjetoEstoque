@@ -12,7 +12,7 @@ return new class extends Migration {
          $table->string('clinome', 100);
          $table->string('clicpf', 11);
          $table->date('clidata_nascimento');
-         $table->timestamp('clidata_hora_criacao')->default(now()->format('d/m/Y H:i:s'));
+         $table->timestamp('clidata_hora_criacao');
          $table->string('clitelefone', 11)->nullable();
          $table->text('cliendereco')->nullable();
       });

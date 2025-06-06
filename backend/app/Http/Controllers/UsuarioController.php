@@ -104,11 +104,12 @@ class UsuarioController extends Controller {
       ]);
 
       $oUsuario = Usuario::create([
-         'usunome'         => $aValidacao['usunome'],
-         'usunome_usuario' => $aValidacao['usunome_usuario'],
-         'usunivel'        => $aValidacao['usunivel'],
-         'ususenha'        => bcrypt($aValidacao['ususenha']),
-         'usuativo'        => $aValidacao['usuativo'] ?? true
+         'usunome'              => $aValidacao['usunome'],
+         'usunome_usuario'      => $aValidacao['usunome_usuario'],
+         'usunivel'             => $aValidacao['usunivel'],
+         'ususenha'             => bcrypt($aValidacao['ususenha']),
+         'usuativo'             => $aValidacao['usuativo'] ?? true,
+         'usudata_hora_criacao' => now()->format('d/m/Y H:i:s')
       ]);
 
       return response()->json(['oUsuario' => $oUsuario], 201);
