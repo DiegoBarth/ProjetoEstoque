@@ -42,7 +42,7 @@ export const useClienteStore = defineStore('Cliente', {
                ...oDados
             });
 
-            return !!data;
+            return data;
          }
          catch(error) {
             throw(error)

@@ -14,7 +14,6 @@
 
 <script setup>
 //#region Componentes
-import ModalCadastro from '../components/UI/ModalCadastro.vue';
 import ModalExclusao from '../components/UI/ModalExclusao.vue';
 import Consulta from '../components/UI/Consulta.vue';
 import GridClientes from '../components/GridClientes.vue';

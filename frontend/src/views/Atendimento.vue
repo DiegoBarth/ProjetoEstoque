@@ -102,10 +102,19 @@
          </div>
       </div>
    </div>
+   <CadastroClientes v-if="bShowModalCadastro" @fecharModal="() => bShowModalCadastro = false" @adicionarCliente="adicionarCliente"
+      :oCliente="oClienteCadastro" :iAcaoAtual="1" />
+   <Modal v-if="bShowModal">
+      <h1 class="text-xl mb-4">O cliente não foi encontrado, deseja realizar o cadastro?</h1>
+      <div class="flex items-center gap-4 w-2/5">
+         <button @click="() => {bShowModalCadastro = true; bShowModal = false}" class="text-white cursor-pointer p-2 bg-green-500 rounded-sm w-1/2">Sim</button>
+         <button @click="bShowModal = false" class="text-white cursor-pointer p-2 bg-red-500 rounded-sm w-1/2">Não</button>
+      </div>
+   </Modal>
 </template>
 
 <script setup>
-import { ref, watch, onMounted, computed, onUnmounted  } from 'vue'
+import { ref, onMounted, computed, onUnmounted  } from 'vue'
 import { useClienteStore } from '../stores/clienteStore';
 import { useProdutoStore } from '../stores/produtoStore';
 import { useAtendimentoStore } from '../stores/atendimentoStore';
@@ -113,6 +122,8 @@ import Botao from '../components/UI/Botao.vue';
 import Campo from '../components/UI/Campo.vue';
 import * as utils from "../utils/main.js";
 import Cookies from 'js-cookie';
+import CadastroClientes from '../components/CadastroClientes.vue';
+import Modal from '.././components/UI/Modal.vue';
 
 const oProdutoStore       = useProdutoStore();
 const oClienteStore       = useClienteStore();
@@ -122,6 +133,8 @@ const bMostrarSugestoes   = ref(false);
 const aSugestoesFiltradas = ref([]);
 const aFormasPagamento    = ref([]);
 const aProdutos           = ref([]);
+const bShowModal          = ref(false);
+const bShowModalCadastro  = ref(false);
 let bGridBloqueado        = ref(false)
 let bBotaoVisivel         = ref(true);
 let debounceTimeout       = null;
@@ -144,6 +157,16 @@ const oCliente = ref({
    sTelefone:       '',
    sDataNascimento: ''
 });
+
+const oClienteCadastro = ref({
+   iCliente:        '',
+   sNome:           '',
+   sCpf:            '',
+   sDataNascimento: '',
+   sTelefone:       '',
+   sEndereco:       ''
+});
+
 const oProduto = ref({
    iProduto:    '',
    sNome:       '',
@@ -185,6 +208,40 @@ onUnmounted(() => {
    oAtendimentoStore.setDadosVenda(null);
 })
 
+async function adicionarCliente(oDados) {
+   if(utils.isDataMaiorAtual(oDados.sDataNascimento)) {
+      return utils.alerta('A data de nascimento não pode ser maior que a data atual', 'error');
+   }
+
+   if(utils.validarCamposObrigatorios()) {
+      const oRetorno = await oClienteStore.cadastrarCliente(formatarDadosCliente(oDados));
+
+      if(oRetorno?.oCliente) {
+         sCpf.value = utils.formatarCPF(oRetorno.oCliente.clicpf);
+         oCliente.value = {
+            iCodigo:         oRetorno.oCliente.clicodigo,
+            sNome:           oRetorno.oCliente.clinome,
+            sEndereco:       oRetorno.oCliente.cliendereco,
+            sTelefone:       utils.formatarTelefone(oRetorno.oCliente.clitelefone),
+            sDataNascimento: utils.formatarData(oRetorno.oCliente.clidata_nascimento)
+         };
+      }
+
+      bShowModalCadastro.value = false;
+      utils.limparCampos();
+   }
+}
+
+function formatarDadosCliente(oDados) {
+   return {
+      clinome:            oDados.sNome,
+      clicpf:             oDados.sCpf.replace(/\D/g, ''),
+      clidata_nascimento: oDados.sDataNascimento,
+      clitelefone:        oDados.sTelefone.replace(/\D/g, ''),
+      cliendereco:        oDados.sEndereco
+   };
+}
+
 function desabilitarCampos() {
    setTimeout(() => {
       $('input, select, button').attr('disabled', true);
@@ -223,6 +280,7 @@ async function onChangeCPF() {
          };
       }
       catch(e) {
+         bShowModal.value = true;
          resetarCliente();
       }
    }

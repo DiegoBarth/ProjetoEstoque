@@ -51,7 +51,7 @@ class ClienteController extends Controller {
       $oCliente = Cliente::where('clicpf', $sCPF)->first();
 
       if(!$oCliente) {
-         return response()->json(['sMensagem' => 'Cliente não encontrado.'], 404);
+         return response()->json('Cliente não encontrado.', 404);
       }
 
       return response()->json(['oCliente' => $oCliente], 200);
