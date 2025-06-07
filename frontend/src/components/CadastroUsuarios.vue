@@ -5,7 +5,7 @@
         <Campo :disabled="iAcaoAtual == 3" sTipo="text"   :bObrigatorio="true" sTitulo="Nome de Usuário" v-model="oUsuario.sNomeUsuario"/>
         <Campo v-if="iAcaoAtual != 3" sTipo="select" :bObrigatorio="true" sTitulo="Nível de acesso" v-model="oUsuario.iNivel" :aOpcoes="aOpcoes"/>        
         <Campo v-else disabled sTipo="text" :bObrigatorio="true"  sTitulo="Nível de acesso" v-model="oUsuario.sNivel" />
-        <Campo v-if="iAcaoAtual != 3" sTipo="select" :bObrigatorio="true" sTitulo="Situação"        v-model="oUsuario.iAtivo" :aOpcoes="[{iValor: 1, sDescricao: 'Ativo'}, {iValor: 0, sDescricao: 'Inativo'}]"/>
+        <Campo v-if="iAcaoAtual != 3" sTipo="select" :bObrigatorio="true" :disabled="iAcaoAtual == 1" sTitulo="Situação"        v-model="oUsuario.iAtivo" :aOpcoes="[{iValor: 1, sDescricao: 'Ativo'}, {iValor: 0, sDescricao: 'Inativo'}]"/>
         <Campo v-else :disabled="iAcaoAtual == 3" sTipo="text" :bObrigatorio="true" sTitulo="Situação" v-model="oUsuario.sSituacao"/>
         <Campo v-if="iAcaoAtual != 3" sTipo="text"   :bObrigatorio="iAcaoAtual == 1" sTitulo="Senha"   v-model="oUsuario.sSenha"/>
       </div>            
@@ -23,6 +23,7 @@ defineEmits(['adicionarUsuario', 'atualizarUsuario', 'fecharModal']);
 onMounted(() => {   
    if(oProps.iAcaoAtual == 1) {
       limparCampos();
+      oProps.oUsuario.iAtivo = 1;
    }
 });
 </script>
