@@ -54,7 +54,6 @@ async function adicionarCliente(oDados) {
 
    if(utils.validarCamposObrigatorios()) {
       await oClienteStore.cadastrarCliente(formatarDadosCliente(oDados));
-      utils.alerta('Cliente cadastrado com sucesso!');      
       recarregarGrid();
       limparCampos();
    }
