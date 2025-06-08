@@ -88,6 +88,7 @@ function showModalCadastro(iAcao, oUsuarioSelecionado) {
 
    if(iAcao != 3) {
       oUsuarioStore.getNiveisUsuario().then((oRetorno) => {
+      console.log("Salvando a streak Xd!")
          aNiveis.value = tratarFiltroNiveis(oRetorno);
       });
    }
