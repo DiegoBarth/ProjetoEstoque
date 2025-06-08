@@ -64,9 +64,9 @@
                      <td class="p-2">{{ produto.iProduto }}</td>
                      <td class="p-2">{{ produto.sNome }}</td>
                      <td class="p-2">{{ produto.iQuantidade }}</td>
-                     <td class="p-2">{{ utils.converterParaMoeda(parseFloat(produto.sValor).toFixed(2)) }}</td>
-                     <td class="p-2">{{ utils.converterParaMoeda(parseFloat(produto.sDesconto).toFixed(2)) }}</td>
-                     <td class="p-2">{{ utils.converterParaMoeda(parseFloat(produto.sValorTotal).toFixed(2)) }}</td>
+                     <td class="p-2">{{ produto.sValor }}</td>
+                     <td class="p-2">{{ produto.sDesconto }}</td>
+                     <td class="p-2">{{ produto.sValorTotal }}</td>
                      <td class="p-2 flex gap-2">
                         <span v-if="!bGridBloqueado" class="cursor-pointer"><i
                               class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white" @click="alterarProdutoGrid(produto)"></i></span>
@@ -199,6 +199,7 @@ onMounted(async () => {
       };
       aProdutos.value = oDadosAtendimento.value.aProdutos;
       sCpf.value = utils.formatarCPF(oDadosAtendimento.value.cliente.clicpf);
+      tratarDadosProdutos();
       onChangeCPF();
       bGridBloqueado.value = true;
       desabilitarCampos();
@@ -422,6 +423,16 @@ function tratarProdutoGrid(oProduto) {
       iQuantidade   : oProduto.iQuantidade,
       fValorVenda   : parseFloat(utils.normalizarValor(oProduto.fValorVenda)),
       fValorTotal   : parseFloat(utils.normalizarValor(oProduto.sValorTotal))
+   }
+}
+
+function tratarDadosProdutos() {
+   if(aProdutos.value.length > 0) {
+      for(let oProduto of aProdutos.value) {
+         oProduto.sValor = utils.converterParaMoeda(parseFloat(oProduto.sValor).toFixed(2));
+         oProduto.sDesconto = utils.converterParaMoeda(parseFloat(oProduto.sDesconto).toFixed(2));
+         oProduto.sValorTotal = utils.converterParaMoeda(parseFloat(oProduto.sValorTotal).toFixed(2));
+      }
    }
 }
 
