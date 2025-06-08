@@ -50,6 +50,9 @@ onMounted(async () => {
 
 async function adicionarUsuario(oDados) {
    if(utils.validarCamposObrigatorios()) {
+      if(oDados.sSenha.length < 6) {
+         return utils.alerta("A senha deve ter no mínimo 6 caracteres.", "error");
+      }      
       await oUsuarioStore.cadastrarUsuario(tratarDadosUsuario(oDados));
       recarregarGrid();
       utils.limparCampos();
@@ -58,6 +61,9 @@ async function adicionarUsuario(oDados) {
 
 async function atualizarUsuario(oDados, iUsuario) {
    if(utils.validarCamposObrigatorios()) {      
+      if(oDados.sSenha && oDados.sSenha.length < 6) {
+         return utils.alerta("A senha deve ter no mínimo 6 caracteres.", "error");
+      }
       await oUsuarioStore.atualizarUsuario(iUsuario, tratarDadosUsuario(oDados));
       recarregarGrid();
       bShowModal.value = false;
@@ -88,7 +94,6 @@ function showModalCadastro(iAcao, oUsuarioSelecionado) {
 
    if(iAcao != 3) {
       oUsuarioStore.getNiveisUsuario().then((oRetorno) => {
-      console.log("Salvando a streak Xd!")
          aNiveis.value = tratarFiltroNiveis(oRetorno);
       });
    }
