@@ -8,8 +8,8 @@ class CreateMetasUsuariosTable extends Migration {
    public function up() {
       Schema::create('metas_usuarios', function (Blueprint $table) {
          $table->id('mucodigo');
-         $table->foreignId('mecodigo')->constrained('metas')->onDelete('cascade');
-         $table->foreignId('usucodigo')->constrained('usuarios')->onDelete('cascade');
+         $table->foreignId('mecodigo')->constrained('metas', 'mecodigo');
+         $table->foreignId('usucodigo')->constrained('usuarios', 'usucodigo');
       });
    }
 

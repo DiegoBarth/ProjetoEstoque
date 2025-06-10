@@ -8,9 +8,8 @@ class CreateMetasProdutosTable extends Migration {
    public function up() {
       Schema::create('metas_produtos', function (Blueprint $table) {
          $table->id('mpcodigo');
-         $table->foreignId('mecodigo')->constrained('metas')->onDelete('cascade');
-         $table->foreignId('prododigo')->constrained('produtos')->onDelete('cascade');
-         $table->timestamps();
+         $table->foreignId('mecodigo')->constrained('metas', 'mecodigo');
+         $table->foreignId('prododigo')->constrained('produtos', 'procodigo');
       });
    }
 
