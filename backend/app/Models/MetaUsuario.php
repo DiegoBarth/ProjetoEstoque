@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MetaUsuario extends Model {
    protected $table = 'metas_usuarios';
    protected $primaryKey = 'mucodigo';
+   public $timestamps = false;
 
    protected $fillable = [
       'mecodigo',

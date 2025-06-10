@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MetaController;
 use App\Http\Controllers\VendaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
@@ -58,6 +59,18 @@ Route::middleware('auth:sanctum')->group(function () {
    Route::post('/produto',              [ProdutoController::class, 'salvar']);
    Route::put('/produto/{iProduto}',    [ProdutoController::class, 'atualizar']);
    Route::delete('/produto/{iProduto}', [ProdutoController::class, 'excluir']);
+});
+
+#endregion
+
+#region Rotas Metas
+
+Route::middleware('auth:sanctum')->group(function () {
+   Route::get('/meta',            [MetaController::class, 'getMetas']);
+   Route::get('/meta/{iMeta}',    [MetaController::class, 'getMetaByCodigo']);
+   Route::post('/meta',           [MetaController::class, 'salvar']);
+   Route::put('/meta/{iMeta}',    [MetaController::class, 'atualizar']);
+   Route::delete('/meta/{iMeta}', [MetaController::class, 'excluir']);
 });
 
 #endregion

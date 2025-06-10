@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class MetaProduto extends Model {
    protected $table = 'metas_produtos';
    protected $primaryKey = 'mpcodigo';
+   public $timestamps = false;
 
    protected $fillable = [
       'mecodigo',
-      'prododigo'
+      'procodigo'
    ];
 
    public function meta() {
@@ -18,7 +19,7 @@ class MetaProduto extends Model {
    }
 
    public function produto() {
-      return $this->belongsTo(Produto::class, 'prododigo');
+      return $this->belongsTo(Produto::class, 'procodigo');
    }
 
 }
