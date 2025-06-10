@@ -77,6 +77,7 @@ async function excluirUsuario(iUsuario) {
 }
 
 function showModalCadastro(iAcao, oUsuarioSelecionado) {
+   oUsuario.value = {};
    bShowModal.value = true;
    iAcaoAtual.value = iAcao;
 

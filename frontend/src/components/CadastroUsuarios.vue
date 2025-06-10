@@ -22,7 +22,6 @@ defineEmits(['adicionarUsuario', 'atualizarUsuario', 'fecharModal']);
 
 onMounted(() => {   
    if(oProps.iAcaoAtual == 1) {
-      limparCampos();
       oProps.oUsuario.iAtivo = 1;
    }
 });
