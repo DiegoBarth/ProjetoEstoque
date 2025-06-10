@@ -8,6 +8,8 @@ class Meta extends Model {
    protected $table = 'metas';
    protected $primaryKey = 'mecodigo';
 
+   public $timestamps = false;
+
    protected $fillable = [
       'medescricao',
       'metipo',
@@ -18,11 +20,11 @@ class Meta extends Model {
    ];
 
    public function usuarios() {
-      return $this->belongsToMany(Usuario::class, 'metas_usuarios', 'mecodigo', 'usucodigo');
+      return $this->hasMany(MetaUsuario::class, 'mecodigo');
    }
-
+   
    public function produtos() {
-      return $this->belongsToMany(Produto::class, 'metas_produtos', 'mecodigo', 'prododigo');
+      return $this->hasMany(MetaProduto::class, 'mecodigo');
    }
 
 }
