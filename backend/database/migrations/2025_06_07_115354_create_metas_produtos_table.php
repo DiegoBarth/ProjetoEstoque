@@ -9,7 +9,7 @@ class CreateMetasProdutosTable extends Migration {
       Schema::create('metas_produtos', function (Blueprint $table) {
          $table->id('mpcodigo');
          $table->foreignId('mecodigo')->constrained('metas', 'mecodigo');
-         $table->foreignId('prododigo')->constrained('produtos', 'procodigo');
+         $table->foreignId('procodigo')->constrained('produtos', 'procodigo');
       });
    }
 
