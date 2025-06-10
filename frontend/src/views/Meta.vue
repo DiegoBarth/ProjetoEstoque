@@ -5,7 +5,7 @@
          <GridMetas v-if="aMetas" :aMetas="aMetas"   @showModalCadastro="showModalCadastro" @showModalExclusao="showModalExclusao"/>
       </template>
    </Consulta>
-   <CadastroMetas v-if="bShowModal" @fecharModal="() => bShowModal = false" @adicionarMeta="adicionarMeta" @atualizarMeta="atualizarMeta" :oMeta="oMeta" :iAcaoAtual="iAcaoAtual" />
+   <CadastroMetas v-if="bShowModal" @fecharModal="() => bShowModal = false" @adicionarMeta="adicionarMeta" @atualizarMeta="atualizarMeta" :oMeta="oMeta" :iAcaoAtual="iAcaoAtual" :aOpcoes="aTiposMeta" />
    <ModalExclusao v-if="iMetaExclusao" @fecharModal="() => iMetaExclusao = false" @excluirRegistro="excluirMeta" />   
 </div>
 </template>
@@ -21,7 +21,7 @@ import CadastroMetas from '@/components/CadastroMetas.vue';
 // #region Dependências
 import { onMounted, ref } from 'vue';
 import { useMetaStore } from '../stores/metaStore';
-import { formatarCPFCNPJ, formatarTelefone, formatarData, isDataMaiorAtual, limparCampos, converterParaMoeda, normalizarValor } from '../utils/main';
+import { formatarData, limparCampos, converterParaMoeda, normalizarValor, validarCamposObrigatorios } from '../utils/main';
 // #endregion
 
 const oMetaStore = useMetaStore();''
@@ -44,13 +44,24 @@ const oMeta         = ref({
    iProduto:        '',
    sProduto:        ''
 });
+const aTiposMeta = [
+   { iValor: 1, sDescricao: 'Valor' },
+   { iValor: 2, sDescricao: 'Quantidade' },
+   { iValor: 3, sDescricao: 'Valor + Quantidade' },
+   { iValor: 4, sDescricao: 'Valor por Usuário' },
+   { iValor: 5, sDescricao: 'Quantidade por usuário' },
+   { iValor: 6, sDescricao: 'Valor + Quantidade por usuário' },
+   { iValor: 7, sDescricao: 'Valor por produto' },
+   { iValor: 8, sDescricao: 'Quantidade por produto' },
+   { iValor: 9, sDescricao: 'Valor + Quantidade por produto' }
+];
 
 onMounted(async () => {
    aMetas.value = await oMetaStore.getMetas();
 })
 
 async function adicionarMeta(oDados) {
-   if(utils.validarCamposObrigatorios()) {
+   if(validarCamposObrigatorios()) {
       await oMetaStore.cadastrarMeta(tratarDadosMeta(oDados));
       recarregarGrid();
       limparCampos();      
@@ -58,7 +69,7 @@ async function adicionarMeta(oDados) {
 }
 
 async function atualizarMeta(oDados, iMeta) {
-   if(utils.validarCamposObrigatorios()) {
+   if(validarCamposObrigatorios()) {
       await oMetaStore.atualizarMeta(iMeta, tratarDadosMeta(oDados));
       recarregarGrid();
       bShowModal.value = false;
@@ -83,13 +94,15 @@ function showModalCadastro(iAcao, oMetaSelecionado) {
          sTipo:           oMetaSelecionado.metipo_descricao,
          fValorMeta:      oMetaSelecionado.mevalor_meta ? converterParaMoeda(oMetaSelecionado.mevalor_meta) : null,
          iQuantidadeMeta: oMetaSelecionado.mequantidade_meta ?? null,
-         sDataInicial:    formatarData(oMetaSelecionado.medata_inicio),
-         sDataFinal:      formatarData(oMetaSelecionado.medata_fim),
+         sDataInicial:    formatarData(oMetaSelecionado.medata_inicio, false),
+         sDataFinal:      formatarData(oMetaSelecionado.medata_fim, false),
          iUsuario:        oMetaSelecionado.usucodigo,
          sUsuario:        oMetaSelecionado.usuario_descricao,
          iProduto:        oMetaSelecionado.procodigo,
          sProduto:        oMetaSelecionado.produto_descricao
       };
+
+      console.log(oMeta.value);
    }  
 }
 
