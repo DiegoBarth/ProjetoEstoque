@@ -40,6 +40,26 @@ export const useUsuarioStore = defineStore('Usuario', {
             throw (error);
          }
       },
+      async getUsuarioByCodigo(iUsuario) {
+         try {
+            const { data } = await api.get(`/api/usuario/${iUsuario}`);
+
+            return this._formatarUsuario(data.oUsuario);
+         }
+         catch (error) {
+            throw (error);
+         }
+      },
+      async getUsuarioByNome(sUsuario) {
+         try {
+            const { data } = await api.get(`/api/usuario/busca/nome?nome_usuario=${encodeURIComponent(sUsuario)}`);
+
+            return data.aUsuarios.map(this._formatarUsuario);
+         }
+         catch (error) {
+            throw (error);
+         }
+      },
       async getNiveisUsuario() {
          try {
             const { data } = await api.get('/api/usuario/busca/nivel');

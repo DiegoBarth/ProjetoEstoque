@@ -23,6 +23,8 @@ class MetaController extends Controller {
          ->leftJoin('produtos', 'produtos.procodigo', '=', 'metas_produtos.procodigo')
          ->select([
             'metas.*',
+            'usuarios.usucodigo',
+            'produtos.procodigo',
             'usuarios.usunome as usuario_descricao',
             'produtos.pronome as produto_descricao',
             DB::raw("
@@ -94,14 +96,14 @@ class MetaController extends Controller {
             'medata_fim'        => $aValidacao['sDataFinal']
          ]);
 
-         if($aValidacao['iUsuario']) {
+         if(isset($aValidacao['iUsuario'])) {
             $oMeta->usuarios()->create([
                'mecodigo'  => $oMeta->mecodigo,
                'usucodigo' => $aValidacao['iUsuario']
             ]);
          }
 
-         if($aValidacao['iProduto']) {
+         if(isset($aValidacao['iProduto'])) {
             $oMeta->produtos()->create([
                'mecodigo'  => $oMeta->mecodigo,
                'procodigo' => $aValidacao['iProduto']

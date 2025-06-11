@@ -101,8 +101,6 @@ function showModalCadastro(iAcao, oMetaSelecionado) {
          iProduto:        oMetaSelecionado.procodigo,
          sProduto:        oMetaSelecionado.produto_descricao
       };
-
-      console.log(oMeta.value);
    }  
 }
 

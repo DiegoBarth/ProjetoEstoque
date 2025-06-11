@@ -78,6 +78,24 @@ class UsuarioController extends Controller {
    }
 
    /**
+    * Busca usuários com base na descrição informada, ou informa que não foram encontrados usuários.
+    * @param Request $oRequest
+    * @return JsonResponse
+    */
+   public function getUsuarioByNome(Request $oRequest) {
+      $sUsuario  = $oRequest->query('nome_usuario');
+
+      $aUsuarios = Usuario::where('usunome', 'ILIKE', "%{$sUsuario}%")->get();
+      
+      if(!count($aUsuarios)) {
+         abort(response()->json(['sMensagem' => 'Nenhum usuário encontrado'], 404));
+      }
+
+      return response()->json(['aUsuarios' => $aUsuarios], 200);
+   }
+
+
+   /**
     * Retorna todos os níveis de usuário
     * @return JsonResponse
     * @throws ValidationException
