@@ -61,8 +61,8 @@ const aItensMenu = [
    { sTitulo: 'Fornecedores', sRota: 'Fornecedor', sGrupo: 'cadastro', bControlaVisualizacao: true,  sIcone: 'fa fa-truck' },
    { sTitulo: 'Clientes',     sRota: 'Cliente',    sGrupo: 'cadastro', bControlaVisualizacao: false, sIcone: 'fa fa-users' },
    { sTitulo: 'Produtos',     sRota: 'Produto',    sGrupo: 'cadastro', bControlaVisualizacao: true,  sIcone: 'fa fa-box' },
+   { sTitulo: 'Metas',        sRota: 'Meta',       sGrupo: 'cadastro', bControlaVisualizacao: true,  sIcone: 'fa fa-bullseye' },
    { sTitulo: 'Vendas',       sRota: 'Vendas',     sGrupo: 'gestao',   bControlaVisualizacao: false, sIcone: 'fa fa-shopping-cart' },
-   { sTitulo: 'Metas',        sRota: 'Meta',       sGrupo: 'gestao',   bControlaVisualizacao: true,  sIcone: 'fa fa-bullseye' },
    { sTitulo: 'Relatórios',   sRota: 'Relatório',  sGrupo: 'gestao',   bControlaVisualizacao: true,  sIcone: 'fa fa-file-alt' }
 ];
 
