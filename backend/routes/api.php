@@ -67,11 +67,12 @@ Route::middleware('auth:sanctum')->group(function () {
 #region Rotas Metas
 
 Route::middleware('auth:sanctum')->group(function () {
-   Route::get('/meta',            [MetaController::class, 'getMetas']);
-   Route::get('/meta/{iMeta}',    [MetaController::class, 'getMetaByCodigo']);
-   Route::post('/meta',           [MetaController::class, 'salvar']);
-   Route::put('/meta/{iMeta}',    [MetaController::class, 'atualizar']);
-   Route::delete('/meta/{iMeta}', [MetaController::class, 'excluir']);
+   Route::get('/meta',                  [MetaController::class, 'getMetas']);
+   Route::get('/meta/{iMeta}/consulta', [MetaController::class, 'consultarMeta']);
+   Route::get('/meta/{iMeta}',          [MetaController::class, 'getMetaByCodigo']);
+   Route::post('/meta',                 [MetaController::class, 'salvar']);
+   Route::put('/meta/{iMeta}',          [MetaController::class, 'atualizar']);
+   Route::delete('/meta/{iMeta}',       [MetaController::class, 'excluir']);
 });
 
 #endregion

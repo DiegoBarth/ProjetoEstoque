@@ -15,6 +15,15 @@ export const useMetaStore = defineStore('Meta', {
             throw(error);
          }
       },
+      async consultarMeta(iMeta) {
+         try {
+            const { data } = await api.get(`/api/meta/${iMeta}/consulta`);
+            return data;
+         }
+         catch(error) {
+            throw(error);
+         }
+      },
       async getMetaByCodigo(iMeta) {
          try {
             const { data } = await api.get(`/api/meta/${iMeta}`);

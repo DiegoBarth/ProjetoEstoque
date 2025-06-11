@@ -6,6 +6,7 @@ use App\Models\Meta;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Services\ConsultaMetasService;
 use Illuminate\Validation\ValidationException;
 
 class MetaController extends Controller {
@@ -49,6 +50,17 @@ class MetaController extends Controller {
       }
 
       return response()->json(['aMetas' => $aMetas], 200);
+   }
+
+   /**
+    * Retorna os dados de uma meta em específico para montar o gráfico da mesma
+    * @param integer $iMeta
+    * @return JsonResponse|mixed
+    */
+   public function consultarMeta($iMeta) {
+      $resultado = ConsultaMetasService::consultarMeta($iMeta);
+
+      return response()->json($resultado);
    }
 
    /**
