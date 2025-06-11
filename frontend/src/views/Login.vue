@@ -14,7 +14,7 @@
                <form @submit.prevent="login" class="flex flex-col items-center w-full px-4 sm:px-6">
                   <div class="texto relative w-full max-w-[280px]" style="text-align: center; height:70px; font-size:30px; font-weight: 500;">Acesso ao Sistema</div>
                   <div class="flex flex-col gap-3 w-2/3 max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-                     <Input sTipo="text" v-model="sUsuario" name="usuario" sPlaceholder="Usuário"/>
+                     <Input sTipo="text" ref="inputUsuario" v-model="sUsuario" name="usuario" sPlaceholder="Usuário"/>
                      <div class="relative w-full max-w-[280px]">
                         <Input sTipo="password" v-model="sSenha" id="senha" name="senha" sPlaceholder="Senha"/>
                         <i class="fa fa-eye absolute top-3.5 right-3 cursor-pointer" style="color: #4D4D4D;" @click="alterarCampoSenha"></i>
@@ -30,8 +30,7 @@
    </div>
 </template>
 <script setup>
-   import api from '../api';
-   import { ref } from 'vue';
+   import { ref, onMounted } from 'vue';
    import { useRouter } from 'vue-router';
    import { useUsuarioStore } from '../stores/usuarioStore';
    import Cookies from 'js-cookie';
@@ -40,9 +39,14 @@
 
    const sUsuario      = ref('');
    const sSenha        = ref('');
+   const inputUsuario  = ref(null);
    const sErro         = ref('');
    const oRouter       = useRouter();
    const oUsuarioStore = useUsuarioStore();
+
+   onMounted(() => {
+      inputUsuario.value.$el.focus();
+   });
 
    async function login() {
       sErro.value = '';
@@ -87,7 +91,7 @@
    }
 
 </script>
-<style scoped>
+<style>
 .cardLogin {
    box-shadow: 10px 0px 100px rgb(19, 19, 19);
    background-color: #E9EFF2;
