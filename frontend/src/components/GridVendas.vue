@@ -1,6 +1,6 @@
 <template>
    <div class="div-principal-grid w-full px-30">
-      <Grid v-if="aVendas" class="mt-10 text-left"
+      <Grid v-if="aVendas"
          :aCabecalhos="['Venda', 'Nome do Cliente', 'Vendedor', 'Forma de Pagamento', 'Número de parcelas', 'Desconto', 'Valor total', 'Data da venda', 'Situação', 'Ações']">
          <tr v-for="(oVenda, iIndice) of aVendas" :key="iIndice">
             <td class="p-2">{{ oVenda.vecodigo                                     }}</td>

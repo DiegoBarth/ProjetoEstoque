@@ -1,6 +1,6 @@
 <template>
    <div class="div-principal-grid w-full px-30">
-      <Grid v-if="aClientes" class="mt-10 text-left"
+      <Grid v-if="aClientes"
          :aCabecalhos="['Cliente', 'Nome do Cliente', 'CPF', 'Data de Nascimento', 'Telefone', 'Endereço', 'Ações']">
          <tr v-for="(oCliente, iIndice) of aClientes" :key="iIndice">
             <td class="p-2">{{ oCliente.clicodigo }}</td>

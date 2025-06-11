@@ -1,6 +1,6 @@
 <template>
    <div class="div-principal-grid w-full px-30">
-      <Grid v-if="aProdutos" class="mt-10 text-left"
+      <Grid v-if="aProdutos"
          :aCabecalhos="['Produto', 'Nome do Produto', 'Valor de Custo', 'Valor de Venda', 'Quantidade', 'Qtde Mínima Ideal', 'Valor de Desconto', 'Fornecedor', 'Ações']"
          sLayout="0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.6fr">
          <tr v-for="(oProduto, iIndice) of aProdutos" :key="iIndice">

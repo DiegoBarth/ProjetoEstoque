@@ -1,6 +1,6 @@
 <template>
    <div class="div-principal-grid w-full px-30">
-      <Grid v-if="aMetas" class="mt-10 text-left"
+      <Grid v-if="aMetas"
          :aCabecalhos="['Meta', 'Descrição', 'Tipo', 'Valor', 'Quantidade', 'Data inicial', 'Data final', 'Usuário', 'Produto', 'Ações']"
          sLayout="0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.6fr">
          <tr v-for="(oMeta, iIndice) of aMetas" :key="iIndice">
