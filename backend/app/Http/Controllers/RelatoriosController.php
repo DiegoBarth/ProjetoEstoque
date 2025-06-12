@@ -27,6 +27,8 @@ class RelatoriosController extends Controller {
 
         $pdf = Pdf::loadView('pdf.relatorioVendas', $dados);
 
+        //streak save
+
         return $pdf->download('relatorio.pdf');
    }
 
