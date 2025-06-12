@@ -7,6 +7,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\FornecedorController;
+use App\Http\Controllers\RelatoriosController;
 
 #region Rotas Usuário
 
@@ -89,3 +90,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 #endregion
+
+Route::get('/relatorio', [RelatoriosController::class, 'gerarRelatorioVendas']);

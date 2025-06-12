@@ -28,7 +28,7 @@
                   </div>
                </div>               
 
-               <div v-if="iTipo >= 3">
+               <div v-if="iTipo >= 3 && iTipo < 6">
                   <div class="flex gap-10">
                      <Campo class="mb-3 w-50" sTitulo="Data Inicial (Venda)" bLabel sTipo="date" />
                      <Campo class="mb-3 w-50" sTitulo="Data Final (Venda)" bLabel sTipo="date" />                                          
@@ -36,8 +36,15 @@
                   </div>                  
                   <Grid v-if="iTipo == 3" sTitulo="Produtos" :aCabecalhos="['', 'Produto', 'Nome do Produto']" :bDataTable="false" />
                   <Grid v-if="iTipo == 4" sTitulo="Usuário (Vendedor)" :aCabecalhos="['', 'Usuário', 'Nome de Usuário']" :bDataTable="false" />
-                  <Grid v-if="iTipo == 5" sTitulo="Clientes" :aCabecalhos="['', 'Cliente', 'Nome do Cliente']" :bDataTable="false" />               
-               </div>               
+                  <Grid v-if="iTipo == 5" sTitulo="Clientes" :aCabecalhos="['', 'Cliente', 'Nome do Cliente']" :bDataTable="false" />
+               </div>    
+
+               <div v-if="iTipo == 6">
+                  <div class="flex gap-10">
+                     <Grid class="w-1/2" sTitulo="Produtos" :aCabecalhos="['', 'Produto', 'Nome do Produto']" :bDataTable="false" />
+                     <Grid class="w-1/2" sTitulo="Fornecedores" :aCabecalhos="['', 'Fornecedor', 'Nome do Fornecedor']" :bDataTable="false" />
+                  </div>
+               </div>           
                
             </div>
          </template>
@@ -74,6 +81,10 @@ const aOpcoesRelatorio = ref([
    {
       iValor: 5,
       sDescricao: 'Vendas X Cliente'
+   },
+   {
+      iValor: 6,
+      sDescricao: 'Produto X Fornecedor'
    }   
 ])
 </script>
