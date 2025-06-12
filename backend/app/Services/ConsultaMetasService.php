@@ -6,6 +6,26 @@ use Illuminate\Support\Facades\DB;
 
 class ConsultaMetasService {
 
+   public static function consultarTodasMetas() {
+      $aMetas = DB::table('metas')->orderBy('metipo')->get();
+
+      $aResultados = [];
+
+      foreach($aMetas as $oMeta) {
+         $resultado = self::consultarMeta($oMeta->mecodigo);
+
+         $resultado['iCodigo']      = $oMeta->mecodigo;
+         $resultado['sDescricao']   = $oMeta->medescricao ?? 'Meta';
+         $resultado['iTipo']        = $oMeta->metipo;
+         $resultado['dDataInicio']  = $oMeta->medata_inicio;
+         $resultado['dDataFim']     = $oMeta->medata_fim;
+
+         $aResultados[] = $resultado;
+      }
+
+      return $aResultados;
+   }
+
    public static function consultarMeta($iMeta) {
       $oMeta = DB::table('metas')->where('mecodigo', $iMeta)->first();
 
@@ -108,7 +128,7 @@ class ConsultaMetasService {
                6 => $oDados->valor_total      >= $oMeta->mevalor_meta && $oDados->quantidade_total >= $oMeta->mequantidade_meta,
             }
          ];
-      });
+      })[0];
    }
 
    private static function getMetaPorProduto($oMeta) {
@@ -141,7 +161,7 @@ class ConsultaMetasService {
                9 => $oDados->valor_total      >= $oMeta->mevalor_meta && $oDados->quantidade_total >= $oMeta->mequantidade_meta,
             }
          ];
-      });
+      })[0];
    }
 
 }

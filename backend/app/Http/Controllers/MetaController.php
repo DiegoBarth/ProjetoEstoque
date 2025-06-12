@@ -53,12 +53,11 @@ class MetaController extends Controller {
    }
 
    /**
-    * Retorna os dados de uma meta em específico para montar o gráfico da mesma
-    * @param integer $iMeta
+    * Retorna os dados das metas para montar os gráficos das mesmas
     * @return JsonResponse|mixed
     */
-   public function consultarMeta($iMeta) {
-      $resultado = ConsultaMetasService::consultarMeta($iMeta);
+   public function consultarMeta() {
+      $resultado = ConsultaMetasService::consultarTodasMetas();
 
       return response()->json($resultado);
    }

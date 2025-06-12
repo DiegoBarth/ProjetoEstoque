@@ -8,6 +8,7 @@ import Venda from'../views/Venda.vue';
 import Relatorio from'../views/Relatorio.vue';
 import Usuario from '../views/Usuario.vue'
 import Meta from'../views/Meta.vue';
+import GraficoMeta from '@/views/GraficoMeta.vue';
 
 const router = createRouter({
    history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,7 +58,12 @@ const router = createRouter({
          name: 'Meta',
          component: Meta
       },
-   ],
+      {
+         path: '/metas',
+         name: 'Metas',
+         component: GraficoMeta
+      }
+   ]
 });
 
 export default router;
