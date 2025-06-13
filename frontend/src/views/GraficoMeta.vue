@@ -20,7 +20,10 @@
    import MetaTipo1 from '@/components/Meta/MetaTipo1.vue';
    import MetaTipo2 from '@/components/Meta/MetaTipo2.vue';
    import MetaTipo3 from '@/components/Meta/MetaTipo3.vue';
-   import api from "@/api";
+   import MetaTipo4 from '@/components/Meta/MetaTipo4.vue';
+   import MetaTipo5 from '@/components/Meta/MetaTipo5.vue';
+   import MetaTipo6 from '@/components/Meta/MetaTipo6.vue';
+   import { useMetaStore } from '@/stores/metaStore';
 
    export default {
       name: 'MetasGraficos',
@@ -28,6 +31,9 @@
          MetaTipo1,
          MetaTipo2,
          MetaTipo3,
+         MetaTipo4,
+         MetaTipo5,
+         MetaTipo6
       },
       data() {
          return {
@@ -35,17 +41,13 @@
          }
       },
       mounted() {
-         this.buscarMetas()
+         const oMetaStore = useMetaStore();
+
+         this.buscarMetas(oMetaStore);
       },
       methods: {
-         async buscarMetas() {
-            try {
-               const oRetorno = await api.get('/api/meta/consulta');
-               this.aMetas = oRetorno.data;
-            }
-            catch(error) {
-               console.error('Erro ao buscar metas:', error);
-            }
+         async buscarMetas(store) {
+            this.aMetas = await store.getResultadosMetas();
          },
          getComponent(tipo) {
             return `MetaTipo${tipo}`

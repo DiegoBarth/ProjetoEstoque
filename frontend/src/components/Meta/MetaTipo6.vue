@@ -51,7 +51,7 @@
             backgroundColor: sCorValorPendente,
             borderRadius: 4,
          },
-                  {
+         {
             label: 'Realizado Quantidade',
             data: [0, fQuantidadePercentual],
             backgroundColor: sCorQuantidadeRealizado,
@@ -70,7 +70,11 @@
       responsive: true,
       plugins: {
          legend: { position: 'top' },
-         title:  { display: true, text: `${oProps.dados.sDescricao} (Valor + Quantidade) - De ${oProps.dados.sDataInicial} à ${oProps.dados.sDataFinal}`},
+         title:  { display: true, text: [
+            `${oProps.dados.sDescricao} (Valor + Quantidade) - De ${oProps.dados.sDataInicial} à ${oProps.dados.sDataFinal}`,
+            '',
+            `${oProps.dados.sUsuario}`
+         ]},
          tooltip: {
             callbacks: {
                label: (context) => {
@@ -104,7 +108,7 @@
             beginAtZero: true,
             max: 100,
             ticks: {
-               callback: fValor => `${fValor}%`
+               callback: v => v + '%'
             },
             title: { display: true, text: 'Percentual (%)' }
          }
