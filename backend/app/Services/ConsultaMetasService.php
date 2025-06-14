@@ -12,15 +12,17 @@ class ConsultaMetasService {
       $aResultados = [];
 
       foreach($aMetas as $oMeta) {
-         $resultado = self::consultarMeta($oMeta->mecodigo);
+         $aResultado = self::consultarMeta($oMeta->mecodigo);
 
-         $resultado['iCodigo']      = $oMeta->mecodigo;
-         $resultado['sDescricao']   = $oMeta->medescricao ?? 'Meta';
-         $resultado['iTipo']        = $oMeta->metipo;
-         $resultado['dDataInicio']  = $oMeta->medata_inicio;
-         $resultado['dDataFim']     = $oMeta->medata_fim;
-
-         $aResultados[] = $resultado;
+         if(count($aResultado)) {
+            $aResultado['iCodigo']      = $oMeta->mecodigo;
+            $aResultado['sDescricao']   = $oMeta->medescricao ?? 'Meta';
+            $aResultado['iTipo']        = $oMeta->metipo;
+            $aResultado['sDataInicial'] = $oMeta->medata_inicio;
+            $aResultado['sDataFinal']   = $oMeta->medata_fim;
+   
+            $aResultados[] = $aResultado;
+         }
       }
 
       return $aResultados;
@@ -114,7 +116,7 @@ class ConsultaMetasService {
          )
          ->get();
 
-      return $aDados->map(function ($oDados) use ($oMeta) {
+      $aDados = $aDados->map(function ($oDados) use ($oMeta) {
          return [
             'iUsuario'         => $oDados->usucodigo,
             'sUsuario'         => $oDados->usunome,
@@ -128,7 +130,13 @@ class ConsultaMetasService {
                6 => $oDados->valor_total      >= $oMeta->mevalor_meta && $oDados->quantidade_total >= $oMeta->mequantidade_meta,
             }
          ];
-      })[0];
+      });
+
+      if(count($aDados)) {
+         return $aDados[0];
+      }
+
+      return $aDados;
    }
 
    private static function getMetaPorProduto($oMeta) {
@@ -147,7 +155,7 @@ class ConsultaMetasService {
          )
          ->get();
 
-      return $aDados->map(function ($oDados) use ($oMeta) {
+      $aDados = $aDados->map(function ($oDados) use ($oMeta) {
          return [
             'iProduto'         => $oDados->procodigo,
             'sProduto'         => $oDados->pronome,
@@ -161,7 +169,13 @@ class ConsultaMetasService {
                9 => $oDados->valor_total      >= $oMeta->mevalor_meta && $oDados->quantidade_total >= $oMeta->mequantidade_meta,
             }
          ];
-      })[0];
+      });
+
+      if(count($aDados)) {
+         return $aDados[0];
+      }
+
+      return $aDados;
    }
 
 }

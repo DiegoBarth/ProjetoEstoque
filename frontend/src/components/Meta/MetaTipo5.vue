@@ -28,7 +28,14 @@
    }
    const oChartOptions = {
       responsive: true,
-      plugins: { legend: { position: 'top' }, title: { display: true, text: `${oProps.dados.sDescricao} (Quantidade total) - De ${oProps.dados.sDataInicial} à ${oProps.dados.sDataFinal}` } },
+      plugins: {
+         legend: { position: 'top' },
+         title:  { display: true, text: [
+            `${oProps.dados.sDescricao} (Quantidade total por usuário) - De ${oProps.dados.sDataInicial} à ${oProps.dados.sDataFinal}` ,
+            '',
+            `${oProps.dados.sUsuario}`
+         ]}
+      },
       scales: {
          y: {
             grid: {

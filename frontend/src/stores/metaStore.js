@@ -1,5 +1,6 @@
 import api from "@/api";
 import { defineStore } from "pinia";
+import { formatarData } from "@/utils/main";
 
 export const useMetaStore = defineStore('Meta', {
    state: () => ({
@@ -13,6 +14,20 @@ export const useMetaStore = defineStore('Meta', {
          }
          catch(error) {
             throw(error);
+         }
+      },
+      async getResultadosMetas() {
+         try {
+            const { data } = await api.get('/api/meta/consulta');
+
+            return data.map(oMeta => ({
+               ...oMeta,
+               sDataInicial: formatarData(oMeta.sDataInicial),
+               sDataFinal:   formatarData(oMeta.sDataFinal)
+            }));
+         }
+         catch(error) {
+            console.error('Erro ao buscar metas:', error);
          }
       },
       async consultarMeta(iMeta) {

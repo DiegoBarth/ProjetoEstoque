@@ -39,7 +39,11 @@
       responsive: true,
       plugins: {
          legend:  { position: 'top' },
-         title:   { display: true, text: `${oProps.dados.sDescricao} (Valor total) - De ${oProps.dados.sDataInicial} à ${oProps.dados.sDataFinal}` },
+         title:   { display: true, text: [
+            `${oProps.dados.sDescricao} (Valor total por usuário) - De ${oProps.dados.sDataInicial} à ${oProps.dados.sDataFinal}`,
+            '',
+            `${oProps.dados.sUsuario}`
+         ]},
          tooltip: {
             callbacks: {
                label(context) {
