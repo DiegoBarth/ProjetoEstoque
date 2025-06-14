@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="h-full">
       <div class="flex items-center justify-between w-full py-10 px-30">
          <h1 class="cabecalho-principal text-3xl text-white font-semibold ">{{ sTitulo }}</h1>
          <Botao v-if="bMostraBotao" @click="$emit('showModalCadastro')" :sTexto="`Cadastrar ${sTitulo.toLowerCase()}`" sTipo="text" sId="botao_cadastrar" sLargura="w-fit" />
