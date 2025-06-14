@@ -3,15 +3,16 @@
    <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden">
       <div class="grid gap-6 p-4 grid-cols-2 w-full h-full rounded-xl overflow-auto">
          <div
-  v-for="(meta, index) in aMetas"
-  :key="meta.iCodigo"
-  :class="{
-    'col-span-2 flex justify-center': aMetas.length === 1,
-    'col-span-1': aMetas.length > 1
-  }"
->
-  <component :is="getComponent(meta.iTipo)" :dados="meta" />
-</div>
+            v-for="(oMeta) in aMetas"
+            :key="oMeta.iCodigo"
+            :class="{
+               'col-span-2 flex justify-center': aMetas.length === 1,
+               'col-span-1': aMetas.length > 1,
+               'card-principal rounded-sm': aMetas.length > 1
+            }"
+         >
+            <component :is="getComponent(oMeta.iTipo)" :dados="oMeta" />
+         </div>
       </div>
    </div>
 </template>
