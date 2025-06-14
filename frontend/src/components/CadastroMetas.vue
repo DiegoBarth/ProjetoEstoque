@@ -39,9 +39,9 @@ import Campo from '../components/UI/Campo.vue';
 import { converterParaMoeda, limparCampos } from '../utils/main'
 import { useUsuarioStore } from '../stores/usuarioStore';
 import { useProdutoStore } from '../stores/produtoStore';
-import { ref, onMounted, computed } from 'vue';
-const oUsuarioStore       = useUsuarioStore();
-const oProdutoStore       = useProdutoStore();
+import { ref, onMounted, computed, watch } from 'vue';
+const oUsuarioStore = useUsuarioStore();
+const oProdutoStore = useProdutoStore();
 
 
 const oProps = defineProps(['iAcaoAtual', 'oMeta', 'aOpcoes']);
@@ -69,7 +69,35 @@ let oRegistroSelecionado  = null;
 let aRegistrosFiltrados   = [];
 let iCampoSelecionado     = ref(null);
 
+function limparCamposDesabilitados() {
+   watch(bCampoValorMetaHabilitado, (bHabilitado) => {
+      if(!bHabilitado) {
+         oProps.oMeta.fValorMeta = null;
+      }
+   });
+
+   watch(bCampoQuantidadeMetaHabilitado, (bHabilitado) => {
+      if(!bHabilitado) {
+         oProps.oMeta.iQuantidadeMeta = null;
+      }
+   });
+
+   watch(bCampoUsuarioHabilitado, (bHabilitado) => {
+      if(!bHabilitado) {
+         resetarUsuario();
+      }
+   });
+
+   watch(bCampoProdutoHabilitado, (bHabilitado) => {
+      if(!bHabilitado) {
+         resetarProduto();
+      }
+   });
+}
+
 onMounted(() => {
+   limparCamposDesabilitados();
+
    if(oProps.iAcaoAtual == 1) {
       limparCampos();
    }
