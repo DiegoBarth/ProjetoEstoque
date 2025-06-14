@@ -23,18 +23,14 @@
    import MetaTipo4 from '@/components/Meta/MetaTipo4.vue';
    import MetaTipo5 from '@/components/Meta/MetaTipo5.vue';
    import MetaTipo6 from '@/components/Meta/MetaTipo6.vue';
+   import MetaTipo7 from '@/components/Meta/MetaTipo7.vue';
+   import MetaTipo8 from '@/components/Meta/MetaTipo8.vue';
+   import MetaTipo9 from '@/components/Meta/MetaTipo9.vue';
    import { useMetaStore } from '@/stores/metaStore';
 
    export default {
       name: 'MetasGraficos',
-      components: {
-         MetaTipo1,
-         MetaTipo2,
-         MetaTipo3,
-         MetaTipo4,
-         MetaTipo5,
-         MetaTipo6
-      },
+      components: { MetaTipo1, MetaTipo2, MetaTipo3, MetaTipo4, MetaTipo5, MetaTipo6, MetaTipo7, MetaTipo8, MetaTipo9 },
       data() {
          return {
             aMetas: []

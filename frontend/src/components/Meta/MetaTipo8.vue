@@ -1,6 +1,8 @@
 <template>
    <GraficoMetaQuantidade
-      :sTitulo="`${dados.sDescricao} (Quantidade total) - De ${dados.sDataInicial} à ${dados.sDataFinal}`"
+      :sTitulo="`${dados.sDescricao} (Quantidade total por produto) - De ${dados.sDataInicial} à ${dados.sDataFinal}`"
+      :sSubtitulo="' '"
+      :sDescricaoExtra="dados.sProduto"
       :iQuantidadeMeta="dados.iQuantidadeMeta"
       :iQuantidadeAtual="dados.iQuantidadeTotal"
    />

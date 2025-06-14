@@ -1,8 +1,8 @@
 <template>
    <GraficoMetaValor
-      :sTitulo="`${dados.sDescricao} (Valor total por usuário) - De ${dados.sDataInicial} à ${dados.sDataFinal}`"
+      :sTitulo="`${dados.sDescricao} (Valor total por produto) - De ${dados.sDataInicial} à ${dados.sDataFinal}`"
       :sSubtitulo="' '"
-      :sDescricaoExtra="dados.sUsuario"
+      :sDescricaoExtra="dados.sProduto"
       :fValorMeta="dados.fValorMeta"
       :fValorTotal="dados.fValorTotal"
    />
@@ -10,6 +10,6 @@
 
 <script setup>
    import GraficoMetaValor from './GraficoMetaValor.vue';
-   
+
    const props = defineProps({ dados: Object });
 </script>
