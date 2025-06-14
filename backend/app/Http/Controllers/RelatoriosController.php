@@ -8,15 +8,15 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class RelatoriosController extends Controller {
 
    public function gerarRelatorioVendas() {
-      $aVendas = Venda::leftJoin('clientes', 'vendas.clicodigo', '=', 'clientes.clicodigo')
-         ->leftJoin('usuarios', 'vendas.usucodigo', '=', 'usuarios.usucodigo')
-         ->select([
+      $aVendas = Venda::select([
             'clientes.clinome as sCliente',
             'usuarios.usunome as sVendedor',
             'vedesconto',
             'vevalor_total',
             'vedata_hora_venda'
          ])
+         ->leftJoin('clientes', 'vendas.clicodigo', '=', 'clientes.clicodigo')
+         ->leftJoin('usuarios', 'vendas.usucodigo', '=', 'usuarios.usucodigo')
          ->get();
 
       $dados = [
@@ -25,9 +25,7 @@ class RelatoriosController extends Controller {
             'vendas' => $aVendas
         ];
 
-        $pdf = Pdf::loadView('pdf.relatorioVendas', $dados);
-
-        //streak save
+        $pdf = Pdf::loadView('pdf.relatorioVendas', $dados);        
 
         return $pdf->download('relatorio.pdf');
    }

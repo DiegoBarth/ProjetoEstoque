@@ -16,7 +16,7 @@ class ClienteController extends Controller {
     * @throws ValidationException
     */
    public function getClientes() {
-      $aClientes = Cliente::all();
+      $aClientes = Cliente::orderBy('clicodigo')->get();
 
       if(!$aClientes) {
          return response()->json(['Nenhum cliente encontrado.'], 404);

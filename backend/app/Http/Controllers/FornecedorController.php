@@ -48,7 +48,7 @@ class FornecedorController extends Controller {
     * @throws ValidationException
     */
    public function getFornecedores() {
-      $aFornecedores = Fornecedor::all();
+      $aFornecedores = Fornecedor::orderBy('forcodigo')->get();
 
       if(!$aFornecedores) {
          return response()->json(['Nenhum fornecedor encontrado.'], 404);

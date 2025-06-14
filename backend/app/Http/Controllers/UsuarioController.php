@@ -54,7 +54,9 @@ class UsuarioController extends Controller {
     * @throws ValidationException
     */
    public function getUsuarios() {
-      $aUsuarios = Usuario::with('nivel')->get();
+      $aUsuarios = Usuario::with('nivel')
+                     ->orderBy('usucodigo')
+                     ->get();
 
       $aUsuarios->transform(function ($oUsuario) {
          $oUsuario->sSituacao = $oUsuario->usuativo ? 'Ativo' : 'Inativo';

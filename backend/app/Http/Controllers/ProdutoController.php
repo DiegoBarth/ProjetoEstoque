@@ -18,6 +18,7 @@ class ProdutoController extends Controller {
    public function getProdutos() {
       $aProdutos = Produto::join('fornecedores', 'fornecedores.forcodigo', '=', 'produtos.forcodigo')
          ->select('produtos.*', 'fornecedores.forrazao_social')
+         ->orderBy('procodigo')
          ->get();
 
       return response()->json(['aProdutos' => $aProdutos], 200);
