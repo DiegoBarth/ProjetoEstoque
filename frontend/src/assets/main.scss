@@ -14,7 +14,8 @@ html {
    font-weight: normal;
 }
 
-.card-menu > a:hover {
+.card-menu > a:hover,
+.router-link-active {
    background-color: var(--principal);
    border-radius: 4px;
    color: var(--fundoPrincipal)
