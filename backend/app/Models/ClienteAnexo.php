@@ -13,11 +13,16 @@ class ClienteAnexo extends Model {
    protected $primaryKey = 'anecodigo';
    public $timestamps = false;
 
+   protected $casts = [
+      'anearquivo' => 'string',
+   ];
+
    protected $fillable = [
       'clicodigo',
       'anenome_arquivo',
       'anetipo',
       'anearquivo',
+      'aneobservacao',
       'anedata_hora'
    ];
 

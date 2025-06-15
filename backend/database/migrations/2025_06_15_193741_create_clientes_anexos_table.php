@@ -11,8 +11,9 @@ return new class extends Migration {
          $table->id('anecodigo');
          $table->foreignId('clicodigo')->constrained('clientes', 'clicodigo');
          $table->string('anenome_arquivo');
-         $table->string('anetipo')->comment('1 - PDF, 2 - JPEG, 3 - PNG, 4 - BMP');
-         $table->binary('anearquivo');
+         $table->string('anetipo');
+         $table->text('anearquivo');
+         $table->text('aneobservacao')->nullable();
          $table->timestamp('anedata_hora');
       });
    }

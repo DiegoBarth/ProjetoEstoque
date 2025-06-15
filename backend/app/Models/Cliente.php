@@ -23,4 +23,8 @@ class Cliente extends Model {
       return $this->hasMany(Venda::class, 'clicodigo');
    }
 
+   public function anexos() {
+      return $this->hasMany(ClienteAnexo::class, 'clicodigo', 'clicodigo');
+   }
+
 }
