@@ -69,9 +69,9 @@
                      <td class="p-2">{{ produto.sValorTotal }}</td>
                      <td class="p-2 flex gap-2">
                         <span v-if="!bGridBloqueado" class="cursor-pointer"><i
-                              class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white" @click="alterarProdutoGrid(produto)"></i></span>
+                              class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white" @click="alterarProdutoGrid(produto)" title="Alterar"></i></span>
                         <span v-if="!bGridBloqueado" class="cursor-pointer"><i
-                           class="fa fa-trash p-2 bg-red-500 rounded-sm text-white" @click="excluirProdutoGrid(produto)"></i></span>
+                           class="fa fa-trash p-2 bg-red-500 rounded-sm text-white" @click="excluirProdutoGrid(produto)" title="Excluir"></i></span>
                      </td>
                   </tr>
                   <tr v-if="aProdutos.length === 0">

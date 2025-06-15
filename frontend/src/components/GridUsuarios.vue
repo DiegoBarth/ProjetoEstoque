@@ -9,11 +9,11 @@
             <td class="p-2">{{ oUsuario.sSituacao }}</td>
             <td class="p-2 flex gap-2">
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 3, oUsuario)"><i
-                     class="fa fa-search p-2 bg-blue-500 rounded-sm text-white"></i></span>
+                     class="fa fa-search p-2 bg-blue-500 rounded-sm text-white" title="Visualizar"></i></span>
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 2, oUsuario)"><i
-                     class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white"></i></span>
+                     class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white" title="Alterar"></i></span>
                <span class="cursor-pointer" @click="$emit('showModalExclusao', oUsuario.usucodigo)"><i
-                     class="fa fa-trash p-2 bg-red-500 rounded-sm text-white"></i></span>
+                     class="fa fa-trash p-2 bg-red-500 rounded-sm text-white" title="Excluir"></i></span>
             </td>
          </tr>
       </Grid>
