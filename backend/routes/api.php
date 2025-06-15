@@ -30,12 +30,17 @@ Route::middleware('auth:sanctum')->group(function () {
 #region Rotas Cliente
 
 Route::middleware('auth:sanctum')->group(function () {
-   Route::get('/cliente',               [ClienteController::class, 'getClientes']);
-   Route::get('/cliente/{iCliente}',    [ClienteController::class, 'getClienteByCodigo']);
-   Route::get('/cliente/busca/cpf',     [ClienteController::class, 'getClienteByCPF']);
-   Route::post('/cliente',              [ClienteController::class, 'salvar']);
-   Route::put('/cliente/{iCliente}',    [ClienteController::class, 'atualizar']);
-   Route::delete('/cliente/{iCliente}', [ClienteController::class, 'excluir']);
+   Route::get('/cliente',                       [ClienteController::class, 'getClientes']);
+   Route::get('/cliente/{iCliente}',            [ClienteController::class, 'getClienteByCodigo']);
+   Route::get('/cliente/busca/cpf',             [ClienteController::class, 'getClienteByCPF']);
+   Route::post('/cliente',                      [ClienteController::class, 'salvar']);
+   Route::put('/cliente/{iCliente}',            [ClienteController::class, 'atualizar']);
+   Route::delete('/cliente/{iCliente}',         [ClienteController::class, 'excluir']);
+   Route::get('/cliente/busca/anexo',           [ClienteController::class, 'getAnexos']);
+   Route::post('/cliente/anexo',                [ClienteController::class, 'salvarAnexo']);
+   Route::get('/cliente/anexo/visualizar/{id}', [ClienteController::class, 'visualizarAnexo']);
+   Route::delete('/cliente/anexo/{iAnexo}',         [ClienteController::class, 'excluirAnexo']);
+
 });
 
 #endregion

@@ -69,6 +69,41 @@ export const useClienteStore = defineStore('Cliente', {
          catch(error) {
             throw(error)
          }
+      },
+      async getAnexosCliente(iCliente) {
+         const response = await api.get(`/api/cliente/busca/anexo?cliente=${encodeURIComponent(iCliente)}`);
+
+         return response.data;
+      },
+      async cadastrarAnexo(oAnexo) {
+         try {
+            const formData = new FormData();
+            formData.append('arquivo', oAnexo.anearquivo);
+            formData.append('nome', oAnexo.anenome_arquivo);
+            formData.append('tipo', oAnexo.anetipo);
+            formData.append('observacao', oAnexo.aneobservacao);
+            formData.append('clicodigo', oAnexo.clicodigo);
+            
+            const response = await api.post('/api/cliente/anexo', formData, {
+               headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            return response.data;
+         }
+         catch (error) {
+            console.error('Erro ao enviar anexo:', error);
+            throw error;
+         }
+      },
+      async removerAnexo(iAnexo) {
+         try {
+            const { data } = await api.delete(`/api/cliente/anexo/${iAnexo}`);
+
+            return !!data;
+         }
+         catch(error) {
+            throw(error)
+         }
       }
    }
 }); 

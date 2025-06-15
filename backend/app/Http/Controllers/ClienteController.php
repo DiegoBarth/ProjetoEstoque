@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
 use App\Models\Venda;
+use App\Models\Cliente;
+use App\Models\ClienteAnexo;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class ClienteController extends Controller {
@@ -132,11 +134,17 @@ class ClienteController extends Controller {
          return response()->json(['sMensagem' => $xRetorno], 404);   
       }
 
+      $oCliente->anexos()->delete();
       $oCliente->delete();
 
       return response()->json(['sMensagem' => "Cliente {$iCliente} - $sNomeCliente excluído com sucesso."], 200);
    }
 
+   /**
+    * Verifica se o cliente possui vendas em aberto. Caso possua, não permitirá excluir o mesmo
+    * @param integer $iCliente
+    * @return boolean|string
+    */
    private function validaVendasPendentes($iCliente) {
       $aVendas = Venda::where([
          "clicodigo"  => $iCliente,
@@ -149,6 +157,93 @@ class ClienteController extends Controller {
       }
 
       return false;
+   }
+
+   /**
+    * Busca os anexos do cliente
+    * @param Request $oRequest
+    * @return JsonResponse
+    */
+   public function getAnexos(Request $oRequest) {
+      $iCliente = $oRequest->query('cliente');
+      $oCliente = Cliente::with('anexos')->find($iCliente);
+
+      if(!$oCliente) {  
+         return response()->json(['sMensagem' => 'Cliente não encontrado'], 404);
+      }
+
+      return response()->json($oCliente->anexos, 200);
+   }
+
+   /**
+    * Salva o anexo do cliente
+    * @param \Illuminate\Http\Request $oRequest
+    * @return JsonResponse|mixed
+    */
+   public function salvarAnexo(Request $oRequest) {
+      $oRequest->validate([
+         'arquivo'    => 'required|file|mimes:pdf,jpg,jpeg,png,bmp,txt|max:10240', // max 10MB
+         'nome'       => 'required|string|max:255',
+         'tipo'       => 'required|string',
+         'clicodigo'  => 'required|integer',
+         'observacao' => 'nullable|string|max:500',
+      ]);
+
+      $oFile = $oRequest->file('arquivo');
+      $sPath = $oFile->store('anexos', 'public');
+
+      $oAnexo = new ClienteAnexo();
+      $oAnexo->anenome_arquivo = $oRequest->nome;
+      $oAnexo->anetipo = $oRequest->tipo;
+      $oAnexo->aneobservacao = $oRequest->observacao;
+      $oAnexo->anearquivo = $sPath;
+      $oAnexo->clicodigo = $oRequest->clicodigo;
+      $oAnexo->anedata_hora = now();
+      $oAnexo->save();
+
+      return response()->json($oAnexo, 200);
+   }
+
+   /**
+    * Retorna o anexo para visualização
+    * @param mixed $iAnexo
+    */
+   public function visualizarAnexo($iAnexo) {
+      $oAnexo = ClienteAnexo::find($iAnexo);
+
+      $sCaminho = $oAnexo->anearquivo;
+
+      if(!Storage::disk('public')->exists($sCaminho)) {
+         return response()->json(['mensagem' => 'Arquivo não encontrado.'], 404);
+      }
+
+      $oConteudo = Storage::disk('public')->get($sCaminho);
+      $sTipo     = $oAnexo->anetipo ?: 'application/octet-stream';
+      $sNome     = $oAnexo->anenome_arquivo ?: 'arquivo';
+
+      return response($oConteudo)
+         ->header('Content-Type', $sTipo)
+         ->header('Content-Disposition', "inline; filename=\"$sNome\"");
+   }
+
+   /**
+    * Exclui um anexo com base no código
+    * @param integer $iCliente
+    * @return JsonResponse
+    * @throws ValidationException
+    */
+   public function excluirAnexo($iAnexo) {
+      $oAnexo = ClienteAnexo::find($iAnexo);
+
+      if(!$oAnexo) {
+         return response()->json(['sMensagem' => 'Anexo não encontrado.'], 404);
+      }
+
+      $sAnexo = $oAnexo->anenome_arquivo;
+
+      $oAnexo->delete();
+
+      return response()->json(['sMensagem' => "Anexo {$iAnexo} - $sAnexo excluído com sucesso."], 200);
    }
 
 }

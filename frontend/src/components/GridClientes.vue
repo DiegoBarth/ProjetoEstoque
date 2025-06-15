@@ -14,8 +14,10 @@
                      class="fa fa-search p-2 bg-blue-500 rounded-sm text-white" title="Visualizar"></i></span>
                <span class="cursor-pointer" @click="$emit('showModalCadastro', 2, oCliente)"><i
                      class="fa fa-pencil p-2 bg-yellow-500 rounded-sm text-white" title="Alterar"></i></span>
-               <span class="cursor-pointer" @click="$emit('showModalExclusao', oCliente.clicodigo)"><i
+               <span class="cursor-pointer" @click="$emit('showModalExclusao', 'cliente', oCliente.clicodigo)"><i
                      class="fa fa-trash p-2 bg-red-500 rounded-sm text-white" title="Excluir"></i></span>
+               <span class="cursor-pointer" @click="$emit('showModalAnexo', oCliente.clicodigo)"><i
+                     class="fa fa-paperclip p-2 bg-gray-500 rounded-sm text-white" title="Anexos"></i></span>
             </td>
          </tr>
       </Grid>
@@ -25,7 +27,7 @@
 import Grid from './UI/Grid.vue';
 import { formatarCPF, formatarTelefone, formatarData } from '../utils/main';
 
-defineEmits(['showModalCadastro', 'showModalExclusao']);
+defineEmits(['showModalCadastro', 'showModalExclusao', 'showModalAnexo']);
 defineProps(['aClientes']);
 
 </script>
