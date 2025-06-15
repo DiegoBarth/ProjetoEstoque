@@ -45,7 +45,7 @@ table.dataTable {
    font-size: 0.875rem;
 }
 
-#dt-length-0 {
+[id^="dt-length-"] {
    border-radius: 0.375rem;
    padding: 0.25rem 0.5rem;
    font-size: 0.875rem;
@@ -69,8 +69,7 @@ table.dataTable {
    margin-bottom: 0.25rem;
 }
 
-#dt-search-0,
-#dt-search-1 {
+[id^="dt-search-"] {
    border-radius: 0.375rem;
    padding: 0.25rem 0.5rem;
    font-size: 0.875rem;
