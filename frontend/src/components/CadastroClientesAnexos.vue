@@ -18,8 +18,8 @@
          id="inputArquivo"
          type="file"
          :disabled="iAcaoAtual == 3"
-         @change="onFileChange"
-         accept=".pdf,.jpg,.jpeg,.png,.bmp,.txt"
+         @change="onChangeFile"
+         accept=".pdf,.jpg,.jpeg,.png,.bmp"
          class="sr-only"
       />
       <span class="ml-2 text-sm text-gray-600">
@@ -46,26 +46,69 @@
    </div>
    <div class="mt-6">
       <p class="font-semibold mb-2">Anexos já incluídos</p>
-         <ul class="max-h-48 overflow-y-auto border rounded p-2 bg-gray-50">
-            <li
-               v-for="(anexo, idx) in anexos"
-               :key="anexo.anecodigo || idx"
-               class="flex justify-between items-center py-1 border-b last:border-b-0"
-            >
-               <span class="truncate max-w-[60%] cursor-pointer text-blue-600 hover:underline"
-               @click="visualizarAnexo(anexo)">
-               {{ anexo.anenome_arquivo }}
-               </span>
-
-               <button
-                  type="button"
-                  class="text-red-600 hover:text-red-800 cursor-pointer"
-                  @click="removerAnexo(anexo.anecodigo)"
-                  :disabled="iAcaoAtual == 3"
-                  title="Remover anexo">
-                  <i class="fa fa-trash"></i>
-               </button>
-            </li>
+         <ul class="max-h-96 overflow-y-auto border rounded p-2 bg-gray-50">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+               <div
+                  v-for="(anexo, idx) in anexos"
+                  :key="anexo.anecodigo || idx"
+                  class="flex flex-col items-center p-2 border rounded bg-white shadow-sm h-[200px]"
+               >
+                  <div class="w-[85%] h-30 mb-2 flex items-center justify-center border rounded overflow-hidden bg-gray-50 relative cursor-pointer"
+                     @click.stop="visualizarAnexo(anexo)"
+                     @mousedown.middle="visualizarAnexo(anexo)"
+                     :title="anexo.aneobservacao || anexo.anenome_arquivo"
+                  >
+                     <img
+                        v-if="isImagem(anexo.anetipo)"
+                        :src="getPreview(anexo)"
+                        class="object-cover w-full h-full"
+                        alt="Pré-visualização"
+                     />
+                     <div
+                        v-else-if="anexo.anetipo === 'application/pdf'"
+                        class="w-full h-full overflow-hidden"
+                     >
+                        <iframe 
+                           :src="getPreview(anexo)"
+                           class="w-full h-full"
+                           style="border:none; overflow:hidden;"
+                           title="Pré-visualização PDF"
+                        ></iframe>
+                     </div>
+                     <i
+                        v-else-if="anexo.anetipo === 'text/plain'"
+                        class="fa fa-file-text-o text-gray-500 text-3xl"
+                        title="Texto"
+                     ></i>
+                     <i
+                        v-else
+                        class="fa fa-file text-gray-400 text-3xl"
+                        title="Arquivo"
+                     ></i>
+                  </div>
+                  <div class="flex-1 flex flex-col justify-between w-full">
+                     <span
+                        class="text-center text-sm hover:underline cursor-pointer break-all"
+                        @click="visualizarAnexo(anexo)"
+                        :title="anexo.aneobservacao || anexo.anenome_arquivo"
+                     >
+                        {{ anexo.anenome_arquivo }}
+                     </span>
+                     <button
+                        type="button"
+                        class="mt-2 text-red-600 hover:text-red-800 text-sm cursor-pointer"
+                        @click="removerAnexo(anexo.anecodigo)"
+                        :disabled="iAcaoAtual == 3"
+                        title="Remover anexo"
+                     >
+                        <i class="fa fa-trash mr-1"></i> Remover
+                     </button>
+                  </div>
+               </div>
+               <div v-if="anexos.length === 0" class="text-gray-400 italic text-center col-span-full">
+                  Nenhum anexo incluído
+               </div>
+            </div>
             <li v-if="anexos.length === 0" class="text-gray-400 italic text-center">
                Nenhum anexo incluído
             </li>
@@ -79,7 +122,6 @@
    import { alerta, formatarDataHora } from '@/utils/main';
    import ModalCadastro from '../components/UI/ModalCadastro.vue';
    import Campo from '../components/UI/Campo.vue';
-   import Botao from './UI/Botao.vue';
 
    const oProps = defineProps({
       iAcaoAtual: Number,
@@ -88,7 +130,7 @@
       aAnexosExistentes: { type: Array, default: () => [] }
    });
 
-   const emit = defineEmits(['adicionarAnexo', 'fecharModal']);
+   const emit = defineEmits(['adicionarAnexo', 'fecharModal', 'showModalExclusao']);
 
    const oAnexo = reactive({
       anenome_arquivo: '',
@@ -97,7 +139,7 @@
       anedata_hora: null,
       clicodigo: oProps.clicodigo || null,
       anecodigo: null,
-      aneobservacao: null
+      aneobservacao: ''
    });
 
    const anexos = ref([...oProps.aAnexosExistentes]);
@@ -107,8 +149,7 @@
       'image/jpeg',
       'image/jpg',
       'image/png',
-      'image/bmp',
-      'text/plain'
+      'image/bmp'
    ];
 
    watch(() => oProps.clicodigo, (iNovoCodigo) => {
@@ -119,7 +160,15 @@
       anexos.value = [...novosAnexos];
    });
 
-   function onFileChange(event) {
+   function isImagem(tipo) {
+      return ['image/jpeg', 'image/jpg', 'image/png', 'image/bmp'].includes(tipo);
+   }
+
+   function getPreview(anexo) {
+      return `${import.meta.env.VITE_BACKEND_URL}/api/cliente/anexo/visualizar/${anexo.anecodigo}`;
+   }
+
+   function onChangeFile(event) {
       const oArquivo = event.target.files[0];
 
       if(!oArquivo) {
