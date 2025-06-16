@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import router from '@/router';
+import { alerta } from './utils/main';
 
 const api = axios.create({
    baseURL: 'http://localhost:8000',
@@ -50,6 +51,10 @@ api.interceptors.response.use(
          }
 
          return error.response;
+      }
+      
+      if(error.response.data.message) {
+         alerta(error.response.data.message, 'error');
       }
       
       return Promise.reject(error);
