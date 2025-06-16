@@ -182,7 +182,7 @@ class ClienteController extends Controller {
     */
    public function salvarAnexo(Request $oRequest) {
       $oRequest->validate([
-         'arquivo'    => 'required|file|mimes:pdf,jpg,jpeg,png,bmp,txt|max:10240', // max 10MB
+         'arquivo'    => 'required|file|mimes:pdf,jpg,jpeg,png,bmp|max:10240', // max 10MB
          'nome'       => 'required|string|max:255',
          'tipo'       => 'required|string',
          'clicodigo'  => 'required|integer',
