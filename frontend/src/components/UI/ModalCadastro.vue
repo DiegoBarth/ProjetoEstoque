@@ -1,5 +1,5 @@
 <template>    
-    <Modal v-if="bModalAberto" v-bind="$attrs" class="bg-gray-100 p-6 shadow-md w-220" id="modalCadastro">
+    <Modal v-if="bModalAberto" v-bind="$attrs" class="bg-gray-100 p-6 shadow-md w-100 sm:w-[80%] md:w-[80%] lg:w-[60%] xl:w-[45%] overflow-auto" id="modalCadastro">
         <div>
             <div class="flex items-center mb-4">        
                 <h2 class="text-xl font-semibold">{{ sTitulo }}</h2>
@@ -14,7 +14,6 @@
     </Modal>    
 </template>
 <script setup>
-import { onUnmounted } from 'vue';
 import Modal from './Modal.vue'
 import Botao from '../UI/Botao.vue';
 
