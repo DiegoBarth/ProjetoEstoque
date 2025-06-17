@@ -2,7 +2,7 @@
    <ModalCadastro
       :bModalAberto="true"
       class="flex items-center justify-center"
-      sTitulo="📎 Gerenciar Anexos"
+      sTitulo="📎 Anexos"
       :iAcao="iAcaoAtual"
       @fecharModal="$emit('fecharModal')"
       @incluir="incluirAnexo"
