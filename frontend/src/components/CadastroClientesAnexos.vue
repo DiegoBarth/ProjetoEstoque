@@ -18,7 +18,7 @@
          id="inputArquivo"
          type="file"
          :disabled="iAcaoAtual == 3"
-         @change="onChangeFile"
+         @change="onChangeArquivo"
          accept=".pdf,.jpg,.jpeg,.png,.bmp"
          class="sr-only"
       />
@@ -168,8 +168,8 @@
       return `${import.meta.env.VITE_BACKEND_URL}/api/cliente/anexo/visualizar/${anexo.anecodigo}`;
    }
 
-   function onChangeFile(event) {
-      const oArquivo = event.target.files[0];
+   function onChangeArquivo(oEvento) {
+      const oArquivo = oEvento.target.files[0];
 
       if(!oArquivo) {
          return;
