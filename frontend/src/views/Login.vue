@@ -78,9 +78,11 @@
 
    function alterarCampoSenha() {
       if($('#senha').prop('type') == 'text') {
+         $('.fa-eye-slash').removeClass('fa-eye-slash').addClass('fa-eye');
          return $('#senha').prop('type', 'password');
       }
       
+      $('.fa-eye').removeClass('fa-eye').addClass('fa-eye-slash');
       $('#senha').prop('type', 'text');
    }
 
