@@ -96,4 +96,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
 #endregion
 
-Route::get('/relatorio', [RelatoriosController::class, 'gerarRelatorioVendaPorProdutos']);
+Route::get('/relatorio', [RelatoriosController::class, 'gerarRelatorioVendas']);
