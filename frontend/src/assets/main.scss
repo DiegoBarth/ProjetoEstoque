@@ -14,11 +14,16 @@ html {
    font-weight: normal;
 }
 
-.card-menu > a:hover,
-.router-link-active {
-   background-color: var(--principal);
+.card-menu {
    border-radius: 4px;
    color: var(--fundoPrincipal)
+}
+
+.card-menu > a:hover,
+.router-link-active {
+   background-color: var(--fundoPrincipal);
+   border-radius: 4px;
+   color: var(--textoPrincipal)
 }
 
 aside > a:first-child:hover {

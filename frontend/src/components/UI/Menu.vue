@@ -1,12 +1,12 @@
 <template>
-   <aside class="min-w-[160px] w-full sm:w-64 bg-white shadow-lg flex flex-col h-full">
+   <aside class="min-w-[160px] w-full sm:w-64 shadow-lg flex flex-col h-full">
       <RouterLink to="/inicio"
          class="p-4 font-bold border-b border-gray-200 text-center block hover:text-sky-600" style="justify-content: space-around; font-size: 20px;">
          Atendimento
       </RouterLink>
       <nav class="flex-1 overflow-y-auto p-4 flex flex-col gap-6 text-sm text-gray-700">
          <div>
-            <p class="text-l text-gray-500 uppercase mb-2">Cadastros</p>
+            <p class="text-l uppercase mb-2" style="color:var(--fundoPrincipal); font-weight: 500;">Cadastros</p>
             <div class="card-menu flex flex-col">
                <RouterLink v-for="item in itensCadastro" :key="item.sRota"
                   class="flex items-center gap-2 hover:text-teal-600" :to="{ name: item.sRota }">
@@ -15,7 +15,7 @@
             </div>
          </div>
          <div>
-            <p class="text-l text-gray-500 uppercase mb-2">Gestão</p>
+            <p class="text-l uppercase mb-2" style="color:var(--fundoPrincipal); font-weight: 500;">Gestão</p>
             <div class="card-menu flex flex-col">
                <RouterLink v-for="item in itensGestao" :key="item.sRota"
                   class="flex items-center gap-2 hover:text-teal-600" :to="{ name: item.sRota }">
@@ -92,7 +92,8 @@ aside {
    position: relative;
    height: 100%;
    width: 12%;
-   background-color: var(--elementos);
+   background-color: var(--principal);
+   color:var(--fundoPrincipal);
    border-right: 1px solid var(--bordas);
    box-shadow: 4px 0 10px 1px var(--bordas);
    transition: 1s width;
@@ -100,7 +101,7 @@ aside {
    a {
       display: flex;
       align-items: center;
-      border-bottom: 1px solid var(--bordas);
+      // border-bottom: 1px solid var(--bordas);
       height: 5%;
       width: 100%;
       text-align: left;
