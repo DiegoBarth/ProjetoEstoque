@@ -72,8 +72,8 @@ async function cancelarVenda() {
    aVendas.value = await oVendaStore.getVendas();
 }
 
-async function confirmarDevolucao(aDevolucoes) {
-   await oVendaStore.realizarDevolucao(iVendaDevolucao.value, aDevolucoes);
+async function confirmarDevolucao(aDevolucoes, sMotivo) {
+   await oVendaStore.realizarDevolucao(iVendaDevolucao.value, aDevolucoes, sMotivo);
 
    bExibirModalDevolucao.value = false;
    iVendaDevolucao.value       = null;

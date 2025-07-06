@@ -93,6 +93,7 @@ Route::middleware('auth:sanctum')->group(function () {
    Route::post('/venda/cancelar/{iVenda}',  [VendaController::class, 'cancelarVenda']);
    Route::post('/venda/itens/{iVenda}',     [VendaController::class, 'getItensVenda']);
    Route::post('/venda/{id}/devolucao',     [VendaController::class, 'realizarDevolucao']);
+   Route::get('/venda/{id}/devolucao',      [VendaController::class, 'buscarDevolucao']);
 });
 
 #endregion

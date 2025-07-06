@@ -15,6 +15,7 @@ class Devolucao extends Model {
       'usucodigo',
       'demotivo',
       'devalor_total',
+      'dedata_hora_devolucao'
    ];
 
    public function venda() {

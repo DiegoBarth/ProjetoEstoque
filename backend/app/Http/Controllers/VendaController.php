@@ -142,66 +142,93 @@ class VendaController extends Controller {
          'produtos'                        => 'required|array',
          'produtos.*.iProduto'             => 'required|integer|exists:produtos,procodigo',
          'produtos.*.iQuantidadeDevolvida' => 'required|integer|min:1',
-         'demotivo'                        => 'nullable|string|max:50'
+         'motivo'                          => 'nullable|string|max:100'
       ]);
 
       $aProdutosDevolucao = $aDados['produtos'];
-      $sMotivo   = $aDados['demotivo'] ?? null;
-      $iUsuario  = auth()->id();
+      $sMotivo            = $aDados['motivo'] ?? null;
+      $iUsuario           = auth()->id();
 
       DB::beginTransaction();
 
       try {
-         $iDevolucao = DB::table('devolucoes')->insertGetId([
+         $oDevolucao = Devolucao::create([
             'vecodigo'              => $iVenda,
             'usucodigo'             => $iUsuario,
             'demotivo'              => $sMotivo,
+            'dedata_hora_devolucao' => now()->format('d/m/Y H:i:s'),
             'devalor_total'         => 0,
-            'dedata_hora_devolucao' => now()
-         ], 'decodigo');
+         ]);
 
          $fTotalDevolucao = 0;
 
-         $itensVenda = DB::table('itens_vendas')
+         $aItensVenda = DB::table('itens_vendas')
             ->where('vecodigo', $iVenda)
             ->whereIn('procodigo', collect($aProdutosDevolucao)->pluck('iProduto'))
             ->get()
             ->keyBy('procodigo');
 
          foreach($aProdutosDevolucao as $aProduto) {
-            $iProduto            = $aProduto['iProduto'];
-            $quantidadeDevolvida = $aProduto['iQuantidadeDevolvida'];
+            $iProduto             = $aProduto['iProduto'];
+            $iQuantidadeDevolvida = $aProduto['iQuantidadeDevolvida'];
 
-            if(!isset($itensVenda[$iProduto])) {
+            if(!isset($aItensVenda[$iProduto])) {
                DB::rollBack();
                return response()->json(['sMensagem' => "Produto $iProduto não pertence à venda"], 422);
             }
 
-            $oItemVenda       = $itensVenda[$iProduto];
-            $fDesconto        = ($oItemVenda->ivdesconto ?? 0) / 1;
-            $fSubtotal        = $quantidadeDevolvida * ($oItemVenda->ivpreco_unitario - $fDesconto);
-            $fTotalDevolucao += $fSubtotal;
+            $oItemVenda = $aItensVenda[$iProduto];
+            $fDesconto  = ($oItemVenda->ivdesconto ?? 0) / 1;
+            $fSubtotal  = $iQuantidadeDevolvida * ($oItemVenda->ivpreco_unitario - $fDesconto);
 
-            DB::table('itens_devolucoes')->insert([
-               'decodigo'     => $iDevolucao,
+            ItemDevolucao::create([
+               'decodigo'     => $oDevolucao->decodigo,
                'ivcodigo'     => $oItemVenda->ivcodigo,
-               'idquantidade' => $quantidadeDevolvida,
+               'idquantidade' => $iQuantidadeDevolvida,
                'idsubtotal'   => $fSubtotal
             ]);
+
+            $fTotalDevolucao += $fSubtotal;
          }
 
-         DB::table('devolucoes')->where('decodigo', $iDevolucao)->update([
-            'devalor_total' => $fTotalDevolucao
-         ]);
+         $oDevolucao->devalor_total = $fTotalDevolucao;
+         $oDevolucao->save();
 
          DB::commit();
+
          return response()->json(['sMensagem' => 'Devolução realizada com sucesso.'], 200);
       }
-      catch(\Exception $e) {
+      catch (\Exception $e) {
          DB::rollBack();
          return response()->json(['sMensagem' => 'Erro ao salvar a devolução: ' . $e->getMessage()], 500);
       }
-   }  
+   }
+
+   /**
+    * Busca uma devolução já existente
+    * @param mixed $iVenda
+    * @return JsonResponse|mixed
+    */
+   public function buscarDevolucao($iVenda) {
+      $oDevolucao = Devolucao::where('vecodigo', $iVenda)->first();
+
+      if(!$oDevolucao) {
+         return response()->json(null);
+      }
+
+      $aItens = $oDevolucao->itens()
+         ->join('itens_vendas', 'itens_devolucoes.ivcodigo', '=', 'itens_vendas.ivcodigo')
+         ->select(
+            'itens_vendas.procodigo as iProduto',
+            'itens_devolucoes.idquantidade as iQuantidadeDevolvida'
+         )
+         ->get();
+
+      return response()->json([
+         'sMotivo'   => $oDevolucao->demotivo,
+         'aProdutos' => $aItens
+      ]);
+   }
    
    /**
     * 

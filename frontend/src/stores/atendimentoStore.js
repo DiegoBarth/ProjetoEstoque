@@ -63,13 +63,24 @@ export const useAtendimentoStore = defineStore('Atendimento', {
             throw(error);
          }
       },
-      async realizarDevolucao(iVenda, aProdutos) {
+      async realizarDevolucao(iVenda, aProdutos, sMotivo) {
          try {
             const { data } = await api.post(`/api/venda/${iVenda}/devolucao`, {
-               produtos: aProdutos
+               produtos: aProdutos,
+               motivo  : sMotivo
             });
 
             return !!data;
+         }
+         catch(error) {
+            throw error;
+         }
+      },
+      async buscarDevolucao(iVendaDevolucao) {
+         try {
+            const { data } = await api.get(`/api/venda/${iVendaDevolucao}/devolucao`);
+
+            return data;
          }
          catch(error) {
             throw error;
