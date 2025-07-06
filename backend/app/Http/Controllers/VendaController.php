@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\FormaPagamento;
 use App\Models\Venda;
+use App\Models\Devolucao;
 use App\Models\ItemVenda;
+use App\Models\ItemDevolucao;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+
 
 class VendaController extends Controller {
  
@@ -127,6 +130,78 @@ class VendaController extends Controller {
          'oVenda'  => $oVenda
       ], 200);
    }
+
+   /**
+    * Realiza a devolução de produto(s) de uma venda
+    * @param \Illuminate\Http\Request $oRequest
+    * @param mixed $iVenda
+    * @return JsonResponse|mixed
+    */
+   public function realizarDevolucao(Request $oRequest, $iVenda) {
+      $aDados = $oRequest->validate([
+         'produtos'                        => 'required|array',
+         'produtos.*.iProduto'             => 'required|integer|exists:produtos,procodigo',
+         'produtos.*.iQuantidadeDevolvida' => 'required|integer|min:1',
+         'demotivo'                        => 'nullable|string|max:50'
+      ]);
+
+      $aProdutosDevolucao = $aDados['produtos'];
+      $sMotivo   = $aDados['demotivo'] ?? null;
+      $iUsuario  = auth()->id();
+
+      DB::beginTransaction();
+
+      try {
+         $iDevolucao = DB::table('devolucoes')->insertGetId([
+            'vecodigo'              => $iVenda,
+            'usucodigo'             => $iUsuario,
+            'demotivo'              => $sMotivo,
+            'devalor_total'         => 0,
+            'dedata_hora_devolucao' => now()
+         ], 'decodigo');
+
+         $fTotalDevolucao = 0;
+
+         $itensVenda = DB::table('itens_vendas')
+            ->where('vecodigo', $iVenda)
+            ->whereIn('procodigo', collect($aProdutosDevolucao)->pluck('iProduto'))
+            ->get()
+            ->keyBy('procodigo');
+
+         foreach($aProdutosDevolucao as $aProduto) {
+            $iProduto            = $aProduto['iProduto'];
+            $quantidadeDevolvida = $aProduto['iQuantidadeDevolvida'];
+
+            if(!isset($itensVenda[$iProduto])) {
+               DB::rollBack();
+               return response()->json(['sMensagem' => "Produto $iProduto não pertence à venda"], 422);
+            }
+
+            $oItemVenda       = $itensVenda[$iProduto];
+            $fDesconto        = ($oItemVenda->ivdesconto ?? 0) / 1;
+            $fSubtotal        = $quantidadeDevolvida * ($oItemVenda->ivpreco_unitario - $fDesconto);
+            $fTotalDevolucao += $fSubtotal;
+
+            DB::table('itens_devolucoes')->insert([
+               'decodigo'     => $iDevolucao,
+               'ivcodigo'     => $oItemVenda->ivcodigo,
+               'idquantidade' => $quantidadeDevolvida,
+               'idsubtotal'   => $fSubtotal
+            ]);
+         }
+
+         DB::table('devolucoes')->where('decodigo', $iDevolucao)->update([
+            'devalor_total' => $fTotalDevolucao
+         ]);
+
+         DB::commit();
+         return response()->json(['sMensagem' => 'Devolução realizada com sucesso.'], 200);
+      }
+      catch(\Exception $e) {
+         DB::rollBack();
+         return response()->json(['sMensagem' => 'Erro ao salvar a devolução: ' . $e->getMessage()], 500);
+      }
+   }  
    
    /**
     * 
@@ -150,7 +225,7 @@ class VendaController extends Controller {
             'sNome'        => $item->produto->pronome ?? '',
             'iQuantidade'  => $item->ivquantidade ?? '',
             'sValor'       => $item->ivpreco_unitario ?? '',
-            'sDesconto'    => (($item->ivquantidade * $item->ivpreco_unitario) - $item->ivsubtotal) / $item->ivquantidade  ?? '',
+            'sDesconto'    => ($item->ivquantidade * $item->ivpreco_unitario - $item->ivsubtotal) / $item->ivquantidade  ?? '',
             'sValorTotal'  => $item->ivsubtotal
          ];
       });

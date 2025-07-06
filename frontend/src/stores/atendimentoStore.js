@@ -63,6 +63,18 @@ export const useAtendimentoStore = defineStore('Atendimento', {
             throw(error);
          }
       },
+      async realizarDevolucao(iVenda, aProdutos) {
+         try {
+            const { data } = await api.post(`/api/venda/${iVenda}/devolucao`, {
+               produtos: aProdutos
+            });
+
+            return !!data;
+         }
+         catch(error) {
+            throw error;
+         }
+      },
       setDadosVenda(oDados) {
          this.oDadosVenda = oDados;
       },

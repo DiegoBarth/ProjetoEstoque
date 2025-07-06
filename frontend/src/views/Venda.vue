@@ -12,7 +12,7 @@
             <button @click="() => bShowModal = false" class="text-white cursor-pointer p-2 bg-red-500 rounded-sm w-1/2">Não</button>
          </div>
       </Modal>
-      <ModalDevolucao v-if="bExibirModalDevolucao" :aProdutos="aProdutos" @fecharModalDevolucao="() => {aProdutos.value = []; bExibirModalDevolucao = false}" />
+      <ModalDevolucao v-if="bExibirModalDevolucao" :aProdutos="aProdutos" :iVendaDevolucao="iVendaDevolucao" @confirmarDevolucao="confirmarDevolucao" @fecharModalDevolucao="() => {aProdutos.value = []; bExibirModalDevolucao = false}" />
    </div>
 </template>
 
@@ -25,7 +25,6 @@ import GridVendas from '../components/GridVendas.vue';
 
 //#region Dependências
 import { onMounted, ref } from 'vue';
-import api from '../api';
 import { useAtendimentoStore } from '../stores/atendimentoStore';
 import ModalDevolucao from '@/components/ModalDevolucao.vue';
 //#endregion
@@ -39,6 +38,7 @@ const iVendaExclusao        = ref(null);
 const iAcaoAtual            = ref(0);
 const aVendas               = ref();
 const aProdutos             = ref([]);
+const iVendaDevolucao       = ref();
 
 onMounted(async () => {
    aVendas.value = await oVendaStore.getVendas();
@@ -56,7 +56,8 @@ function showModal(iAcao, iCodigo) {
 
 function showModalDevolucao(oVenda) {
    bExibirModalDevolucao.value = true;
-   aProdutos.value = oVenda.aProdutos;
+   iVendaDevolucao.value       = oVenda.vecodigo;
+   aProdutos.value             = oVenda.aProdutos;
 }
 
 async function finalizarVenda() {
@@ -69,5 +70,13 @@ async function cancelarVenda() {
    await oVendaStore.cancelarVenda(iVenda.value);
    bShowModal.value = false;
    aVendas.value = await oVendaStore.getVendas();
+}
+
+async function confirmarDevolucao(aDevolucoes) {
+   await oVendaStore.realizarDevolucao(iVendaDevolucao.value, aDevolucoes);
+
+   bExibirModalDevolucao.value = false;
+   iVendaDevolucao.value       = null;
+   aVendas.value               = await oVendaStore.getVendas();
 }
 </script>
