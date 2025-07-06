@@ -41,6 +41,10 @@ return new class extends Migration {
            SET proestoque = proestoque + NEW.idquantidade
            WHERE procodigo = v_procodigo;
 
+           UPDATE itens_vendas
+           SET ivquantidade = ivquantidade - NEW.idquantidade
+           WHERE ivcodigo = NEW.ivcodigo;
+
            RETURN NEW;
         END;
         $$ LANGUAGE plpgsql;
