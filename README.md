@@ -7,6 +7,20 @@ Desenvolvido com **Laravel 10**, **Tailwind CSS** e **PostgreSQL**, o sistema pe
 
 ---
 
+## 📚 Índice
+
+- [🚀 Funcionalidades](#-funcionalidades)
+- [🛠️ Tecnologias utilizadas](#️-tecnologias-utilizadas)
+- [📦 Exemplo de uso real](#-exemplo-de-uso-real)
+- [⚙️ Instalação e uso](#️-instalação-e-uso)
+  - [🖥️ Backend (Laravel + PostgreSQL)](#️-backend-laravel--postgresql)
+  - [🎨 Frontend (Tailwind CSS + Vite)](#-frontend-tailwind-css--vite)
+- [✅ Requisitos](#-requisitos)
+- [🧑‍💻 Autores](#-autores)
+- [📄 Licença](#-licença)
+
+---
+
 ## 🚀 Funcionalidades
 
 ### 👥 Atendimento e Operação
