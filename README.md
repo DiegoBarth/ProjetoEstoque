@@ -1,5 +1,13 @@
 # 📦 ProjetoEstoque
 
+![PHP](https://img.shields.io/badge/PHP-8.1-blue?logo=php)
+![Laravel](https://img.shields.io/badge/laravel-10-red?logo=laravel)
+![Vue.js](https://img.shields.io/badge/Vue.js-3.x-42b883?logo=vue.js&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.3-38B2AC?logo=tailwind-css&logoColor=white)
+![License MIT](https://img.shields.io/badge/license-MIT-brightgreen)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+
 Sistema web completo para **loja de eletrônicos**, com foco em **atendimento, controle de vendas, estoque e gestão de metas**.  
 Desenvolvido com **Laravel 10**, **Tailwind CSS** e **PostgreSQL**, o sistema permite que atendentes realizem vendas rapidamente e que gestores acompanhem resultados por meio de **gráficos e relatórios personalizados**.
 
