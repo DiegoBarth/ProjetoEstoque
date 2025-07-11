@@ -1,9 +1,31 @@
 # 📦 ProjetoEstoque
 
+![PHP](https://img.shields.io/badge/PHP-8.1-blue?logo=php)
+![Laravel](https://img.shields.io/badge/laravel-10-red?logo=laravel)
+![Vue.js](https://img.shields.io/badge/Vue.js-3.x-42b883?logo=vue.js&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.3-38B2AC?logo=tailwind-css&logoColor=white)
+![License MIT](https://img.shields.io/badge/license-MIT-brightgreen)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+
 Sistema web completo para **loja de eletrônicos**, com foco em **atendimento, controle de vendas, estoque e gestão de metas**.  
 Desenvolvido com **Laravel 10**, **Tailwind CSS** e **PostgreSQL**, o sistema permite que atendentes realizem vendas rapidamente e que gestores acompanhem resultados por meio de **gráficos e relatórios personalizados**.
 
 > 🔐 Ideal para uso em balcão e gestão de loja: controle de estoque em tempo real, registro de vendas e acompanhamento de metas mensais.
+
+---
+
+## 📚 Índice
+
+- [🚀 Funcionalidades](#-funcionalidades)
+- [🛠️ Tecnologias utilizadas](#️-tecnologias-utilizadas)
+- [📦 Exemplo de uso real](#-exemplo-de-uso-real)
+- [⚙️ Instalação e uso](#️-instalação-e-uso)
+  - [🖥️ Backend (Laravel + PostgreSQL)](#️-backend-laravel--postgresql)
+  - [🎨 Frontend (Tailwind CSS + Vite)](#-frontend-tailwind-css--vite)
+- [✅ Requisitos](#-requisitos)
+- [🧑‍💻 Autores](#-autores)
+- [📄 Licença](#-licença)
 
 ---
 
