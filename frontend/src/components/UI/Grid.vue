@@ -1,17 +1,19 @@
 <template>
    <div>
       <h1 class="mb-3" v-if="sTitulo">{{ sTitulo }}</h1>
-      <table class="shadow-md mx-auto rounded-sm w-full" id="tabela">
-         <thead class="bg-black rounded-t-sm sticky top-0">
-            <tr>
-               <th v-for="(sCabecalho, iIndice) of aCabecalhos" class="p-2 text-left text-white" :key="iIndice">{{
-                  sCabecalho }}</th>
-            </tr>
-         </thead>
-         <tbody v-bind="$attrs">
-            <slot></slot>
-         </tbody>      
-      </table>
+      <div :class="!bDataTable ? 'max-h-[396px] overflow-scroll' : null">
+         <table class="shadow-md mx-auto rounded-sm w-full" id="tabela">
+            <thead class="bg-black rounded-t-sm sticky top-0">
+               <tr>
+                  <th v-for="(sCabecalho, iIndice) of aCabecalhos" class="p-2 text-left text-white" :key="iIndice">{{
+                     sCabecalho }}</th>
+               </tr>
+            </thead>
+            <tbody v-bind="$attrs">
+               <slot></slot>
+            </tbody>      
+         </table>
+      </div>
    </div>
 </template>
 <script setup>

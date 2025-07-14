@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
    Route::get('/cliente/busca/anexo',           [ClienteController::class, 'getAnexos']);
    Route::post('/cliente/anexo',                [ClienteController::class, 'salvarAnexo']);
    Route::get('/cliente/anexo/visualizar/{id}', [ClienteController::class, 'visualizarAnexo']);
-   Route::delete('/cliente/anexo/{iAnexo}',         [ClienteController::class, 'excluirAnexo']);
+   Route::delete('/cliente/anexo/{iAnexo}',     [ClienteController::class, 'excluirAnexo']);
 
 });
 
@@ -98,4 +98,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 #endregion
 
-Route::get('/relatorio', [RelatoriosController::class, 'gerarRelatorioVendas']);
+Route::post('/relatorio/vendas', [RelatoriosController::class, 'gerarRelatorioVendas']);
+Route::post('/relatorio/produtos', [RelatoriosController::class, 'gerarRelatorioProdutos']);
+Route::post('/relatorio/vendasProdutos', [RelatoriosController::class, 'gerarRelatorioVendasPorProdutos']);
+Route::post('/relatorio/vendasClientes', [RelatoriosController::class, 'gerarRelatorioVendasPorCliente']);
