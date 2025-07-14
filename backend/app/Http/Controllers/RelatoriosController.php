@@ -67,11 +67,14 @@ class RelatoriosController extends Controller {
       $this->oPdf = new \FPDF();
       $this->oPdf->AddPage();
       $this->criarCabecalho('Relatório de Vendas');
+      $this->oPdf->setFont('Arial', 'B', 12);
+      $this->oPdf->Cell(50, 5, 'Filtros', 0, 1, 'L');
+      $this->criarFiltros(utf8_decode($sFiltros));
+      $this->oPdf->Ln(5);
 
       $iVendedor             = 0;
       $iVendasVendedor       = 0;
       $fTotalVendidoVendedor = 0;      
-      $this->criarFiltros(utf8_decode($sFiltros));
       foreach($aVendas as $oVenda) {
          if($iVendedor && $iVendedor != $oVenda->iVendedor) {                        
             $this->oPdf->setFillColor(200, 200, 200);
@@ -170,14 +173,17 @@ class RelatoriosController extends Controller {
 
       $this->oPdf = new \FPDF();
       $this->oPdf->AddPage('R');
-      $this->criarCabecalho('Relatório de Produtos');
-      
+      $this->criarCabecalho('Relatório de Produtos');      
+      $this->oPdf->setFont('Arial', 'B', 12);
+      $this->oPdf->Cell(50, 5, 'Filtros', 0, 1, 'L');
+      $this->criarFiltros(utf8_decode($sFiltros));
+      $this->oPdf->Ln(5);
+
       $iFornecedor                     = 0;
       $iProdutosEstoqueBaixoFornecedor = 0;
       $iProdutosEmFaltaFornecedor      = 0;
       $iProdutosEstoqueBaixo           = 0;
       $iProdutosEmFalta                = 0;            
-      $this->criarFiltros(utf8_decode($sFiltros));
       foreach($aProdutos as $oProduto) {
          if($iFornecedor && $iFornecedor != $oProduto->iFornecedor) {                        
             $this->oPdf->setFillColor(200, 200, 200);
@@ -295,7 +301,10 @@ class RelatoriosController extends Controller {
       $this->oPdf = new \FPDF();
       $this->oPdf->AddPage('R');
       $this->criarCabecalho('Relatório de Vendas');
+      $this->oPdf->setFont('Arial', 'B', 12);
+      $this->oPdf->Cell(50, 5, 'Filtros', 0, 1, 'L');
       $this->criarFiltros(utf8_decode($sFiltros));
+      $this->oPdf->Ln(5);
 
       $iProduto            = 0;      
       $iTotalVendasProduto = 0;      
@@ -398,15 +407,15 @@ class RelatoriosController extends Controller {
       $this->oPdf = new \FPDF();
       $this->oPdf->AddPage();
       $this->criarCabecalho('Relatório de Vendas Por Cliente');
-
       $this->oPdf->setFont('Arial', 'B', 12);
       $this->oPdf->Cell(50, 5, 'Filtros', 0, 1, 'L');
+      $this->criarFiltros(utf8_decode($sFiltros));
+      $this->oPdf->Ln(5);
+
       $iCliente = 0;
       $iVendasCliente = 0;      
       $fTotalVendidoCliente = 0;
       $fTotalVendido = 0;
-      $this->criarFiltros(utf8_decode($sFiltros));
-      $this->oPdf->Ln(5);
       foreach($aVendas as $oVenda) {
          if($iCliente && $iCliente != $oVenda->iCliente) {                        
             $this->oPdf->setFillColor(200, 200, 200);
