@@ -136,8 +136,7 @@ const aOpcoesRelatorio = ref([
    }      
 ])
 
-async function emitirRelatorio() {   
-   console.log(iTipo.value)
+async function emitirRelatorio() {      
    switch(Number(iTipo.value)) {
       case 1:
          oRelatorioStore.emitirRelatorioProdutos(tratarFiltros(iTipo.value));
