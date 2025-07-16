@@ -332,7 +332,7 @@ class RelatoriosController extends Controller {
       foreach($aVendas as $oVenda) {
          if($iProduto && $iProduto != $oVenda->iProduto) {                        
             $this->oPdf->setFillColor(200, 200, 200);            
-            $this->setTotalizador(utf8_decode("Número total de Vendas do Produto: {$iTotalVendasProduto }"));            
+            $this->setTotalizador(utf8_decode("Número total de Vendas do Produto: {$iTotalVendasProduto }"), 195);
             $iTotalVendasProduto = 0;            
          }
 
@@ -370,9 +370,9 @@ class RelatoriosController extends Controller {
       }
 
       $this->oPdf->setFillColor(200, 200, 200);      
-      $this->setTotalizador(utf8_decode("Número total de Vendas do Produto: {$iTotalVendasProduto }"));            
+      $this->setTotalizador(utf8_decode("Número total de Vendas do Produto: {$iTotalVendasProduto }"), 195);
       $this->oPdf->setFillColor(150, 150, 150);      
-      $this->setTotalizador(utf8_decode("Número total de Vendas: ".  sizeof($aVendas)));
+      $this->setTotalizador(utf8_decode("Número total de Vendas: ".  sizeof($aVendas)), 195);
       
       return response($this->oPdf->Output('S'), 200)
          ->header('Content-Type', 'application/pdf');      
