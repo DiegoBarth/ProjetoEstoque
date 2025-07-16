@@ -22,8 +22,6 @@ const oProps = defineProps(['iAcaoAtual', 'oFornecedor', 'aOpcoes']);
 defineEmits(['adicionarFornecedor', 'atualizarFornecedor', 'fecharModal']);
 
 function formatarCampoCpfCnpj(oCampo) {
-   console.log(oCampo.value.length)
-
    if(oCampo.value.length <= 15) {
       return formatarCPF(oCampo);
    }
