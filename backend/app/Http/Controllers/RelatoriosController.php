@@ -72,6 +72,13 @@ class RelatoriosController extends Controller {
       $this->criarFiltros(utf8_decode($sFiltros));
       $this->oPdf->Ln(5);
 
+      if(count($aVendas) <= 0) {
+         $this->oPdf->SetTextColor(100, 0, 0);  
+         $this->oPdf->Cell($this->oPdf->GetPageWidth() - 10, 10, utf8_decode('Nenhum registro encontrado com os filtros aplicados.'), 0, 1, 'C');                  
+         return response($this->oPdf->Output('S'), 200)
+            ->header('Content-Type', 'application/pdf');
+      }
+
       $iVendedor             = 0;
       $iVendasVendedor       = 0;
       $fTotalVendidoVendedor = 0;      
@@ -178,6 +185,13 @@ class RelatoriosController extends Controller {
       $this->oPdf->Cell(50, 5, 'Filtros', 0, 1, 'L');
       $this->criarFiltros(utf8_decode($sFiltros));
       $this->oPdf->Ln(5);
+
+      if(count($aProdutos) <= 0) {
+         $this->oPdf->SetTextColor(170, 0, 0);  
+         $this->oPdf->Cell($this->oPdf->GetPageWidth() - 10, 10, utf8_decode('Nenhum registro encontrado com os filtros aplicados.'), 0, 1, 'C');                  
+         return response($this->oPdf->Output('S'), 200)
+            ->header('Content-Type', 'application/pdf');
+      }
 
       $iFornecedor                     = 0;
       $iProdutosEstoqueBaixoFornecedor = 0;
@@ -306,6 +320,13 @@ class RelatoriosController extends Controller {
       $this->criarFiltros(utf8_decode($sFiltros));
       $this->oPdf->Ln(5);
 
+      if(count($aVendas) <= 0) {
+         $this->oPdf->SetTextColor(100, 0, 0);  
+         $this->oPdf->Cell($this->oPdf->GetPageWidth() - 10, 10, utf8_decode('Nenhum registro encontrado com os filtros aplicados.'), 0, 1, 'C');                  
+         return response($this->oPdf->Output('S'), 200)
+            ->header('Content-Type', 'application/pdf');
+      }
+
       $iProduto            = 0;      
       $iTotalVendasProduto = 0;      
       foreach($aVendas as $oVenda) {
@@ -411,6 +432,13 @@ class RelatoriosController extends Controller {
       $this->oPdf->Cell(50, 5, 'Filtros', 0, 1, 'L');
       $this->criarFiltros(utf8_decode($sFiltros));
       $this->oPdf->Ln(5);
+
+      if(count($aVendas) <= 0) {
+         $this->oPdf->SetTextColor(100, 0, 0);  
+         $this->oPdf->Cell($this->oPdf->GetPageWidth() - 10, 10, utf8_decode('Nenhum registro encontrado com os filtros aplicados.'), 0, 1, 'C');                  
+         return response($this->oPdf->Output('S'), 200)
+            ->header('Content-Type', 'application/pdf');
+      }
 
       $iCliente = 0;
       $iVendasCliente = 0;      

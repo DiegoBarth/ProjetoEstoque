@@ -89,6 +89,8 @@ import { useClienteStore } from '../stores/clienteStore'
 import { useFornecedorStore } from '../stores/fornecedorStore'
 import { useProdutoStore } from '../stores/produtoStore'
 import { useRelatorioStore } from '../stores/relatorioStore'
+import { differenceInDays } from 'date-fns'
+import { alerta } from '../utils/main'
 
 const oUsuariosStore     = useUsuarioStore();
 const oClientesStore     = useClienteStore();
@@ -136,7 +138,21 @@ const aOpcoesRelatorio = ref([
    }      
 ])
 
-async function emitirRelatorio() {      
+async function emitirRelatorio() {   
+   var aMensagens = [];
+   
+   if((oFiltros.value.sDataInicial && oFiltros.value.sDataFinal) && differenceInDays(oFiltros.value.sDataInicial, oFiltros.value.sDataFinal) > 0) {
+      aMensagens.push('A data inicial deve ser menor que a data final');
+   }
+
+   if(validaFiltrosVazios()) {
+      aMensagens.push('Informe ao menos um filtro para emitir o relatório');
+   }
+
+   if(aMensagens.length) {
+      return alerta(aMensagens, 'error')
+   }   
+   
    switch(Number(iTipo.value)) {
       case 1:
          oRelatorioStore.emitirRelatorioProdutos(tratarFiltros(iTipo.value));
@@ -151,6 +167,13 @@ async function emitirRelatorio() {
          oRelatorioStore.emitirRelatorioVendasPorCliente(tratarFiltros(iTipo.value));         
          break;      
    }
+}
+
+function validaFiltrosVazios() {
+   return Object.values(oFiltros.value).every(valor => {
+      if (Array.isArray(valor)) return valor.length === 0
+      return valor === ''
+   })
 }
 
 function limparFiltros() {
