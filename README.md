@@ -17,15 +17,19 @@ Desenvolvido com **Laravel 10**, **Tailwind CSS** e **PostgreSQL**, o sistema pe
 
 ## 📚 Índice
 
-- [🚀 Funcionalidades](#-funcionalidades)
-- [🛠️ Tecnologias utilizadas](#️-tecnologias-utilizadas)
-- [📦 Exemplo de uso real](#-exemplo-de-uso-real)
-- [⚙️ Instalação e uso](#️-instalação-e-uso)
+- [� ProjetoEstoque](#-projetoestoque)
+  - [📚 Índice](#-índice)
+  - [🚀 Funcionalidades](#-funcionalidades)
+    - [👥 Atendimento e Operação](#-atendimento-e-operação)
+    - [📊 Gestão e Relatórios](#-gestão-e-relatórios)
+  - [🛠️ Tecnologias utilizadas](#️-tecnologias-utilizadas)
+  - [📦 Exemplo de uso real](#-exemplo-de-uso-real)
+  - [⚙️ Instalação e uso](#️-instalação-e-uso)
   - [🖥️ Backend (Laravel + PostgreSQL)](#️-backend-laravel--postgresql)
   - [🎨 Frontend (Tailwind CSS + Vite)](#-frontend-tailwind-css--vite)
-- [✅ Requisitos](#-requisitos)
-- [🧑‍💻 Autores](#-autores)
-- [📄 Licença](#-licença)
+  - [✅ Requisitos](#-requisitos)
+  - [🧑‍💻 Autores](#-autores)
+  - [📄 Licença](#-licença)
 
 ---
 
@@ -74,7 +78,7 @@ Desenvolvido com **Laravel 10**, **Tailwind CSS** e **PostgreSQL**, o sistema pe
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/KauaRodrigo/ProjetoEstoque.git
+git clone https://github.com/DiegoBarth/ProjetoEstoque.git
 cd ProjetoEstoque
 ```
 
