@@ -1,13 +1,13 @@
 <template>
-<div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden"> 
-   <Consulta sTitulo='Metas' @showModalCadastro="showModalCadastro(1)">      
-      <template #gridConsulta>
-         <GridMetas v-if="aMetas" :aMetas="aMetas"   @showModalCadastro="showModalCadastro" @showModalExclusao="showModalExclusao"/>
-      </template>
-   </Consulta>
-   <CadastroMetas v-if="bShowModal" @fecharModal="() => bShowModal = false" @adicionarMeta="adicionarMeta" @atualizarMeta="atualizarMeta" :oMeta="oMeta" :iAcaoAtual="iAcaoAtual" :aOpcoes="aTiposMeta" />
-   <ModalExclusao v-if="iMetaExclusao" @fecharModal="() => iMetaExclusao = false" @excluirRegistro="excluirMeta" />   
-</div>
+   <div class="card-principal w-[calc(100vw-50px)] h-[calc(100vh-50px)] m-[25px] rounded-xl overflow-hidden"> 
+      <Consulta sTitulo='Metas' @showModalCadastro="showModalCadastro(1)">      
+         <template #gridConsulta>
+            <GridMetas v-if="aMetas" :aMetas="aMetas"   @showModalCadastro="showModalCadastro" @showModalExclusao="showModalExclusao"/>
+         </template>
+      </Consulta>
+      <CadastroMetas v-if="bShowModal" @fecharModal="() => bShowModal = false" @adicionarMeta="adicionarMeta" @atualizarMeta="atualizarMeta" :oMeta="oMeta" :iAcaoAtual="iAcaoAtual" :aOpcoes="aTiposMeta" />
+      <ModalExclusao v-if="iMetaExclusao" @fecharModal="() => iMetaExclusao = false" @excluirRegistro="excluirMeta" />   
+   </div>
 </template>
 
 <script setup>
