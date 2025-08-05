@@ -5,7 +5,7 @@ return [
    'paths' => ['api/*', 'sanctum/csrf-cookie', 'web/*'],
    'exposed_headers' => [],
    'allowed_origins' => [
-      'http://ifixforyou.local/',
+      'http://localhost',
    ],
    'allowed_methods' => ['*'],
    'allowed_headers' => ['*'],

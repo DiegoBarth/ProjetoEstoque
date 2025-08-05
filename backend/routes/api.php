@@ -98,7 +98,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
 #endregion
 
-Route::post('/relatorio/vendas', [RelatoriosController::class, 'gerarRelatorioVendas']);
-Route::post('/relatorio/produtos', [RelatoriosController::class, 'gerarRelatorioProdutos']);
-Route::post('/relatorio/vendasProdutos', [RelatoriosController::class, 'gerarRelatorioVendasPorProdutos']);
-Route::post('/relatorio/vendasClientes', [RelatoriosController::class, 'gerarRelatorioVendasPorCliente']);
+#region Rotas Relatórios
+Route::middleware('auth:sanctum')->group(function () {
+   Route::post('/relatorio/vendas', [RelatoriosController::class, 'gerarRelatorioVendas']);
+   Route::post('/relatorio/produtos', [RelatoriosController::class, 'gerarRelatorioProdutos']);
+   Route::post('/relatorio/vendasProdutos', [RelatoriosController::class, 'gerarRelatorioVendasPorProdutos']);
+   Route::post('/relatorio/vendasClientes', [RelatoriosController::class, 'gerarRelatorioVendasPorCliente']);
+});
+#endregion

@@ -4,7 +4,7 @@ import router from '@/router';
 import { alerta } from './utils/main';
 
 const api = axios.create({
-   baseURL: 'http://ifixforyou.local/api',
+   baseURL: 'http://localhost',
    withCredentials: true,
    headers: {
       'Accept'      : 'application/json'

@@ -15,14 +15,5 @@ export default defineConfig({
       alias: {
          '@': fileURLToPath(new URL('./src', import.meta.url))
       }
-   },
-   server: {
-      allowedHosts: [
-         'ifixforyou.local'
-      ],
-      host: 'ifixforyou.local',
-      port: 5173,
-      strictPort: true,
-      https: false
    }
 })
